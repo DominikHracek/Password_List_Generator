@@ -1,12 +1,14 @@
-#include <iostream>
+ #include <iostream>
 
 #include "help.h"
 
 void Help::show_general_help() {
   std::cout << "Thanks for using Khakis's Password List Generator" << '\n';
   std::cout << '\n';
-  std::cout << "Usage ./kplg [OPTIONS]" << '\n';
+  std::cout << "Usage ./kplg [OPTIONS] -w" << '\n';
   std::cout << "Usage ./kplg --help [OPTION]" << '\n';
+  std::cout << "DO NOT USE -w/--words AND -f/--file AT THE SAME TIME," << '\n';
+  std::cout << "IF YOU DO SO, -f/--file HAS PRIVILEGE AND IF NOT FOUND -w/--words ARE IGNORED";
   std::cout << '\n';
   std::cout << "Options:" << '\n';
   std::cout << '\t' << "-h" << " " << "|" << " " << "--help" << '\t' << "Shows this page" << '\n';
@@ -70,6 +72,19 @@ void Help::show_case(){
   std::cout << "Example:" << '\n';
   std::cout << '\t' << "./kplg -c 1" << '\n';
   std::cout << '\t' << "./kplg --case 1" << '\n';
+}
+
+void Help::show_words(){
+  std::cout << "USE THIS AS THE LAST ONE";
+  std::cout << "Usage:" << '\n';
+  std::cout << '\t' << "./kplg -w";
+  std::cout << '\t' << "./kplg --words";
+  std::cout << '\n';
+  std::cout << "Specifies the words to combine" << '\n';
+  std::cout << '\n';
+  std::cout << "Example:" << '\n';
+  std::cout << '\t' << "./kplg -w words to combine" << '\n';
+  std::cout << '\t' << "./kplg --words words to combine" << '\n';
 }
 
 void Help::show_file(){
