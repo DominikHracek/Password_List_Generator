@@ -4,13 +4,11 @@
 #include "help.h"
 #include "generate.h"
 
-void start_user_friendly_ui() {
-  std::cout << "Not ready, WIP";
-}
+Generate generate;
 
 int main(int argc, char *argv[]) {
   if (argc == 1) {
-    start_user_friendly_ui();
+    generate.start_ui();
     
   } else if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
     Help help_page;
@@ -36,8 +34,8 @@ int main(int argc, char *argv[]) {
       }
     }
   } else {
-    Generate generate;
     generate.get_arguments(argc, argv);
+    generate.start_ui();
   }
   
   return 0;
