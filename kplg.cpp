@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <cstring>
 #include <iostream>
 
@@ -9,7 +10,8 @@ Generate generate;
 int main(int argc, char *argv[]) {
   if (argc == 1) {
     generate.start_ui();
-    
+    // TO-DO generate.start_friendly_ui(); <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
   } else if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
     Help help_page;
     if (argc == 2){
@@ -31,11 +33,15 @@ int main(int argc, char *argv[]) {
       } else if (strcmp(argv[2], "-f") == 0 || strcmp(argv[2], "--file") == 0){
         help_page.show_file();
         
+      } else {
+        std::cout << "Error: Unknown argument " << argv[2] << '\n';
+        exit(2);
       }
     }
   } else {
     generate.get_arguments(argc, argv);
     generate.start_ui();
+    generate.generate_combinations();
   }
   
   return 0;
