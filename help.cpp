@@ -74,19 +74,6 @@ void Help::show_case(){
   std::cout << '\t' << "./kplg --case 1" << '\n';
 }
 
-void Help::show_words(){
-  std::cout << "USE THIS AS THE LAST ONE";
-  std::cout << "Usage:" << '\n';
-  std::cout << '\t' << "./kplg -w";
-  std::cout << '\t' << "./kplg --words";
-  std::cout << '\n';
-  std::cout << "Specifies the words to combine" << '\n';
-  std::cout << '\n';
-  std::cout << "Example:" << '\n';
-  std::cout << '\t' << "./kplg -w words to combine" << '\n';
-  std::cout << '\t' << "./kplg --words words to combine" << '\n';
-}
-
 void Help::show_file(){
   std::cout << "Usage:" << '\n';
   std::cout << '\t' << "./kplg -f" << '\n';

@@ -5,6 +5,5 @@ class Help{
     void show_maximal_character_length();
     void show_characters();
     void show_case();
-    void show_words();
     void show_file();
 };
