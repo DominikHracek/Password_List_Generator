@@ -9,12 +9,25 @@
 Generate::Generate() {
     minimal_combination_length = 0;
     maximal_combination_length = 12;
-    character_set_file = "characters.kplg";
-    character_set_line = 1;
+
+    separators_file_name = "";
+    separators_line = 1;
+    separators = {
+    "1) - _ / \\ ",
+    "2) - _ / \\ ! ; : \" \'",
+    "3) - _ / \\ ! ; : \" \' | @ # $ %",
+    "4) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , .",
+    "5) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { }",
+    "6) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < >",
+    "7) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < > ? ~ `"
+};
+    separator = "";
+
     letter_case = 0;
+
     input_file_name = "";
-    output_file_name = "generated_passwords.txt";
     words = {};
+    output_file_name = "generated_passwords.txt";
 }
 
 void Generate::get_arguments(int argc, char *argv[]) {
@@ -43,10 +56,10 @@ void Generate::get_arguments(int argc, char *argv[]) {
             if (i + 1 < argc && possible_value.find("-") == -1) {
               std::string character_file_checker = argv[i + 1];
               if (character_file_checker.find(",") != -1){
-                character_set_file = character_file_checker.substr(0,character_file_checker.find(","));
-                character_set_line = std::stoi(character_file_checker.substr(character_file_checker.find(",") + 1));
+                separators_file_name = character_file_checker.substr(0,character_file_checker.find(","));
+                separators_line = std::stoi(character_file_checker.substr(character_file_checker.find(",") + 1));
               } else {
-                character_set_line = std::stoi(argv[i + 1]);
+                separators_line = std::stoi(argv[i + 1]);
               }
             } else {
               std::cout << "Error: Missing value for -r/--char argument." << '\n';
@@ -77,29 +90,41 @@ void Generate::start_ui() {
   std::cout << ">>>>>>>>>>>>>>>>>>>>>Khakis's Password List Generator<<<<<<<<<<<<<<<<<<<<<" << '\n';
   std::cout << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
+
   std::cout << "Minimal combination length: " << minimal_combination_length << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
+
   std::cout << "Maximal combination length: " << maximal_combination_length << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
+
   std::cout << "Case-sensitivity level: " << letter_case << "/" << 4 << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << "Character set:" << '\n';
-  std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "Name: " << character_set_file << '\n';
-  std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  if (character_set_line < 1){
-    character_set_line = 1;
-    std::cout << '\t' << "Line: " << character_set_line << '\n';
-    std::this_thread::sleep_for(std::chrono::milliseconds(25));
-    std::cout << '\t' << "Each file's first line start at index 1 -> index has been set to 1" << '\n';
-    std::this_thread::sleep_for(std::chrono::milliseconds(25));
-    std::cout << '\n';
+
+  if (separators_file_name == ""){
+    if (separators_line < 1){
+      std::cout << "Each file's first line start at index 1 -> index has been set to 1" << '\n';
+      separators_line = 1;
+    } else if (separators_line > 7){
+      std::cout << "Unsupported separator line index, please check the help page for -r/--char with";
+      std::cout << "./kplg -h/--help -r/--char";
+    } else {
+      std::cout << "Character set:" <<  '\n';
+      std::cout << '\t' << "Character file: " << "internal" << '\n';
+      std::cout << '\t' << "Character line: " << separators_line << '\n';
+      std::this_thread::sleep_for(std::chrono::milliseconds(25));
+    }
   } else {
-    std::cout << '\t' << "Line: " << character_set_line << '\n';
-    std::this_thread::sleep_for(std::chrono::milliseconds(25));
+    std::cout << "Character set:" << '\n';
+    std::cout << '\t' << "Character file: " << separators_file_name << '\n';
+    std::cout << '\t' << "Character line: " << separators_line << '\n';
   }
+  std::cout << '\n';
+
   std::cout << "File with words: " << input_file_name << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+
   std::cout << "File with generated passwords: " << output_file_name << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
 }
 
 void Generate::read_file(std::string input_file_name) {
@@ -110,14 +135,38 @@ void Generate::read_file(std::string input_file_name) {
       input_file >> line_in_file;
       words.push_back(line_in_file);
     }
-    int max_word_length = 0;
-    for (std::string word : words) {
-      if (word.length() > max_word_length) {
-        max_word_length = word.length();
-      }
+  }
+  input_file.close();
+  int max_word_length = 0;
+  for (std::string word : words) {
+    if (word.length() > max_word_length) {
+      max_word_length = word.length();
     }
+  }
+}
 
-    for (int i = 0; i < words.size(); i++) {
+void Generate::get_separators(std::string separators_file_name, int line) {
+  separators_file.open(separators_file_name);
+  //TO-DO get line at specified index
+  /*
+  if (separators_file.is_open()){
+    while(separators_file.good()){
+      std::line_in_separators_file;
+      separators_file >> line_in_separators_file;
+      separators.push_back(line_in_separators_file);
+    }
+  }
+  separators_file.close()
+  separator = separators.at(line);
+  */
+}
+
+void Generate::get_separators(int line) {
+  separators.at(line);
+}
+
+    // Show all words on the same line after 1 second
+    /*for (int i = 0; i < words.size(); i++) {
       std::cout << '\r';
       for (int j = 0; j < max_word_length; j++) {
         std::cout << ' '; // Clear the line
@@ -125,11 +174,7 @@ void Generate::read_file(std::string input_file_name) {
       std::cout << '\r' << words[i];
       std::cout.flush(); // Flush the output to make it visible
       std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
-
-    std::cout << std::endl;
-  }
-}
+    }*/
 
 void Generate::ask_for_patterns() {}
 
