@@ -44,15 +44,25 @@ void Help::show_maximal_character_length(){
 }
 
 void Help::show_characters(){
+  std::cout << "Internal word separators (used when <separator_file> not specified) << '\n";
+  std::cout << '\t' << "1) - _ / \\ " << '\n';
+  std::cout << '\t' << "2) - _ / \\ ! ; : \" \'" << '\n';
+  std::cout << '\t' << "3) - _ / \\ ! ; : \" \' | @ # $ %" << '\n';
+  std::cout << '\t' << "4) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , ." << '\n';
+  std::cout << '\t' << "5) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { }" << '\n';
+  std::cout << '\t' << "6) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < >" << '\n';
+  std::cout << '\t' << "7) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < > ? ~ `" << '\n';
+  std::cout << '\n';
+  std::cout << '\n';
   std::cout << "Usage:" << '\n';
-  std::cout << '\t' << "./kplg -r <(punctuation_file,)line_in_file>" << '\n';
-  std::cout << '\t' << "./kplg --char <(punctuation_file,)line_in_file>" << '\n';
+  std::cout << '\t' << "./kplg -r <(separator_file,)line_in_file>" << '\n';
+  std::cout << '\t' << "./kplg --char <(separator_file,)line_in_file>" << '\n';
   std::cout << '\n';
-  std::cout << "Decides what punctuation (word-word, word_word, wordword) to increase the probability of getting the right password" << '\n';
+  std::cout << "Decides what sepatators (word-word, word_word, wordword) to use to increase the probability of getting the right password" << '\n';
   std::cout << '\n';
-  std::cout << "If not specified otherwise, characters.kplg is used as file for punctuation.";
+  std::cout << "If <separator_file> not specified, internal separators from help page are used";
   std::cout << "Example:" << '\n';
-  std::cout << '\t' << "./kplg -r 13 (line 13 in file characters.kplg)" << '\n';
+  std::cout << '\t' << "./kplg -r 2 (2 separator in help page)" << '\n';
   std::cout << '\t' << "./kplg --char my_characters.txt,15 (line 15 in file my_characters.txt)" << '\n';
 }
 
