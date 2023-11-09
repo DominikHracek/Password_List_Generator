@@ -147,18 +147,15 @@ void Generate::read_file(std::string input_file_name) {
 
 void Generate::get_separators(std::string separators_file_name, int line) {
   separators_file.open(separators_file_name);
-  //TO-DO get line at specified index
-  /*
   if (separators_file.is_open()){
     while(separators_file.good()){
-      std::line_in_separators_file;
+      std::string line_in_separators_file;
       separators_file >> line_in_separators_file;
       separators.push_back(line_in_separators_file);
     }
   }
-  separators_file.close()
+  separators_file.close();
   separator = separators.at(line);
-  */
 }
 
 void Generate::get_separators(int line) {
