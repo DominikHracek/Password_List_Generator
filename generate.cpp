@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cstring>
 #include <iostream>
+#include <string>
 #include <thread>
 
 #include "generate.h"
@@ -21,7 +22,7 @@ Generate::Generate() {
     "6) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < >",
     "7) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < > ? ~ `"
 };
-    separator = "";
+    separator = "- _ / \\";
 
     letter_case = 0;
 
@@ -58,8 +59,10 @@ void Generate::get_arguments(int argc, char *argv[]) {
               if (character_file_checker.find(",") != -1){
                 separators_file_name = character_file_checker.substr(0,character_file_checker.find(","));
                 separators_line = std::stoi(character_file_checker.substr(character_file_checker.find(",") + 1));
+                get_separators(separators_file_name, separators_line);
               } else {
                 separators_line = std::stoi(argv[i + 1]);
+                get_separators(separators_line);
               }
             } else {
               std::cout << "Error: Missing value for -r/--char argument." << '\n';
@@ -111,12 +114,14 @@ void Generate::start_ui() {
       std::cout << "Character set:" <<  '\n';
       std::cout << '\t' << "Character file: " << "internal" << '\n';
       std::cout << '\t' << "Character line: " << separators_line << '\n';
+      std::cout << '\t' << "Characters: " << separator << '\n';
       std::this_thread::sleep_for(std::chrono::milliseconds(25));
     }
   } else {
     std::cout << "Character set:" << '\n';
     std::cout << '\t' << "Character file: " << separators_file_name << '\n';
     std::cout << '\t' << "Character line: " << separators_line << '\n';
+    std::cout << '\t' << "Characters: " << separator << '\n';
   }
   std::cout << '\n';
 
@@ -127,7 +132,7 @@ void Generate::start_ui() {
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
 }
 
-void Generate::read_file(std::string input_file_name) {
+/*void Generate::read_file(std::string input_file_name) {
   input_file.open(input_file_name);
   if (input_file.is_open()){
     while(input_file.good()){
@@ -143,26 +148,25 @@ void Generate::read_file(std::string input_file_name) {
       max_word_length = word.length();
     }
   }
-}
+}*/
 
 void Generate::get_separators(std::string separators_file_name, int line) {
   separators_file.open(separators_file_name);
-  //TO-DO get line at specified index
-  /*
-  if (separators_file.is_open()){
-    while(separators_file.good()){
-      std::line_in_separators_file;
-      separators_file >> line_in_separators_file;
-      separators.push_back(line_in_separators_file);
-    }
+  std::string line_being_read;
+  while (std::getline(separators_file, line_being_read)){
+    separators.push_back(line_being_read);
   }
-  separators_file.close()
-  separator = separators.at(line);
-  */
+  separators_file.close();
+
+  if(line >=1 && line <= separators.size()){
+    separator = separators[line - 1];
+  }
 }
 
 void Generate::get_separators(int line) {
-  separators.at(line);
+  if (line >=1 && line <= separators.size()){
+    separator = separators[line - 1];
+  }
 }
 
     // Show all words on the same line after 1 second
@@ -176,15 +180,14 @@ void Generate::get_separators(int line) {
       std::this_thread::sleep_for(std::chrono::seconds(1));
     }*/
 
-void Generate::ask_for_patterns() {}
+//void Generate::ask_for_patterns() {}
 
+/*
 void Generate::generate_combinations() {
   read_file(input_file_name);
-  // number_of_words^number_of_places_for_words     * number_of_punctuation^number_of_places_for_punctuation
-  // (word1 word2; word2 word3, word3 word1 -> 3^2) * ( ,-,_,/)4^2 (-/,-_, etc.)
-  //for (int i = 1; i <=pow(words.size()); i++){}
-  /*
-  * TO-DO
+   number_of_words^number_of_places_for_words     * number_of_punctuation^number_of_places_for_punctuation
+   (word1 word2; word2 word3, word3 word1 -> 3^2) * ( ,-,_,/)4^2 (-/,-_, etc.)
+  for (int i = 1; i <=pow(words.size()); i++){}
+    * TO-DO
   * If word is longer, than the expected output length, shorten it from the beginning, end, the middle and evenly both words
-  */
-}
+*/
