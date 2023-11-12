@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <thread>
-
 #include "generate.h"
 
 Generate::Generate() {
@@ -14,13 +13,13 @@ Generate::Generate() {
     separators_file_name = "";
     separators_line = 1;
     separators = {
-    "1) - _ / \\ ",
-    "2) - _ / \\ ! ; : \" \'",
-    "3) - _ / \\ ! ; : \" \' | @ # $ %",
-    "4) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , .",
-    "5) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { }",
-    "6) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < >",
-    "7) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < > ? ~ `"
+    "- _ / \\ ",
+    "- _ / \\ ! ; : \" \'",
+    "- _ / \\ ! ; : \" \' | @ # $ %",
+    "- _ / \\ ! ; : \" \' | @ # $ % ^ & * , .",
+    "- _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { }",
+    "- _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < >",
+    "- _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < > ? ~ `"
 };
     separator = "- _ / \\";
 
@@ -132,27 +131,9 @@ void Generate::start_ui() {
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
 }
 
-/*void Generate::read_file(std::string input_file_name) {
-  input_file.open(input_file_name);
-  if (input_file.is_open()){
-    while(input_file.good()){
-      std::string line_in_file;
-      input_file >> line_in_file;
-      words.push_back(line_in_file);
-    }
-  }
-  input_file.close();
-  int max_word_length = 0;
-  for (std::string word : words) {
-    if (word.length() > max_word_length) {
-      max_word_length = word.length();
-    }
-  }
-}*/
-
 void Generate::get_separators(std::string separators_file_name, int line) {
+  separators.clear();
   separators_file.open(separators_file_name);
-<<<<<<< HEAD
   std::string line_being_read;
   while (std::getline(separators_file, line_being_read)){
     separators.push_back(line_being_read);
@@ -162,17 +143,6 @@ void Generate::get_separators(std::string separators_file_name, int line) {
   if(line >=1 && line <= separators.size()){
     separator = separators[line - 1];
   }
-=======
-  if (separators_file.is_open()){
-    while(separators_file.good()){
-      std::string line_in_separators_file;
-      separators_file >> line_in_separators_file;
-      separators.push_back(line_in_separators_file);
-    }
-  }
-  separators_file.close();
-  separator = separators.at(line);
->>>>>>> 1500244baba2d4a5a34248777104c62a62f80d92
 }
 
 void Generate::get_separators(int line) {
