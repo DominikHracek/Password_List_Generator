@@ -152,6 +152,7 @@ void Generate::start_ui() {
 
 void Generate::get_separators(std::string separators_file_name, int line) {
   separators_file.open(separators_file_name);
+<<<<<<< HEAD
   std::string line_being_read;
   while (std::getline(separators_file, line_being_read)){
     separators.push_back(line_being_read);
@@ -161,6 +162,17 @@ void Generate::get_separators(std::string separators_file_name, int line) {
   if(line >=1 && line <= separators.size()){
     separator = separators[line - 1];
   }
+=======
+  if (separators_file.is_open()){
+    while(separators_file.good()){
+      std::string line_in_separators_file;
+      separators_file >> line_in_separators_file;
+      separators.push_back(line_in_separators_file);
+    }
+  }
+  separators_file.close();
+  separator = separators.at(line);
+>>>>>>> 1500244baba2d4a5a34248777104c62a62f80d92
 }
 
 void Generate::get_separators(int line) {
