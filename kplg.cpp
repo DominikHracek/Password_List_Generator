@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
   } else {
     generate.get_arguments(argc, argv);
     generate.start_ui();
-    generate.generate_combinations();
+    //generate.generate_combinations();
   }
   
   return 0;
