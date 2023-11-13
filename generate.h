@@ -10,13 +10,13 @@ class Generate {
   public:
     Generate();
     void get_arguments(int argc, char *argv[]);
-    void ask_for_patterns();
-    void generate_combinations();
     void start_ui();
     void start_friendly_ui();
-    void read_file(std::string input_file_name);
     void get_separators(std::string separators_file_name, int line);
     void get_separators(int line);
+    void get_words(std::string input_file_name);
+    void ask_for_patterns();
+    void generate_combinations();
 
   private:
     int minimal_combination_length = 0;

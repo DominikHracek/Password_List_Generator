@@ -151,25 +151,22 @@ void Generate::get_separators(int line) {
   }
 }
 
-    // Show all words on the same line after 1 second
-    /*for (int i = 0; i < words.size(); i++) {
-      std::cout << '\r';
-      for (int j = 0; j < max_word_length; j++) {
-        std::cout << ' '; // Clear the line
-      }
-      std::cout << '\r' << words[i];
-      std::cout.flush(); // Flush the output to make it visible
-      std::this_thread::sleep_for(std::chrono::seconds(1));
-    }*/
+void Generate::get_words(std::string input_file_name) {
+  words.clear();
+  input_file.open(input_file_name);
+  std::string line_being_read;
+  while (std::getline(input_file, line_being_read)){
+    words.push_back(line_being_read);
+  }
+  input_file.close();
+}
 
-//void Generate::ask_for_patterns() {}
+void Generate::ask_for_patterns() {
 
-/*
+}
+
 void Generate::generate_combinations() {
-  read_file(input_file_name);
-   number_of_words^number_of_places_for_words     * number_of_punctuation^number_of_places_for_punctuation
-   (word1 word2; word2 word3, word3 word1 -> 3^2) * ( ,-,_,/)4^2 (-/,-_, etc.)
-  for (int i = 1; i <=pow(words.size()); i++){}
-    * TO-DO
-  * If word is longer, than the expected output length, shorten it from the beginning, end, the middle and evenly both words
-*/
+  /*for (int i = 1; i <=pow(words.size()); i++){
+    //
+  }*/
+}
