@@ -162,8 +162,9 @@ void Generate::get_words(std::string input_file_name) {
 }
 
 void Generate::ask_for_patterns() {
-
-}
+  std::cout << "How do you want to split words to passwords" << '\n';
+  std::cout << '\t' << "1) From start of every word by x letters (3: Generate words -> Gen, era, te, wor, ds)" << '\n';
+  std::cout << '\t' << "2) From start by x letters (3: Generate words -> Gen, era, tew, ord, s)" << '\n';}
 
 void Generate::generate_combinations() {
   /*for (int i = 1; i <=pow(words.size()); i++){
