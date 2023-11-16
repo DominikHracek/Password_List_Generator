@@ -19,22 +19,25 @@ class Generate {
     void generate_combinations();
 
   private:
-    int minimal_combination_length = 0;
-    int maximal_combination_length = 12;
+    int minimal_combination_length;
+    int maximal_combination_length;
 
     std::ifstream separators_file;
-    std::string separators_file_name = "";
-    int separators_line = 1;
-    std::vector<std::string> separators = {};
-    std::string separator = "";
+    std::string separators_file_name;
+    int separators_line;
+    std::vector<std::string> separators;
+    std::string separator;
 
-    int letter_case = 0;
+    int letter_case;
 
-    std::string input_file_name = "";
+    std::string patterns[2];
+    int pattern;
+
+    std::string input_file_name;
     std::ifstream input_file;
-    std::vector<std::string> words = {};
+    std::vector<std::string> words;
 
-    std::string output_file_name = "generated_passwords.txt";
+    std::string output_file_name;
     std::ifstream output_file;
 };
 

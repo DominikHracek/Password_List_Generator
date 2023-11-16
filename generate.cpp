@@ -25,8 +25,11 @@ Generate::Generate() {
 
     letter_case = 0;
 
+    pattern = 0;
+
     input_file_name = "";
     words = {};
+    
     output_file_name = "generated_passwords.txt";
 }
 
@@ -82,8 +85,8 @@ void Generate::get_arguments(int argc, char *argv[]) {
             break;
           }
         } else {
-          std::cout << "Error: Unknown argument " << arg << '\n';
-            break;
+          std::cout << "Error: Unknown argument " << '\"' << arg << '\"' << '\n';
+            exit(1);
         }
     }
 }
@@ -100,6 +103,9 @@ void Generate::start_ui() {
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
   std::cout << "Case-sensitivity level: " << letter_case << "/" << 4 << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+
+  std::cout << "Spliting words pattern: " << patterns[pattern] << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
   if (separators_file_name == ""){
@@ -164,7 +170,8 @@ void Generate::get_words(std::string input_file_name) {
 void Generate::ask_for_patterns() {
   std::cout << "How do you want to split words to passwords" << '\n';
   std::cout << '\t' << "1) From start of every word by x letters (3: Generate words -> Gen, era, te, wor, ds)" << '\n';
-  std::cout << '\t' << "2) From start by x letters (3: Generate words -> Gen, era, tew, ord, s)" << '\n';}
+  std::cout << '\t' << "2) From start by x letters (3: Generate words -> Gen, era, tew, ord, s)" << '\n';
+}
 
 void Generate::generate_combinations() {
   /*for (int i = 1; i <=pow(words.size()); i++){
