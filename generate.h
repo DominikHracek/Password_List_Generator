@@ -36,6 +36,7 @@ class Generate {
     std::string input_file_name;
     std::ifstream input_file;
     std::vector<std::string> words;
+    std::vector<char> patterns_of_words;
 
     std::string output_file_name;
     std::ifstream output_file;
