@@ -29,8 +29,6 @@ Generate::Generate() {
 
     letter_case = 0;
 
-    pattern = 0;
-
     input_file_name = "";
     words = {};
     patterns_of_words = {};
@@ -144,9 +142,12 @@ void Generate::start_ui() {
     std::cout << "File with words: " << input_file_name << '\n';
     std::this_thread::sleep_for(std::chrono::milliseconds(25));
   }
-  std::cout << "Words: " << '\n';
-  for (std::string word : words){
-    std::cout << '\t' << word << '\n';
+  std::cout << "Combinations: " << '\n';
+  for (int i = 0; i < combinations.size(); i++){
+    for (int j = 0; j < combinations[i].size(); j++){
+      std::cout << combinations[i][j] << " ";
+    }
+    std::cout << '\n';
   }
   std::cout << '\n';
 
@@ -184,17 +185,59 @@ void Generate::get_words(std::string input_file_name) {
   input_file.close();
 }
 
+std::string trim(std::string string) {
+  const char* whitespace = " \t\n\r\f\v";
+  size_t begin = string.find_first_not_of(whitespace);
+  if (begin == std::string::npos) {
+    return std::string{};
+  }
+  size_t end = string.find_last_not_of(whitespace);
+  return string.substr(begin, end - begin + 1);
+}
+
+void Generate::get_words() {
+  std::cout << "Enter words to combine (separate with commas(,)).\nEverything will be lowercased: ";
+  std::string words_to_add;
+  std::getline(std::cin, words_to_add);
+
+  std::stringstream stringstream(words_to_add);
+  std::string substring;
+  while (std::getline(stringstream, substring, ',')){
+    for (char &character : substring){
+      character = tolower(character);
+    }
+    substring = trim(substring);
+    std::cout << substring << '\n';
+    words.push_back(substring);
+  }
+  std::cin.clear();
+}
+
 void Generate::ask_for_patterns() {
   if (input_file_name == ""){
-    std::cout << "Enter words to combine (separate with commas(,) WITHOUT SPACE): ";
-    std::string words_to_add;
-    std::cin >> words_to_add;
+    get_words();
+  } else {
+    get_words(input_file_name);
+  }
 
-    std::stringstream stringstream(words_to_add);
-    std::string substring;
-    while (std::getline(stringstream, substring, ',')){
-      words.push_back(substring);
+  for (std::string word : words){
+    std::cout << "Enter all combination of the word: '" << word << "' (combination -> comb,combin) that should be used: ";
+    std::string combinaton_to_use;
+    std::getline(std::cin, combinaton_to_use);
+
+    std::stringstream stringstream(combinaton_to_use);
+    std::string combination;
+    std::vector<std::string> word_combinations;
+    while (std::getline(stringstream, combination, ',')) {
+      for (char &character : combination){
+        character = tolower(character);
+      }
+      combination = trim(combination);
+      std::cout << combination << '\n';
+      word_combinations.push_back(combination);
     }
+    combinations.push_back(word_combinations);
+    std::cin.clear();
   }
 }
 
