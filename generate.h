@@ -15,6 +15,7 @@ class Generate {
     void get_separators(std::string separators_file_name, int line);
     void get_separators(int line);
     void get_words(std::string input_file_name);
+    int count_occurrences(std::string string, char character);
     void ask_for_patterns();
     void generate_combinations();
 

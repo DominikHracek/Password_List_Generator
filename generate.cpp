@@ -1,9 +1,13 @@
+#include <boost/algorithm/string/trim.hpp>
 #include <chrono>
 #include <cmath>
 #include <cstring>
+#include <sstream>
 #include <iostream>
 #include <string>
 #include <thread>
+#include <boost/algorithm/string.hpp>
+
 #include "generate.h"
 
 Generate::Generate() {
@@ -133,8 +137,18 @@ void Generate::start_ui() {
   }
   std::cout << '\n';
 
-  std::cout << "File with words: " << input_file_name << '\n';
-  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  if (input_file_name == ""){
+    std::cout << "File with words: " << "None" << '\n';
+    std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  } else {
+    std::cout << "File with words: " << input_file_name << '\n';
+    std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  }
+  std::cout << "Words: " << '\n';
+  for (std::string word : words){
+    std::cout << '\t' << word << '\n';
+  }
+  std::cout << '\n';
 
   std::cout << "File with generated passwords: " << output_file_name << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
@@ -172,16 +186,14 @@ void Generate::get_words(std::string input_file_name) {
 
 void Generate::ask_for_patterns() {
   if (input_file_name == ""){
-    std::cout << "Enter words to combine (separate with commas(,)): ";
+    std::cout << "Enter words to combine (separate with commas(,) WITHOUT SPACE): ";
     std::string words_to_add;
     std::cin >> words_to_add;
-    for (const char character : words_to_add){
-      if (character != ','){
-        patterns_of_words.push_back(character);
-      }
-    }
-    for (int i = 0; i < patterns_of_words.size(); i++){
-      std::cout << patterns_of_words[i] << '\n';
+
+    std::stringstream stringstream(words_to_add);
+    std::string substring;
+    while (std::getline(stringstream, substring, ',')){
+      words.push_back(substring);
     }
   }
 }
