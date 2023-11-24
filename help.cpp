@@ -17,6 +17,8 @@ void Help::show_general_help() {
   std::cout << "IF YOU DO SO, -f/--file HAS PRIVILEGE AND IF NOT FOUND -w/--words WILL BE IGNORED";
   std::this_thread::sleep_for(std::chrono::seconds(1));
   std::cout << '\n';
+  std::cout << '\n';
+  std::cout << '\n';
   std::cout << "Options:" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-h" << " " << "|" << " " << "--help" << '\t' << "Shows this page" << '\n';
