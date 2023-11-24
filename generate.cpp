@@ -64,8 +64,13 @@ void Generate::get_arguments(int argc, char *argv[]) {
                 separators_line = std::stoi(character_file_checker.substr(character_file_checker.find(",") + 1));
                 get_separators(separators_file_name, separators_line);
               } else {
-                separators_line = std::stoi(argv[i + 1]);
-                get_separators(separators_line);
+                try {
+                  separators_line = std::stoi(argv[i + 1]);
+                  get_separators(separators_line);
+                } catch (std::invalid_argument ia) {
+                  separators_file_name = argv[i + 1];
+                  get_separators(separators_file_name, separators_line);
+                }
               }
             } else {
               std::cout << "Error: Missing value for -r/--char argument." << '\n';
@@ -104,9 +109,6 @@ void Generate::start_ui() {
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
   std::cout << "Case-sensitivity level: " << letter_case << "/" << 4 << '\n';
-  std::this_thread::sleep_for(std::chrono::milliseconds(25));
-
-  std::cout << "Spliting words pattern: " << patterns[pattern] << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
   if (separators_file_name == ""){
@@ -169,7 +171,7 @@ void Generate::get_words(std::string input_file_name) {
 }
 
 void Generate::ask_for_patterns() {
-  if (input_file_name != ""){
+  if (input_file_name == ""){
     std::cout << "Enter words to combine (separate with commas(,)): ";
     std::string words_to_add;
     std::cin >> words_to_add;
