@@ -9,7 +9,8 @@ Generate generate;
 
 int main(int argc, char *argv[]) {
   if (argc == 1) {
-    generate.start_ui();
+    std::cout << "To-do geneerate.start_friendly_ui();" << '\n';
+    exit(1);
     // TO-DO generate.start_friendly_ui(); <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
   } else if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
@@ -40,8 +41,9 @@ int main(int argc, char *argv[]) {
     }
   } else {
     generate.get_arguments(argc, argv);
+    generate.ask_for_patterns();
     generate.start_ui();
-    //generate.generate_combinations();
+    generate.generate_combinations();
   }
   
   return 0;
