@@ -1,12 +1,12 @@
-#include <boost/algorithm/string/trim.hpp>
+#include <cctype>
 #include <chrono>
 #include <cmath>
 #include <cstring>
 #include <sstream>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <thread>
-#include <boost/algorithm/string.hpp>
 
 #include "generate.h"
 
@@ -99,6 +99,16 @@ void Generate::get_arguments(int argc, char *argv[]) {
     }
 }
 
+std::string trim(std::string string) {
+  const char* whitespace = " \t\n\r\f\v";
+  size_t begin = string.find_first_not_of(whitespace);
+  if (begin == std::string::npos) {
+    return std::string{};
+  }
+  size_t end = string.find_last_not_of(whitespace);
+  return string.substr(begin, end - begin + 1);
+}
+
 void Generate::start_ui() {
   std::cout << ">>>>>>>>>>>>>>>>>>>>>Khakis's Password List Generator<<<<<<<<<<<<<<<<<<<<<" << '\n';
   std::cout << '\n';
@@ -144,15 +154,88 @@ void Generate::start_ui() {
   }
   std::cout << "Combinations: " << '\n';
   for (int i = 0; i < combinations.size(); i++){
+    std::cout << '\t' << words[i] << '\n';
     for (int j = 0; j < combinations[i].size(); j++){
-      std::cout << combinations[i][j] << " ";
+      std::cout << '\t' << '\t' << combinations[i][j] << '\n';
     }
-    std::cout << '\n';
   }
   std::cout << '\n';
 
   std::cout << "File with generated passwords: " << output_file_name << '\n';
-  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::this_thread::sleep_for(std::chrono::milliseconds(500));
+  std::cout << '\n' << '\n';
+  std::string output_check;
+  std::cout << "Is everything ok? [Y/n]: ";
+  std::getline(std::cin, output_check);
+  for (char &character : output_check){
+    character = std::tolower(character);
+  }
+  output_check = trim(output_check);
+  std::cin.clear();
+
+  if (output_check == "y" || output_check == "yes" || output_check == ""){
+    generate_combinations();
+  } else {
+    std::cout << '\t' << "1) Minimal length" << '\n';
+    std::cout << '\t' << "2) Maximal length" << '\n';
+    std::cout << '\t' << "3) Case-sensitivity level" << '\n';
+    std::cout << '\t' << "4) Character set" << '\n';
+    std::cout << '\t' << "5) Files" << '\n';
+    std::cout << '\t' << "6) Combinations" << '\n';
+    std::cout << "What's wrong: ";
+    int whats_wrong;
+    try {
+      std::cin >> whats_wrong;
+    } catch (std::invalid_argument) {
+      std::cout << "Test invalid argument, but shouldn't ever be shown" << '\n';
+      std::cin.clear();
+      //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    bool invalid_choice = false;
+    do {
+      bool invalid_choice_inner = false;
+      switch (whats_wrong) {
+      case 1:
+        std::cout << "New minimal length: ";
+        std::cin >> minimal_combination_length;
+        break;
+      case 2:
+        std::cout << "New maximal length: ";
+        std::cin >> maximal_combination_length;
+        break;
+      case 3:
+        std::cout << "New case-sensitivity level: ";
+        std::cin >> letter_case;
+        break;
+      case 4:
+        do {
+          std::cout << "1) File name" << '\n';
+          std::cout << "2) File line" << '\n';
+          int file_checker;
+          std::cin >> file_checker;
+          switch (file_checker) {
+            case 1:
+              std::cout << "New file name: ";
+              std::getline(std::cin, separators_file_name);
+              break;
+            case 2:
+              std::cout << "New file line: ";
+              std::getline(std::cin, separators_file_name);
+              break;
+            default:
+              invalid_choice_inner = true;
+              break;
+          }
+        } while (invalid_choice_inner);
+        break;
+      default:
+        std::cout << "Incorrect number" << '\n';
+        invalid_choice = true;
+        break;
+      }
+    } while (invalid_choice);
+    start_ui();
+  }
 }
 
 void Generate::get_separators(std::string separators_file_name, int line) {
@@ -185,16 +268,6 @@ void Generate::get_words(std::string input_file_name) {
   input_file.close();
 }
 
-std::string trim(std::string string) {
-  const char* whitespace = " \t\n\r\f\v";
-  size_t begin = string.find_first_not_of(whitespace);
-  if (begin == std::string::npos) {
-    return std::string{};
-  }
-  size_t end = string.find_last_not_of(whitespace);
-  return string.substr(begin, end - begin + 1);
-}
-
 void Generate::get_words() {
   std::cout << "Enter words to combine (separate with commas(,)).\nEverything will be lowercased: ";
   std::string words_to_add;
@@ -207,7 +280,6 @@ void Generate::get_words() {
       character = tolower(character);
     }
     substring = trim(substring);
-    std::cout << substring << '\n';
     words.push_back(substring);
   }
   std::cin.clear();
@@ -228,12 +300,12 @@ void Generate::ask_for_patterns() {
     std::stringstream stringstream(combinaton_to_use);
     std::string combination;
     std::vector<std::string> word_combinations;
+    word_combinations.push_back(word);
     while (std::getline(stringstream, combination, ',')) {
       for (char &character : combination){
         character = tolower(character);
       }
       combination = trim(combination);
-      std::cout << combination << '\n';
       word_combinations.push_back(combination);
     }
     combinations.push_back(word_combinations);
