@@ -164,8 +164,8 @@ void Generate::start_ui() {
   std::cout << "File with generated passwords: " << output_file_name << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(500));
   std::cout << '\n' << '\n';
-  std::string output_check;
   std::cout << "Is everything ok? [Y/n]: ";
+  std::string output_check;
   std::getline(std::cin, output_check);
   for (char &character : output_check){
     character = std::tolower(character);
