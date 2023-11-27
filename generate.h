@@ -10,6 +10,7 @@ class Generate {
   public:
     Generate();
     void get_arguments(int argc, char *argv[]);
+    void is_everything_ok();
     void start_ui();
     void start_friendly_ui();
     void get_separators(std::string separators_file_name, int line);
