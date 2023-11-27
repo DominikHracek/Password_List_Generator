@@ -43,7 +43,6 @@ int main(int argc, char *argv[]) {
     generate.get_arguments(argc, argv);
     generate.ask_for_patterns();
     generate.start_ui();
-    generate.generate_combinations();
   }
   
   return 0;
