@@ -5,7 +5,6 @@
 #include "help.h"
 #include "generate.h"
 
-Generate generate;
 
 int main(int argc, char *argv[]) {
   if (argc == 1) {
@@ -40,6 +39,7 @@ int main(int argc, char *argv[]) {
       }
     }
   } else {
+    Generate generate;
     generate.get_arguments(argc, argv);
     generate.ask_for_patterns();
     generate.start_ui();
