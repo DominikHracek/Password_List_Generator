@@ -110,7 +110,10 @@ std::string trim(std::string string) {
 }
 
 void Generate::generate_combinations() {
-    std::cout << "Yo" << '\n';
+    int total_words;
+    for (auto combination : combinations){
+        total_words += combination.size();
+    }
     exit(0);
 }
 
