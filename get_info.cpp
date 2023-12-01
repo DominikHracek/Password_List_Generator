@@ -179,10 +179,12 @@ void Get_Info::is_everything_ok() {
                             case 1:
                                 std::cout << "New file name: ";
                                 std::getline(std::cin, separators_file_name);
+                                get_separators(separators_file_name, separators_line);
                                 break;
                             case 2:
                                 std::cout << "New file line: ";
-                                std::getline(std::cin, separators_file_name);
+                                std::cin >> separators_line;
+                                get_separators(separators_line);
                                 break;
                             default:
                                 invalid_choice_inner = true;
