@@ -5,7 +5,6 @@
 #include "help.h"
 #include "generate.h"
 
-
 int main(int argc, char *argv[]) {
   if (argc == 1) {
     std::cout << "To-do geneerate.start_friendly_ui();" << '\n';
@@ -39,10 +38,10 @@ int main(int argc, char *argv[]) {
       }
     }
   } else {
-    Generate generate;
-    generate.get_arguments(argc, argv);
-    generate.ask_for_patterns();
-    generate.start_ui();
+    Get_Info get_info;
+    get_info.get_arguments(argc, argv);
+    get_info.ask_for_patterns();
+    get_info.start_ui();
   }
   
   return 0;
