@@ -84,21 +84,23 @@ void Help::show_use_multiple_times(){
 }
 
 void Help::show_characters(){
-  std::cout << "Internal word separators (used when <separator_file> not specified) << '\n";
+  std::cout << "Internal word separators (used when <separator_file> not specified)" << '\n' << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "1) - _ / \\ " << '\n';
+  std::cout << "THE FIRST TWO SEPARATORS ARE NOTHING (wordword) AND SPACE (word word) AND THEN IT CONTINUES (word-word, etc.)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "2) - _ / \\ ! ; : \" \'" << '\n';
+  std::cout << '\t' << "1)  - _ / \\ " << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "3) - _ / \\ ! ; : \" \' | @ # $ %" << '\n';
+  std::cout << '\t' << "2)  - _ / \\ ! ; : \" \'" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "4) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , ." << '\n';
+  std::cout << '\t' << "3)  - _ / \\ ! ; : \" \' | @ # $ %" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "5) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { }" << '\n';
+  std::cout << '\t' << "4)  - _ / \\ ! ; : \" \' | @ # $ % ^ & * , ." << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "6) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < >" << '\n';
+  std::cout << '\t' << "5)  - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { }" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "7) - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < > ? ~ `" << '\n';
+  std::cout << '\t' << "6)  - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < >" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "7)  - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < > ? ~ `" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\n';
   std::cout << '\n';
