@@ -11,7 +11,7 @@ Generate::Generate() {
 void Generate::get_info(int minimal_combination_length,
                         int maximal_combination_length,
                         int letter_case,
-                        std::string separator,
+                        std::vector<std::string> separator,
                         std::vector<std::vector<std::string>> combinations) {
 
 	this->minimal_combination_length = minimal_combination_length;

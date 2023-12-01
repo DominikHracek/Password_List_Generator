@@ -10,7 +10,7 @@ class Generate{
         void get_info(int minimal_combination_length,
                       int maximal_combination_length,
                       int letter_case,
-                      std::string separator,
+                      std::vector<std::string> separator,
                       std::vector<std::vector<std::string>> combinations);
         void calculate_number_of_combinations();
         void generate_combinations();
@@ -19,7 +19,7 @@ class Generate{
         int minimal_combination_length;
         int maximal_combination_length;
         int letter_case;
-        std::string separator;
+        std::vector<std::string> separator;
         std::vector<std::vector<std::string>> combinations;
 
         bool use_same_word_multiple_times_in_one;
