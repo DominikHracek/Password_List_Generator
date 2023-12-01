@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "help.h"
-#include "generate.h"
+#include "get_info.h"
 
 int main(int argc, char *argv[]) {
   if (argc == 1) {
