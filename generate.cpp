@@ -26,7 +26,7 @@ void Generate::calculate_number_of_combinations() {
 	for (auto combination : combinations){
 		total_words += combination.size();
 	}
-	for (int i = minimal_combination_length; i <=maximal_combination_length; i++){
+	for (int i = minimal_combination_length; i <=maximal_combination_length; i++){ //FIX, DOESN'T WORK HOW IT SHOULD
 		total_combinations = total_words;
 		if (!use_same_word_multiple_times_in_one){
 			int multiplier = 1;
@@ -42,7 +42,10 @@ void Generate::calculate_number_of_combinations() {
 			}
 		}
 	}
+	std::cout << total_combinations << '\n';
 	Generate::generate_combinations();
 }
 
-void Generate::generate_combinations() {}
+void Generate::generate_combinations() {
+	exit(0);
+}
