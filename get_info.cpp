@@ -20,14 +20,13 @@ Get_Info::Get_Info(){
 
     separators_file_name = "";
     separators_line = 1;
-    separators = {
-        "- _ / \\ ",
-        "- _ / \\ ! ; : \" \'",
-        "- _ / \\ ! ; : \" \' | @ # $ %",
-        "- _ / \\ ! ; : \" \' | @ # $ % ^ & * , .",
-        "- _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { }",
-        "- _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < >",
-        "- _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < > ? ~ `"};
+    separators.push_back({""," ","-","_","/","\\"});
+    separators.push_back({""," ","-","_","/","\\","!",";",":","'","\""});
+    separators.push_back({""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%"});
+    separators.push_back({""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%","^","&","*",",","."});
+    separators.push_back({""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%","^","&","*",",",".","[","]","{","}"});
+    separators.push_back({""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%","^","&","*",",",".","[","]","{","}","+","=","<",">"});
+    separators.push_back({""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%","^","&","*",",",".","[","]","{","}","+","=","<",">","?","~","`"});
     separator = "- _ / \\";
 
     letter_case = 0;
@@ -130,7 +129,12 @@ void Get_Info::is_everything_ok() {
 
     if (output_check == "y" || output_check == "yes" || output_check == "") {
         Generate generate;
-        generate.generate_combinations();
+        generate.get_info(minimal_combination_length,
+                          maximal_combination_length,
+                          letter_case,
+                          separator,
+                          combinations);
+        generate.calculate_number_of_combinations();
     } else {
         int whats_wrong;
 
