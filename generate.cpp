@@ -15,6 +15,8 @@ Generate::Generate() {
     minimal_combination_length = 0;
     maximal_combination_length = 12;
 
+    use_same_word_multiple_times_in_one = false;
+
     separators_file_name = "";
     separators_line = 1;
     separators = {
@@ -48,14 +50,20 @@ void Generate::get_arguments(int argc, char *argv[]) {
             if (i + 1 < argc && possible_value.find("-") == -1) {
                 minimal_combination_length = std::stoi(argv[i + 1]);
             } else {
-                std::cout << "Error: Missing value for -n/--min argument." << '\n';
+                std::cout << "Error: Missing value for -n/--min argument" << '\n';
                 break;
             }
         } else if (arg == "-x" || arg == "--max") {
             if (i + 1 < argc && possible_value.find("-") == -1) {
                 maximal_combination_length = std::stoi(argv[i + 1]);
             } else {
-                std::cout << "Error: Missing value for -x/--max argument." << '\n';
+                std::cout << "Error: Missing value for -x/--max argument" << '\n';
+                break;
+            }
+        } else if (arg == "-m" || arg == "--multiple"){
+            use_same_word_multiple_times_in_one = true;
+            if (i + 1 < argc && possible_value.find("-") == -1) {
+                std::cout << "Error: This argument doesn't have a value(it's true/false)" << '\n';
                 break;
             }
         } else if (arg == "-r" || arg == "--char") {
@@ -75,21 +83,21 @@ void Generate::get_arguments(int argc, char *argv[]) {
                     }
                 }
             } else {
-                std::cout << "Error: Missing value for -r/--char argument." << '\n';
+                std::cout << "Error: Missing value for -r/--char argument" << '\n';
                 break;
             }
         } else if (arg == "-c" || arg == "--case") {
             if (i + 1 < argc && possible_value.find("-") == -1) {
                 letter_case = std::stoi(argv[i + 1]);
             } else {
-                std::cout << "Error: Missing value for -c/--case argument." << '\n';
+                std::cout << "Error: Missing value for -c/--case argument" << '\n';
                 break;
             }
         } else if (arg == "-f" || arg == "--file") {
             if (i + 1 < argc && possible_value.find("-") == -1) {
                 input_file_name = argv[i + 1];
             } else {
-                std::cout << "Error: Missing value for -f/--file argument." << '\n';
+                std::cout << "Error: Missing value for -f/--file argument" << '\n';
                 break;
             }
         } else {
@@ -113,6 +121,26 @@ void Generate::generate_combinations() {
     int total_words;
     for (auto combination : combinations){
         total_words += combination.size();
+    }
+    for (int i = minimal_combination_length; i <=maximal_combination_length; i++){
+        int total_combinations = total_words;
+        if (!use_same_word_multiple_times_in_one){
+            int multiplier = 1;
+            for (int i = total_words - 1; i > 0; i--){
+                std::cout << multiplier << '\n';
+                multiplier *= i;
+                total_combinations += total_words * multiplier;
+            }
+            std::cout << multiplier << '\n';
+        } else {
+            int multiplier = 1;
+            for (int i = total_words - 1; i > 0; i--){
+                std::cout << multiplier << '\n';
+                multiplier *= 5;
+                total_combinations += total_words * multiplier;
+            }
+            std::cout << multiplier << '\n';
+        }
     }
     exit(0);
 }
