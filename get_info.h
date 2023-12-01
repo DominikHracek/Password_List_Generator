@@ -29,8 +29,8 @@ class Get_Info {
     std::ifstream separators_file;
     std::string separators_file_name;
     int separators_line;
-    std::vector<std::string> separators;
-    std::string separator;
+    std::vector<std::vector<std::string>> separators;
+    std::vector<std::string> separator;
 
     int letter_case;
 

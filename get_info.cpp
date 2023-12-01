@@ -20,14 +20,15 @@ Get_Info::Get_Info(){
 
     separators_file_name = "";
     separators_line = 1;
-    separators.push_back({""," ","-","_","/","\\"});
-    separators.push_back({""," ","-","_","/","\\","!",";",":","'","\""});
-    separators.push_back({""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%"});
-    separators.push_back({""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%","^","&","*",",","."});
-    separators.push_back({""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%","^","&","*",",",".","[","]","{","}"});
-    separators.push_back({""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%","^","&","*",",",".","[","]","{","}","+","=","<",">"});
-    separators.push_back({""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%","^","&","*",",",".","[","]","{","}","+","=","<",">","?","~","`"});
-    separator = "- _ / \\";
+    separators = {
+        {""," ","-","_","/","\\"},
+        {""," ","-","_","/","\\","!",";",":","'","\""},
+        {""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%"},
+        {""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%","^","&","*",",","."},
+        {""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%","^","&","*",",",".","[","]","{","}"},
+        {""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%","^","&","*",",",".","[","]","{","}","+","=","<",">"},
+        {""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%","^","&","*",",",".","[","]","{","}","+","=","<",">","?","~","`"}};
+    separator = {""," ","-","_","/","\\"};
 
     letter_case = 0;
 
@@ -233,14 +234,24 @@ void Get_Info::start_ui() {
             std::cout << "Character set:" << '\n';
             std::cout << '\t' << "Character file: " << "internal" << '\n';
             std::cout << '\t' << "Character line: " << separators_line << '\n';
-            std::cout << '\t' << "Characters: " << separator << '\n';
+            std::cout << '\t' << "Characters: ";
+            for (std::string one_of_separator : separator){
+                std::cout << one_of_separator << " ";
+            }
+            std::cout << '\n';
             std::this_thread::sleep_for(std::chrono::milliseconds(25));
         }
     } else {
         std::cout << "Character set:" << '\n';
         std::cout << '\t' << "Character file: " << separators_file_name << '\n';
         std::cout << '\t' << "Character line: " << separators_line << '\n';
-        std::cout << '\t' << "Characters: " << separator << '\n';
+        std::cout << '\t' << "Characters: ";
+        for (std::string one_of_separator : separator){
+          std::cout << one_of_separator << " ";
+        }
+        std::cout << '\n';
+        std::this_thread::sleep_for(std::chrono::milliseconds(25));
+
     }
     std::cout << '\n';
 
@@ -269,15 +280,24 @@ void Get_Info::start_ui() {
 void Get_Info::get_separators(std::string separators_file_name, int line) {
     separators.clear();
     separators_file.open(separators_file_name);
+
     std::string line_being_read;
-    while (std::getline(separators_file, line_being_read)) {
-        separators.push_back(line_being_read);
+    int currently_read_line = 0;
+    while (std::getline(separators_file, line_being_read) && currently_read_line < line) {
+        std::stringstream ss(line_being_read);
+        std::vector<std::string> subvector;
+        std::string element_in_subvector;
+        while (std::getline(ss, element_in_subvector, ',')){
+            subvector.push_back(element_in_subvector);
+        }
+        separators.push_back(subvector);
+        currently_read_line++;
     }
-    separators_file.close();
 
     if (line >= 1 && line <= separators.size()) {
         separator = separators[line - 1];
     }
+    separators_file.close();
 }
 
 void Get_Info::get_separators(int line) {
