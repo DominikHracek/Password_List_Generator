@@ -27,7 +27,9 @@ void Help::show_general_help() {
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-x" << " " << "|" << " " << "--max" << '\t' << "Maximal number of characters (default: 12)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "-r" << " " << "|" << " " << "--char" << '\t' << "What characters to use between words TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << '\n';
+  std::cout << '\t' << "-m" << " " << "|" << " " << "--multiple" << '\t' << "Same word multiple times in one combination (if not specified, every word is used only ones)" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "-r" << " " << "|" << " " << "--char" << '\t' << "What characters to use between words" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-c" << " " << "|" << " " << "--case" << '\t' << "Upper/Lowercase settings" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
@@ -68,6 +70,17 @@ void Help::show_maximal_character_length(){
   std::cout << '\t' << "./kplg -m 16" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "./kplg --max 16" << '\n';
+}
+
+void Help::show_use_multiple_times(){
+  std::cout << "Specifies, whether to allow a combination to have the same word multipletimes(testcombinationtest)" << '\n';
+  std::cout << "                                                                              ^^^^           ^^^^" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << "Usage and example:" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg -m" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg --multiple" << '\n';
 }
 
 void Help::show_characters(){
