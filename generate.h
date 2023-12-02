@@ -11,7 +11,8 @@ class Generate{
                       int maximal_combination_length,
                       int letter_case,
                       std::vector<std::string> separator,
-                      std::vector<std::vector<std::string>> combinations);
+                      std::vector<std::vector<std::string>> combinations,
+                      bool use_same_word_multiple_times_in_one);
         void calculate_number_of_combinations();
         void generate_combinations();
 

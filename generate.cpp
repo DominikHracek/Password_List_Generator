@@ -12,13 +12,15 @@ void Generate::get_info(int minimal_combination_length,
                         int maximal_combination_length,
                         int letter_case,
                         std::vector<std::string> separator,
-                        std::vector<std::vector<std::string>> combinations) {
+                        std::vector<std::vector<std::string>> combinations,
+                        bool use_same_word_multiple_times_in_one) {
 
 	this->minimal_combination_length = minimal_combination_length;
 	this->maximal_combination_length = maximal_combination_length;
 	this->letter_case = letter_case;
 	this->separator = separator;
 	this->combinations = combinations;
+	this->use_same_word_multiple_times_in_one = use_same_word_multiple_times_in_one;
 }
 
 void Generate::calculate_number_of_combinations() {
@@ -29,18 +31,21 @@ void Generate::calculate_number_of_combinations() {
 	for (int i = minimal_combination_length; i <=maximal_combination_length; i++){ //FIX, DOESN'T WORK HOW IT SHOULD
 		total_combinations = total_words;
 		if (!use_same_word_multiple_times_in_one){
-			int multiplier = 1;
-			for (int i = total_words - 1; i > 0; i--){
-				multiplier *= i;
+			int multiplier = 4;
+			for (int i = total_words - 2; i >= 0; i--){
+				std::cout << "Multiplier: " << multiplier << '\n';
 				total_combinations += total_words * multiplier;
+				//5
+				multiplier *= i;
 			}
 		} else {
 			int multiplier = 1;
-			for (int i = total_words - 1; i > 0; i--){
-				multiplier *= 5;
+			for (int i = total_words; i > 0; i--){
 				total_combinations += total_words * multiplier;
+				multiplier *= 5;
 			}
 		}
+		total_combinations *= separator.size();
 	}
 	std::cout << total_combinations << '\n';
 	Generate::generate_combinations();
