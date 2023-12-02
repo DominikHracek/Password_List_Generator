@@ -134,7 +134,8 @@ void Get_Info::is_everything_ok() {
                           maximal_combination_length,
                           letter_case,
                           separator,
-                          combinations);
+                          combinations,
+                          use_same_word_multiple_times_in_one);
         generate.calculate_number_of_combinations();
     } else {
         int whats_wrong;
@@ -263,6 +264,11 @@ void Get_Info::start_ui() {
     } else {
         std::cout << "File with words: " << input_file_name << '\n';
         std::this_thread::sleep_for(std::chrono::milliseconds(25));
+    }
+    if (use_same_word_multiple_times_in_one){
+        std::cout << "Use word multiple times in a combination: true" << '\n';
+    } else {
+        std::cout << "Use word multiple times in a combination: false" << '\n';
     }
     std::cout << "Combinations: " << '\n';
     for (int i = 0; i < combinations.size(); i++) {
