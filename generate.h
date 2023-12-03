@@ -25,6 +25,7 @@ class Generate{
 
         bool use_same_word_multiple_times_in_one;
         int total_combinations;
+        int total_words;
         int multiplier;
 };
 
