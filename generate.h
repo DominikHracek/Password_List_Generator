@@ -15,11 +15,18 @@ class Generate{
                       bool use_same_word_multiple_times_in_one);
 
         void calculate_number_of_combinations();
-        void generate_combinations(
-            int length,
+        void generate_combinations_with_repetition(
+            int combination_length,
             std::vector<std::string> words,
-            std::string currentCombination,
-            int current = 1);
+            std::string combination,
+            int current);
+
+        void generate_combinations_without_repetition(
+            int combination_length,
+            std::vector<std::string> words,
+            std::string combination,
+            int current);
+
         std::vector<std::string> convert_2d_vector_to_normal_vector(std::vector<std::vector<std::string>> twod_vector);
 
     private:

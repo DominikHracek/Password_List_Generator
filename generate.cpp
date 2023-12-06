@@ -50,13 +50,17 @@ void Generate::calculate_number_of_combinations() {
 	//total_combinations *= pow(separator.size(), total_words);
 	std::cout << "Total generated combinations: " << total_combinations << '\n';
 	combinations = convert_2d_vector_to_normal_vector(twod_combinations);
+	std::vector<std::string> words_without_repetition = combinations;
 	std::cout << "Done converting 2d vector to normal one" << '\n';
-	for (std::string combination : combinations){
-		std::cout << combination << '\n';
-	}
 
-	for (int i = 1; i < combinations.size(); i++){
-		generate_combinations(i, combinations, "", 1);
+	if (use_same_word_multiple_times_in_one){
+		for (int i = 1; i <= combinations.size(); i++){
+			generate_combinations_with_repetition(i, combinations, "", 0);
+		}
+	} else {
+          for (int i = 1; i <= combinations.size(); i++){
+            generate_combinations_without_repetition(i, combinations, "", 0);
+          }
 	}
 	exit(0);
 }
@@ -71,19 +75,45 @@ std::vector<std::string> Generate::convert_2d_vector_to_normal_vector(std::vecto
 	return converted_vector;
 }
 
-std::vector<std::string> generateCombinations(const std::string& characters, int maxLength) {
-  std::vector<std::string> combinations;
+void Generate::generate_combinations_with_repetition(int combination_length,
+                                                     std::vector<std::string> words,
+                                                     std::string combination,
+                                                     int current) {
+	if (current == combination_length){
+		std::cout << combination << '\n';
+		return;
+	}
 
-  // Generate combinations of length 1 to maxLength
-  for (int length = 1; length <= maxLength; length++) {
-    // Generate combinations using std::next_permutation
-    std::string combination(length, characters[0]);
-    combinations.push_back(combination);
+	for (std::string word : words){
+		std::string current_combination = combination;
+		current_combination += word;
+	}
 
-    while (std::next_permutation(combination.begin(), combination.end())) {
-      combinations.push_back(combination);
-    }
-  }
+	for (std::string word : words){
+		generate_combinations_with_repetition(combination_length, words, combination + word, current + 1);
+	}
+}
 
-  return combinations;
-}  
+void Generate::generate_combinations_without_repetition(int combination_length,
+                                                        std::vector<std::string> words_without_repetition,
+                                                        std::string combination,
+                                                        int current) {
+
+	if (current == combination_length){
+		std::cout << combination << '\n';
+		return;
+	}
+
+	for (std::string word : words_without_repetition){
+		std::string current_combination = combination;
+		current_combination += word;
+	}
+
+	for (std::string word : words_without_repetition){
+		auto remove_word = find(words_without_repetition.begin(), words_without_repetition.end(), word);
+		if (remove_word != words_without_repetition.end()){
+			words_without_repetition.erase(remove_word);
+		}
+		generate_combinations_without_repetition(combination_length, words_without_repetition, combination, current);
+	}
+}
