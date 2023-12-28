@@ -39,7 +39,7 @@ Get_Info::Get_Info(){
     output_file_name = "generated_passwords.txt";
 }
 
-void Get_Info::get_arguments(int argc, char *argv[]) {
+void Get_Info::get_arguments(const int argc, char *argv[]) {
     for (int i = 1; i < argc; i += 2) {
         std::string arg = argv[i];
         std::string possible_value;
@@ -48,14 +48,14 @@ void Get_Info::get_arguments(int argc, char *argv[]) {
         }
 
         if (arg == "-n" || arg == "--min") {
-            if (i + 1 < argc && possible_value.find("-") == -1) {
+            if (i + 1 < argc && possible_value.find('-') == -1) {
                 minimal_combination_length = std::stoi(argv[i + 1]);
             } else {
                 std::cout << "Error: Missing value for -n/--min argument" << '\n';
                 break;
             }
         } else if (arg == "-x" || arg == "--max") {
-            if (i + 1 < argc && possible_value.find("-") == -1) {
+            if (i + 1 < argc && possible_value.find('-') == -1) {
                 maximal_combination_length = std::stoi(argv[i + 1]);
             } else {
                 std::cout << "Error: Missing value for -x/--max argument" << '\n';
@@ -63,22 +63,22 @@ void Get_Info::get_arguments(int argc, char *argv[]) {
             }
         } else if (arg == "-m" || arg == "--multiple"){
             use_same_word_multiple_times_in_one = true;
-            if (i + 1 < argc && possible_value.find("-") == -1) {
+            if (i + 1 < argc && possible_value.find('-') == -1) {
                 std::cout << "Error: This argument doesn't have a value(it's true/false)" << '\n';
                 break;
             }
         } else if (arg == "-r" || arg == "--char") {
-            if (i + 1 < argc && possible_value.find("-") == -1) {
+            if (i + 1 < argc && possible_value.find('-') == -1) {
                 std::string character_file_checker = argv[i + 1];
-                if (character_file_checker.find(",") != -1) {
-                    separators_file_name = character_file_checker.substr(0, character_file_checker.find(","));
-                    separators_line = std::stoi(character_file_checker.substr(character_file_checker.find(",") + 1));
+                if (character_file_checker.find(',') != -1) {
+                    separators_file_name = character_file_checker.substr(0, character_file_checker.find(','));
+                    separators_line = std::stoi(character_file_checker.substr(character_file_checker.find(',') + 1));
                     get_separators(separators_file_name, separators_line);
                 } else {
                     try {
                         separators_line = std::stoi(argv[i + 1]);
                         get_separators(separators_line);
-                    } catch (std::invalid_argument ia) {
+                    } catch (std::invalid_argument&) {
                         separators_file_name = argv[i + 1];
                         get_separators(separators_file_name, separators_line);
                     }
@@ -88,14 +88,14 @@ void Get_Info::get_arguments(int argc, char *argv[]) {
                 break;
             }
         } else if (arg == "-c" || arg == "--case") {
-            if (i + 1 < argc && possible_value.find("-") == -1) {
+            if (i + 1 < argc && possible_value.find('-') == -1) {
                 letter_case = std::stoi(argv[i + 1]);
             } else {
                 std::cout << "Error: Missing value for -c/--case argument" << '\n';
                 break;
             }
         } else if (arg == "-f" || arg == "--file") {
-            if (i + 1 < argc && possible_value.find("-") == -1) {
+            if (i + 1 < argc && possible_value.find('-') == -1) {
                 input_file_name = argv[i + 1];
             } else {
                 std::cout << "Error: Missing value for -f/--file argument" << '\n';
@@ -108,13 +108,13 @@ void Get_Info::get_arguments(int argc, char *argv[]) {
     }
 }
 
-std::string trim(std::string string) {
-  const char *whitespace = " \t\n\r\f\v";
-  size_t begin = string.find_first_not_of(whitespace);
+std::string trim(const std::string& string) {
+  const auto *whitespace = " \t\n\r\f\v";
+  const size_t begin = string.find_first_not_of(whitespace);
   if (begin == std::string::npos) {
     return std::string{};
   }
-  size_t end = string.find_last_not_of(whitespace);
+  const size_t end = string.find_last_not_of(whitespace);
   return string.substr(begin, end - begin + 1);
 }
 
@@ -128,7 +128,7 @@ void Get_Info::is_everything_ok() {
     output_check = trim(output_check);
     std::cin.clear();
 
-    if (output_check == "y" || output_check == "yes" || output_check == "") {
+    if (output_check == "y" || output_check == "yes" || output_check.empty()) {
         Generate generate;
         generate.get_info(minimal_combination_length,
                           maximal_combination_length,
@@ -226,7 +226,7 @@ void Get_Info::start_ui() {
     std::cout << "Case-sensitivity level: " << letter_case << "/" << 4 << '\n';
     std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
-    if (separators_file_name == "") {
+    if (separators_file_name.empty()) {
         if (separators_line < 1) {
             std::cout << "Each file's first line starts at index 1 -> index has been set to 1" << '\n';
             separators_line = 1;
@@ -238,7 +238,7 @@ void Get_Info::start_ui() {
             std::cout << '\t' << "Character file: " << "internal" << '\n';
             std::cout << '\t' << "Character line: " << separators_line << '\n';
             std::cout << '\t' << "Characters: ";
-            for (std::string one_of_separator : separator){
+            for (const std::string& one_of_separator : separator){
                 std::cout << one_of_separator << " ";
             }
             std::cout << '\n';
@@ -249,7 +249,7 @@ void Get_Info::start_ui() {
         std::cout << '\t' << "Character file: " << separators_file_name << '\n';
         std::cout << '\t' << "Character line: " << separators_line << '\n';
         std::cout << '\t' << "Characters: ";
-        for (std::string one_of_separator : separator){
+        for (const std::string& one_of_separator : separator){
           std::cout << one_of_separator << " ";
         }
         std::cout << '\n';
@@ -258,7 +258,7 @@ void Get_Info::start_ui() {
     }
     std::cout << '\n';
 
-    if (input_file_name == "") {
+    if (input_file_name.empty()) {
         std::cout << "File with words: " << "None" << '\n';
         std::this_thread::sleep_for(std::chrono::milliseconds(25));
     } else {
@@ -273,8 +273,8 @@ void Get_Info::start_ui() {
     std::cout << "Combinations: " << '\n';
     for (int i = 0; i < combinations.size(); i++) {
         std::cout << '\t' << words[i] << '\n';
-        for (int j = 0; j < combinations[i].size(); j++) {
-            std::cout << '\t' << '\t' << combinations[i][j] << '\n';
+        for (const auto & j : combinations[i]) {
+            std::cout << '\t' << '\t' << j << '\n';
         }
     }
     std::cout << '\n';
@@ -285,7 +285,7 @@ void Get_Info::start_ui() {
     std::cout << '\n' << '\n';
 }
 
-void Get_Info::get_separators(std::string separators_file_name, int line) {
+void Get_Info::get_separators(const std::string& separators_file_name,const int line) {
     separators.clear();
     separators_file.open(separators_file_name);
 
@@ -314,7 +314,7 @@ void Get_Info::get_separators(int line) {
     }
 }
 
-void Get_Info::get_words(std::string input_file_name) {
+void Get_Info::get_words(const std::string& input_file_name) {
     words.clear();
     input_file.open(input_file_name);
     std::string line_being_read;
@@ -342,13 +342,13 @@ void Get_Info::get_words() {
 }
 
 void Get_Info::ask_for_patterns() {
-    if (input_file_name == "") {
+    if (input_file_name.empty()) {
         get_words();
     } else {
         get_words(input_file_name);
     }
 
-    for (std::string word : words) {
+    for (const std::string& word : words) {
         std::cout << "Enter all combination of the word: '" << word << "' (combination -> comb,combin) that should be used: ";
         std::string combinaton_to_use;
         std::getline(std::cin, combinaton_to_use);

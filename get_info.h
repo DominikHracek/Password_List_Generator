@@ -13,9 +13,9 @@ class Get_Info {
     void is_everything_ok();
     void start_ui();
     void start_friendly_ui();
-    void get_separators(std::string separators_file_name, int line);
+    void get_separators(const std::string& separators_file_name, int line);
     void get_separators(int line);
-    void get_words(std::string input_file_name);
+    void get_words(const std::string& input_file_name);
     void get_words();
     int count_occurrences(std::string string, char character);
     void ask_for_patterns();
