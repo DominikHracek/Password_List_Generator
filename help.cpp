@@ -23,7 +23,7 @@ void Help::show_general_help() {
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-h" << " " << "|" << " " << "--help" << '\t' << "Shows this page" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "-n" << " " << "|" << " " << "--min" << '\t' << "Minimal number of characters (default: 0)" << '\n';
+  std::cout << '\t' << "-n" << " " << "|" << " " << "--min" << '\t' << "Minimal number of characters (default: 1)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-x" << " " << "|" << " " << "--max" << '\t' << "Maximal number of characters (default: 12)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
