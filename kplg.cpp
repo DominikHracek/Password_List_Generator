@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[]) {
   if (argc == 1) {
-    std::cout << "To-do geneerate.start_friendly_ui();" << '\n';
+    std::cout << "To-do generate.start_friendly_ui();" << '\n';
     exit(1);
     // TO-DO generate.start_friendly_ui(); <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
