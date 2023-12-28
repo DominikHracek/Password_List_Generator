@@ -67,7 +67,6 @@ void Generate::calculate_number_of_combinations() {
 	std::ofstream output_file("generated_combinations.txt");
 	for (const std::string& combination : generated_combinations) {
 		output_file << combination << '\n';
-		std::cout << combination << '\n';
 	}
 	output_file.close();
 	exit(0);
