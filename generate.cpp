@@ -26,7 +26,7 @@ void Generate::get_info(const int minimal_combination_length,
 	this->maximal_combination_length = maximal_combination_length;
 	this->letter_case = letter_case;
 	this->separator = std::move(separator);
-	this->twod_combinations = std::move(twod_combinations);
+	this->twod_combinations = twod_combinations;
 	this->use_same_word_multiple_times_in_one = use_same_word_multiple_times_in_one;
 }
 
@@ -56,16 +56,20 @@ void Generate::calculate_number_of_combinations() {
 	generated_combinations.clear();
 	if (use_same_word_multiple_times_in_one){
 		for (int i = 1; i <= combinations.size(); i++){
-			generate_combinations_with_repetition(i, combinations, "", 0);
+			std::vector<std::string> temporary_combinations = generate_combinations_with_repetition(i, combinations, "", 0);
+			for (const std::string& combination : temporary_combinations){
+				generated_combinations.push_back(combination);
+			}
 		}
 	} else {
         generated_combinations = generate_combinations_without_repetition(combinations);
-		std::ofstream output_file("generated_combinations.txt");
-		for (const std::string& combination : generated_combinations) {
-			output_file << combination << '\n';
-		}
-		output_file.close();
 	}
+	std::ofstream output_file("generated_combinations.txt");
+	for (const std::string& combination : generated_combinations) {
+		output_file << combination << '\n';
+		std::cout << combination << '\n';
+	}
+	output_file.close();
 	exit(0);
 }
 
@@ -79,14 +83,14 @@ std::vector<std::string> Generate::convert_2d_vector_to_normal_vector(const std:
 	return converted_vector;
 }
 
-void Generate::generate_combinations_with_repetition(const int combination_length,
+std::vector<std::string> Generate::generate_combinations_with_repetition(const int combination_length,
                                                      const std::vector<std::string>& words,
                                                      const std::string& combination,
                                                      const int current) {
+	std::vector<std::string> generated_combinations;
 	if (current == combination_length){
-		std::cout << combination << '\n';
 		generated_combinations.push_back(combination);
-		return;
+		return generated_combinations;
 	}
 
 	for (const std::string& word : words){
@@ -95,10 +99,13 @@ void Generate::generate_combinations_with_repetition(const int combination_lengt
 	}
 
 	for (const std::string& word : words){
-		generate_combinations_with_repetition(combination_length, words, combination + word, current + 1);
+		std::vector<std::string> new_words = generate_combinations_with_repetition(combination_length, words, combination + word, current + 1);
+		for (const std::string& new_word : new_words){
+			generated_combinations.push_back(new_word);
+		}
 	}
+	return generated_combinations;
 }
-
 
 std::vector<std::string> Generate::generate_combinations_without_repetition(std::vector<std::string> v) {
 	std::vector<std::string> permutations;

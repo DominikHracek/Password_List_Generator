@@ -16,7 +16,7 @@ class Generate{
 
         void calculate_number_of_combinations();
 
-        static void generate_combinations_with_repetition(int combination_length,
+        static std::vector<std::string> generate_combinations_with_repetition(int combination_length,
                                                           const std::vector<std::string>& words,
                                                           const std::string& combination,
                                                           int current);
@@ -32,7 +32,7 @@ class Generate{
         std::vector<std::string> separator;
         std::vector<std::vector<std::string>> twod_combinations;
         std::vector<std::string> combinations;
-        static std::vector<std::string> generated_combinations;
+        std::vector<std::string> generated_combinations;
 
         bool use_same_word_multiple_times_in_one;
         int total_combinations;
