@@ -7,40 +7,37 @@
 class Generate{
     public:
         Generate();
-        void get_info(int minimal_combination_length,
-                      int maximal_combination_length,
-                      int letter_case,
-                      std::vector<std::string> separator,
-                      std::vector<std::vector<std::string>> combinations,
-                      bool use_same_word_multiple_times_in_one);
+    void get_info(int minimal_combination_length,
+                    int maximal_combination_length,
+                    int letter_case,
+                    std::vector<std::string> separator,
+                    const std::vector<std::vector<std::string>>& twod_combinations,
+                    bool use_same_word_multiple_times_in_one);
 
         void calculate_number_of_combinations();
-        void generate_combinations_with_repetition(
-            int combination_length,
-            std::vector<std::string> words,
-            std::string combination,
-            int current);
 
-        void generate_combinations_without_repetition(
-            int combination_length,
-            std::vector<std::string> words,
-            std::string combination,
-            int current);
+        static void generate_combinations_with_repetition(int combination_length,
+                                                          const std::vector<std::string>& words,
+                                                          const std::string& combination,
+                                                          int current);
 
-        std::vector<std::string> convert_2d_vector_to_normal_vector(std::vector<std::vector<std::string>> twod_vector);
+        static std::vector<std::string> generate_combinations_without_repetition(std::vector<std::string> v);
+
+        static std::vector<std::string> convert_2d_vector_to_normal_vector(const std::vector<std::vector<std::string>>& twod_vector);
 
     private:
-        int minimal_combination_length;
-        int maximal_combination_length;
-        int letter_case;
+        int minimal_combination_length{};
+        int maximal_combination_length{};
+        int letter_case{};
         std::vector<std::string> separator;
         std::vector<std::vector<std::string>> twod_combinations;
         std::vector<std::string> combinations;
+        static std::vector<std::string> generated_combinations;
 
         bool use_same_word_multiple_times_in_one;
         int total_combinations;
         int total_words;
-        int multiplier;
+        int multiplier{};
 };
 
 #endif
