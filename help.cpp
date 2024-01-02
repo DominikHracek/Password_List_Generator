@@ -23,19 +23,42 @@ void Help::show_general_help() {
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-h" << " " << "|" << " " << "--help" << '\t' << "Shows this page" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "-i" << " " << "|" << " " << "--interactive" << '\t' << "Starts interactive mode" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-n" << " " << "|" << " " << "--min" << '\t' << "Minimal number of characters (default: 1)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-x" << " " << "|" << " " << "--max" << '\t' << "Maximal number of characters (default: 12)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "-m" << " " << "|" << " " << "--multiple" << '\t' << "Same word multiple times in one combination (if not specified, every word is used only ones)" << '\n';
-  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  //std::cout << '\t' << "-m" << " " << "|" << " " << "--multiple" << '\t' << "Same word multiple times in one combination (if not specified, every word is used only ones)" << '\n';
+  //std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-r" << " " << "|" << " " << "--char" << '\t' << "What characters to use between words" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-c" << " " << "|" << " " << "--case" << '\t' << "Upper/Lowercase settings" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-f" << " " << "|" << " " << "--file" << '\t' << "Load words from a file" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "-o" << " " << "|" << " " << "--output" << '\t' << "Specifies the file to save the generated combinations" << '\n';
   // Template: std::cout << '\t' << "-" << " " << "|" << " " << "--" << '\t' << "" << '\n';
 }
+
+void Help::show_interactive_mode() {
+  std::cout << "Usage:" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg -i" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg --interactive" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\n';
+  std::cout << "Starts interactive mode" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\n';
+  std::cout << "Example:" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg -i" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg --interactive" << '\n';
+}
+
 void Help::show_minimal_character_length(){
   std::cout << "Usage:" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
@@ -72,7 +95,7 @@ void Help::show_maximal_character_length(){
   std::cout << '\t' << "./kplg --max 16" << '\n';
 }
 
-void Help::show_use_multiple_times(){
+/*void Help::show_use_multiple_times(){
   std::cout << "Specifies, whether to allow a combination to have the same word multipletimes(testcombinationtest)" << '\n';
   std::cout << "                                                                              ^^^^           ^^^^" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
@@ -81,26 +104,26 @@ void Help::show_use_multiple_times(){
   std::cout << '\t' << "./kplg -m" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "./kplg --multiple" << '\n';
-}
+}*/
 
 void Help::show_characters(){
   std::cout << "Internal word separators (used when <separator_file> not specified)" << '\n' << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << "THE FIRST TWO SEPARATORS ARE NOTHING (wordword) AND SPACE (word word) AND THEN IT CONTINUES (word-word, etc.)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "1)  - _ / \\ " << '\n';
+  std::cout << '\t' << R"(1)  - _ / \)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "2)  - _ / \\ ! ; : \" \'" << '\n';
+  std::cout << '\t' << R"(2)  - _ / \ ! ; : " ')" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "3)  - _ / \\ ! ; : \" \' | @ # $ %" << '\n';
+  std::cout << '\t' << R"(3)  - _ / \ ! ; : " ' | @ # $ %)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "4)  - _ / \\ ! ; : \" \' | @ # $ % ^ & * , ." << '\n';
+  std::cout << '\t' << R"(4)  - _ / \ ! ; : " ' | @ # $ % ^ & * , .)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "5)  - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { }" << '\n';
+  std::cout << '\t' << R"(5)  - _ / \ ! ; : " ' | @ # $ % ^ & * , . [ ] { })" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "6)  - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < >" << '\n';
+  std::cout << '\t' << R"(6)  - _ / \ ! ; : " ' | @ # $ % ^ & * , . [ ] { } + = < >)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "7)  - _ / \\ ! ; : \" \' | @ # $ % ^ & * , . [ ] { } + = < > ? ~ `" << '\n';
+  std::cout << '\t' << R"(7)  - _ / \ ! ; : " ' | @ # $ % ^ & * , . [ ] { } + = < > ? ~ `)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\n';
   std::cout << '\n';
@@ -153,7 +176,7 @@ void Help::show_case(){
   std::cout << '\t' << "./kplg --case 1" << '\n';
 }
 
-void Help::show_file(){
+void Help::show_input_file(){
   std::cout << "Usage:" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "./kplg -f" << '\n';
@@ -169,4 +192,22 @@ void Help::show_file(){
   std::cout << '\t' << "./kplg -f words.txt" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "./kplg --file words" << '\n';
+}
+
+void Help::show_output_file() {
+  std::cout << "Usage:" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg -o" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg --output" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\n';
+  std::cout << "Specifies the file, where to save the generated passwords" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\n';
+  std::cout << "Example:" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg -o passwords.txt" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg --output passwords" << '\n';
 }
