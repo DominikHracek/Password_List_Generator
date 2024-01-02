@@ -12,8 +12,7 @@ class Generate{
                     int letter_case,
                     std::vector<std::string> separator,
                     const std::vector<std::vector<std::string>>& twod_combinations,
-                    bool use_same_word_multiple_times_in_one,
-                    std::string output_file_name);
+                    const std::string &output_file_name);
 
         void generate_combinations();
 
@@ -22,8 +21,6 @@ class Generate{
                                                           const std::vector<std::string>& separator,
                                                           const std::string& combination,
                                                           int current);
-
-        //static std::vector<std::string> generate_combinations_without_repetition(std::vector<std::string> words, const std::vector<std::string> &separators);
 
         static std::vector<std::string> convert_2d_vector_to_normal_vector(const std::vector<std::vector<std::string>>& twod_vector);
 
@@ -36,7 +33,7 @@ class Generate{
         std::vector<std::string> combinations;
         std::vector<std::string> generated_combinations;
 
-        bool use_same_word_multiple_times_in_one;
+        int total_separators;
         int total_combinations;
         int total_words;
         int multiplier;
