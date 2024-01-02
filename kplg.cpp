@@ -5,19 +5,22 @@
 #include "help.h"
 #include "get_info.h"
 
-int main(int argc, char *argv[]) {
+int main(const int argc, char *argv[]) {
   if (argc == 1) {
-    std::cout << "To-do generate.start_friendly_ui();" << '\n';
-    exit(1);
-    // TO-DO generate.start_friendly_ui(); <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-  } else if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
+    Get_Info get_info;
+    get_info.ask_for_patterns();
+    get_info.start_ui();
+  }
+  if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
     Help help_page;
     if (argc == 2){
       help_page.show_general_help();
       
     } else if (argc == 3){
-      if (strcmp(argv[2], "-n") == 0 || strcmp(argv[2], "--min") == 0) {
+      if (strcmp(argv[2], "-i") == 0 || strcmp(argv[2], "--interactive") == 0){
+        help_page.show_interactive_mode();
+      }
+      else if (strcmp(argv[2], "-n") == 0 || strcmp(argv[2], "--min") == 0) {
         help_page.show_minimal_character_length();
         
       } else if (strcmp(argv[2], "-x") == 0 || strcmp(argv[2], "--max") == 0){
@@ -30,13 +33,21 @@ int main(int argc, char *argv[]) {
         help_page.show_case();
         
       } else if (strcmp(argv[2], "-f") == 0 || strcmp(argv[2], "--file") == 0){
-        help_page.show_file();
-        
+        help_page.show_input_file();
+
+      } else if (strcmp(argv[2], "-o") == 0 || strcmp(argv[2], "--output") == 0){
+        help_page.show_output_file();
+
       } else {
         std::cout << "Error: Unknown argument " << argv[2] << '\n';
         exit(2);
       }
     }
+  } else if (strcmp(argv[1], "-i") == 0 || strcmp(argv[1], "--interactive") == 0) {
+    Get_Info get_info;
+    get_info.get_arguments(argc, argv);
+    std::cout << "This will start interactive mode in the future, WIP" << '\n';
+    //get_info.start_friendly_ui();
   } else {
     Get_Info get_info;
     get_info.get_arguments(argc, argv);
