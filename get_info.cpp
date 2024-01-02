@@ -47,7 +47,11 @@ void Get_Info::get_arguments(const int argc, char *argv[]) {
             possible_value = argv[i + 1];
         }
 
-        if (arg == "-n" || arg == "--min") {
+        if (arg == "-i" || arg == "--interactive") {
+            //start_friendly_ui();
+            std::cout << "Starting in interactive mode" << '\n';
+            break;
+        } else if (arg == "-n" || arg == "--min") {
             if (i + 1 < argc && possible_value.find('-') == -1) {
                 minimal_combination_length = std::stoi(argv[i + 1]);
             } else {
@@ -61,12 +65,12 @@ void Get_Info::get_arguments(const int argc, char *argv[]) {
                 std::cout << "Error: Missing value for -x/--max argument" << '\n';
                 break;
             }
-        } else if (arg == "-m" || arg == "--multiple"){
+        /*} else if (arg == "-m" || arg == "--multiple"){
             use_same_word_multiple_times_in_one = true;
             if (i + 1 < argc && possible_value.find('-') == -1) {
                 std::cout << "Error: This argument doesn't have a value(it's true/false)" << '\n';
                 break;
-            }
+            }*/
         } else if (arg == "-r" || arg == "--char") {
             if (i + 1 < argc && possible_value.find('-') == -1) {
                 std::string character_file_checker = argv[i + 1];
@@ -99,6 +103,14 @@ void Get_Info::get_arguments(const int argc, char *argv[]) {
                 input_file_name = argv[i + 1];
             } else {
                 std::cout << "Error: Missing value for -f/--file argument" << '\n';
+                break;
+            }
+        } else if (arg == "-o" || arg == "--output") {
+            //TODO ./khakis.exe -m -o working, ./khakis.exe -m -o passwords.txt not working
+            if (i + 1 < argc && possible_value.find('-') == -1) {
+                output_file_name = argv[i + 1];
+            } else {
+                std::cout << "Error: Missing value for -o/--output argument" << '\n';
                 break;
             }
         } else {
@@ -135,8 +147,9 @@ void Get_Info::is_everything_ok() {
                           letter_case,
                           separator,
                           combinations,
-                          use_same_word_multiple_times_in_one);
-        generate.calculate_number_of_combinations();
+                          use_same_word_multiple_times_in_one,
+                          output_file_name);
+        generate.generate_combinations();
     } else {
         int whats_wrong;
 
@@ -265,6 +278,10 @@ void Get_Info::start_ui() {
         std::cout << "File with words: " << input_file_name << '\n';
         std::this_thread::sleep_for(std::chrono::milliseconds(25));
     }
+
+    std::cout << "Output file name: " << output_file_name << '\n';
+    std::this_thread::sleep_for(std::chrono::milliseconds(25));
+
     if (use_same_word_multiple_times_in_one){
         std::cout << "Use word multiple times in a combination: true" << '\n';
     } else {
@@ -308,7 +325,7 @@ void Get_Info::get_separators(const std::string& separators_file_name,const int 
     separators_file.close();
 }
 
-void Get_Info::get_separators(int line) {
+void Get_Info::get_separators(const int line) {
     if (line >= 1 && line <= separators.size()) {
         separator = separators[line - 1];
     }
@@ -333,7 +350,7 @@ void Get_Info::get_words() {
     std::string substring;
     while (std::getline(stringstream, substring, ',')) {
         for (char &character : substring) {
-            character = tolower(character);
+            character = std::tolower(character);
         }
         substring = trim(substring);
         words.push_back(substring);
@@ -359,7 +376,7 @@ void Get_Info::ask_for_patterns() {
         word_combinations.push_back(word);
         while (std::getline(stringstream, combination, ',')) {
             for (char &character : combination) {
-                character = tolower(character);
+                character = std::tolower(character);
             }
             combination = trim(combination);
             word_combinations.push_back(combination);
