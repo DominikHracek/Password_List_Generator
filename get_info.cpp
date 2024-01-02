@@ -15,9 +15,7 @@
 Get_Info::Get_Info(){
     minimal_combination_length = 0;
     maximal_combination_length = 12;
-
-    use_same_word_multiple_times_in_one = false;
-
+    
     separators_file_name = "";
     separators_line = 1;
     separators = {
@@ -65,12 +63,6 @@ void Get_Info::get_arguments(const int argc, char *argv[]) {
                 std::cout << "Error: Missing value for -x/--max argument" << '\n';
                 break;
             }
-        /*} else if (arg == "-m" || arg == "--multiple"){
-            use_same_word_multiple_times_in_one = true;
-            if (i + 1 < argc && possible_value.find('-') == -1) {
-                std::cout << "Error: This argument doesn't have a value(it's true/false)" << '\n';
-                break;
-            }*/
         } else if (arg == "-r" || arg == "--char") {
             if (i + 1 < argc && possible_value.find('-') == -1) {
                 std::string character_file_checker = argv[i + 1];
@@ -147,7 +139,6 @@ void Get_Info::is_everything_ok() {
                           letter_case,
                           separator,
                           combinations,
-                          use_same_word_multiple_times_in_one,
                           output_file_name);
         generate.generate_combinations();
     } else {
@@ -282,11 +273,6 @@ void Get_Info::start_ui() {
     std::cout << "Output file name: " << output_file_name << '\n';
     std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
-    if (use_same_word_multiple_times_in_one){
-        std::cout << "Use word multiple times in a combination: true" << '\n';
-    } else {
-        std::cout << "Use word multiple times in a combination: false" << '\n';
-    }
     std::cout << "Combinations: " << '\n';
     for (int i = 0; i < combinations.size(); i++) {
         std::cout << '\t' << words[i] << '\n';

@@ -2,7 +2,6 @@
 #define GET_INFO_H
 
 #include <fstream>
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -23,8 +22,6 @@ class Get_Info {
   private:
     int minimal_combination_length;
     int maximal_combination_length;
-
-    bool use_same_word_multiple_times_in_one;
 
     std::ifstream separators_file;
     std::string separators_file_name;
