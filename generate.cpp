@@ -4,8 +4,6 @@
 #include <utility>
 #include <vector>
 #include <fstream>
-#include <indicators/progress_bar.hpp>
-#include <indicators/progress_spinner.hpp>
 
 #include "generate.h"
 
@@ -55,7 +53,7 @@ void Generate::generate_combinations() {
 				generated_combinations.push_back(new_combination);
 				std::cout << '\r' << new_combination << std::flush;
 				if (new_combination.length() < previous_length) {
-					int difference = previous_length - new_combination.length();
+					const int difference = previous_length - new_combination.length();
 					std::cout << std::string(difference, ' ') << std::flush;
 				}
 				previous_length = new_combination.length();
@@ -63,12 +61,9 @@ void Generate::generate_combinations() {
 		}
 	}
 
-	std::cout << "Generated combinations: " << generated_combinations.size() << '\n';
-
 	std::ofstream output_file(output_file_name);
-	for (int i = 0; i < generated_combinations.size(); i++){
-		output_file << generated_combinations[i] << '\n';
-		//p.set_progress((i + 1) * 100 / generated_combinations.size());
+	for (const std::string &generated_combination : generated_combinations){
+		output_file << generated_combination << '\n';
 	}
 	output_file.close();
 	std::cout << "Combinations written to file: " << output_file_name << '\n';
