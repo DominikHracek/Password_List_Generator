@@ -54,14 +54,14 @@ void Get_Info::get_arguments(const int argc, char *argv[]) {
                 minimal_combination_length = std::stoi(argv[i + 1]);
             } else {
                 std::cout << "Error: Missing value for -n/--min argument" << '\n';
-                break;
+                exit(0);
             }
         } else if (arg == "-x" || arg == "--max") {
             if (i + 1 < argc && possible_value.find('-') == -1) {
                 maximal_combination_length = std::stoi(argv[i + 1]);
             } else {
                 std::cout << "Error: Missing value for -x/--max argument" << '\n';
-                break;
+                exit(0);
             }
         } else if (arg == "-r" || arg == "--char") {
             if (i + 1 < argc && possible_value.find('-') == -1) {
@@ -81,21 +81,21 @@ void Get_Info::get_arguments(const int argc, char *argv[]) {
                 }
             } else {
                 std::cout << "Error: Missing value for -r/--char argument" << '\n';
-                break;
+                exit(0);
             }
         } else if (arg == "-c" || arg == "--case") {
             if (i + 1 < argc && possible_value.find('-') == -1) {
                 letter_case = std::stoi(argv[i + 1]);
             } else {
                 std::cout << "Error: Missing value for -c/--case argument" << '\n';
-                break;
+                exit(0);
             }
         } else if (arg == "-f" || arg == "--file") {
             if (i + 1 < argc && possible_value.find('-') == -1) {
                 input_file_name = argv[i + 1];
             } else {
                 std::cout << "Error: Missing value for -f/--file argument" << '\n';
-                break;
+                exit(0);
             }
         } else if (arg == "-o" || arg == "--output") {
             //TODO ./khakis.exe -m -o working, ./khakis.exe -m -o passwords.txt not working
@@ -103,7 +103,7 @@ void Get_Info::get_arguments(const int argc, char *argv[]) {
                 output_file_name = argv[i + 1];
             } else {
                 std::cout << "Error: Missing value for -o/--output argument" << '\n';
-                break;
+                exit(0);
             }
         } else {
             std::cout << "Error: Unknown argument " << '\"' << arg << '\"' << '\n';
