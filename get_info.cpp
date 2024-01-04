@@ -98,7 +98,6 @@ void Get_Info::get_arguments(const int argc, char *argv[]) {
                 exit(0);
             }
         } else if (arg == "-o" || arg == "--output") {
-            //TODO ./khakis.exe -m -o working, ./khakis.exe -m -o passwords.txt not working
             if (i + 1 < argc && possible_value.find('-') == -1) {
                 output_file_name = argv[i + 1];
             } else {
