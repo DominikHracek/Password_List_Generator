@@ -2,8 +2,6 @@
 #include <cmath>
 #include <iostream>
 #include <utility>
-#include <vector>
-#include <cryptopp/aes.h>
 
 #include "generate.h"
 
@@ -14,6 +12,7 @@ Generate::Generate() {
 	combinations = {};
 	generated_combinations = {};
 	verbose = false;
+	hash = false;
 }
 
 void Generate::get_info(const int minimal_combination_length,
@@ -22,7 +21,8 @@ void Generate::get_info(const int minimal_combination_length,
                         std::vector<std::string> separator,
                         const std::vector<std::vector<std::string>>& twod_combinations,
                         const std::string& output_file_name,
-                        const bool verbose) {
+                        const bool verbose,
+                        const bool hash) {
 
 	this->minimal_combination_length = minimal_combination_length;
 	this->maximal_combination_length = maximal_combination_length;
@@ -31,6 +31,7 @@ void Generate::get_info(const int minimal_combination_length,
 	this->twod_combinations = twod_combinations;
 	this->output_file_name = output_file_name;
 	this->verbose = verbose;
+	this->hash = hash;
 }
 
 std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::string>& combinations) {
@@ -136,15 +137,15 @@ void Generate::generate_combinations() {
 
 	generated_combinations.clear();
 
-	if (verbose) {
-		if (hash) {
+	if (hash) {
+		if (verbose) {
 			std::ofstream output_file(output_file_name);
 			std::vector<std::string> correct_length_combinations;
 			correct_length_combinations.clear();
 			for (const std::string &generated_combination : generated_combinations){
 				if (generated_combination.length() >= minimal_combination_length && generated_combination.length() <= maximal_combination_length) {
 					correct_length_combinations.push_back(generated_combination);
-					
+
 				}
 				output_file << generated_combination << '\n';
 			}
@@ -160,26 +161,12 @@ void Generate::generate_combinations() {
 				if (generated_combination.length() >= minimal_combination_length && generated_combination.length() <= maximal_combination_length) {
 					correct_length_combinations.push_back(generated_combination);
 				}
-				output_file << generated_combination << '\n';
 			}
 			casing(correct_length_combinations);
 			output_file.close();
 			std::cout << '\n' << "Combinations written to file: " << output_file_name << '\n';
 			exit(0);
 		}
-	} else {
-		std::ofstream output_file(output_file_name);
-		std::vector<std::string> correct_length_combinations;
-		correct_length_combinations.clear();
-		for (const std::string &generated_combination : generated_combinations){
-			if (generated_combination.length() >= minimal_combination_length && generated_combination.length() <= maximal_combination_length) {
-				correct_length_combinations.push_back(generated_combination);
-			}
-		}
-		casing(correct_length_combinations);
-		output_file.close();
-		std::cout << '\n' << "Combinations written to file: " << output_file_name << '\n';
-		exit(0);
 	}
 }
 

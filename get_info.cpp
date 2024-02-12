@@ -36,7 +36,8 @@ Get_Info::Get_Info(){
 
     output_file_name = "generated_passwords.txt";
 
-    verbose;
+    verbose = false;
+    hash = false;
 }
 
 void Get_Info::get_arguments(const int argc, char *argv[]) {
@@ -143,7 +144,8 @@ void Get_Info::is_everything_ok() {
                           separator,
                           combinations,
                           output_file_name,
-                          verbose);
+                          verbose,
+                          hash);
         generate.generate_combinations();
     } else {
         //TODO make sure, everything is working in this condition

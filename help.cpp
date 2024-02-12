@@ -35,6 +35,8 @@ void Help::show_general_help() {
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-v" << " " << "|" << " " << "--verbose" << '\t' << "Enables verbose output" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "not supported" << " " << "|" << " " << "--hash" << '\t' << "Calculates hashes for rainbow tables" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-f" << " " << "|" << " " << "--file" << '\t' << "Load words from a file" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-o" << " " << "|" << " " << "--output" << '\t' << "Specifies the file to save the generated combinations" << '\n';
@@ -61,9 +63,9 @@ void Help::show_interactive_mode() {
 void Help::show_minimal_character_length(){
   std::cout << "Usage:" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "./kplg -n" << '\n';
+  std::cout << '\t' << "./kplg -n <minimal length>" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "./kplg --min" << '\n';
+  std::cout << '\t' << "./kplg --min <minimal length>" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\n';
   std::cout << "Sets the minimal length of generated combinations" << '\n';
@@ -79,9 +81,9 @@ void Help::show_minimal_character_length(){
 void Help::show_maximal_character_length(){
   std::cout << "Usage:" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "./kplg -x" << '\n';
+  std::cout << '\t' << "./kplg -x <maximal length>" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "./kplg --max" << '\n';
+  std::cout << '\t' << "./kplg --max <maximal length>" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\n';
   std::cout << "Sets the maximal length of generated combinations" << '\n';
@@ -137,9 +139,9 @@ void Help::show_characters(){
 void Help::show_case(){
   std::cout << "Usage:" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "./kplg -c" << '\n';
+  std::cout << '\t' << "./kplg -c <case>" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "./kplg --case" << '\n';
+  std::cout << '\t' << "./kplg --case <case>" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\n';
   std::cout << "Decides, how much are letters switched from upper to lower case (0-n)" << '\n';
@@ -179,6 +181,29 @@ void Help::show_verbose() {
   std::cout << '\t' << "./kplg --verbose" << '\n';
 }
 
+void Help::show_hash() {
+  std::cout << "Usage: " << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "Short form is not supported" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg --hash <algorithm>" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\n';
+  std::cout << "Sets the hash algorithm" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << "Available algorithms:" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "md5" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "sha1" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << '\t' << "sha1-128" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+
+  std::cout << "Example:" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg --hash sha256" << '\n';
+}
 
 void Help::show_input_file(){
   std::cout << "Usage:" << '\n';

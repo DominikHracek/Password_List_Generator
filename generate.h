@@ -1,9 +1,9 @@
 #ifndef GENERATE_H
 #define GENERATE_H
 
-#include <iostream>
-#include <string>
 #include <vector>
+#include <fstream>
+
 class Generate{
     public:
         Generate();
@@ -13,7 +13,8 @@ class Generate{
                     std::vector<std::string> separator,
                     const std::vector<std::vector<std::string>>& twod_combinations,
                     const std::string &output_file_name,
-                    bool verbose);
+                    bool verbose,
+                    bool hash);
 
     std::vector<std::vector<std::string>> casing(const std::vector<std::string>& combinations);
 
@@ -42,6 +43,7 @@ class Generate{
         std::vector<std::string> combinations;
         std::vector<std::string> generated_combinations;
         bool verbose;
+        bool hash;
 
         int total_separators;
         int total_combinations;

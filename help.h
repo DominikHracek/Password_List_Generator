@@ -8,6 +8,7 @@ class Help{
     static void show_characters();
     static void show_case();
     static void show_verbose();
+    static void show_hash();
     static void show_input_file();
     static void show_output_file();
 };

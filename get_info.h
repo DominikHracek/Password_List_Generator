@@ -44,6 +44,7 @@ class Get_Info {
     std::ifstream output_file;
 
     bool verbose;
+    bool hash;
 };
 
 #endif
