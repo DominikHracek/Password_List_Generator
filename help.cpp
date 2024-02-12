@@ -33,10 +33,11 @@ void Help::show_general_help() {
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-c" << " " << "|" << " " << "--case" << '\t' << "Upper/Lowercase settings" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "-v" << " " << "|" << " " << "--verbose" << '\t' << "Enables verbose output" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-f" << " " << "|" << " " << "--file" << '\t' << "Load words from a file" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-o" << " " << "|" << " " << "--output" << '\t' << "Specifies the file to save the generated combinations" << '\n';
-  // Template: std::cout << '\t' << "-" << " " << "|" << " " << "--" << '\t' << "" << '\n';
 }
 
 void Help::show_interactive_mode() {
@@ -143,11 +144,11 @@ void Help::show_case(){
   std::cout << '\n';
   std::cout << "Decides, how much are letters switched from upper to lower case (0-n)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "0 - Leave as it is" << '\n';
+  std::cout << '\t' << "0  - Leave as it is" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "1  - Create all combinations of switching the first letter of every word (word word, word Word, Word word, Word Word)";
+  std::cout << '\t' << "1  - Create all combinations of switching the first letter of every word (word word, word Word, Word word, Word Word)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "2  - Same as 1, but with first, the middle one (both middle ones, if even amount of characters in word) and last)";
+  std::cout << '\t' << "2  - Same as 1, but with first, the middle one (both middle ones, if even amount of characters in word) and last)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "3a - With odd indexed characters (LiKe ThIs)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
@@ -162,6 +163,22 @@ void Help::show_case(){
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "./kplg --case 1" << '\n';
 }
+
+void Help::show_verbose() {
+  std::cout << "Usage:" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg -v" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg --verbose" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\n';
+  std::cout << "Example:" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg -v" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg --verbose" << '\n';
+}
+
 
 void Help::show_input_file(){
   std::cout << "Usage:" << '\n';

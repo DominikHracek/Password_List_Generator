@@ -28,13 +28,15 @@ Get_Info::Get_Info(){
         {""," ","-","_","/","\\","!",";",":","'","\"","|","@","#","$","%","^","&","*",",",".","[","]","{","}","+","=","<",">","?","~","`"}};
     separator = {""," ","-","_","/","\\"};
 
-    letter_case = 0;
+    letter_case = '0';
 
     input_file_name = "";
     words = {};
     patterns_of_words = {};
 
     output_file_name = "generated_passwords.txt";
+
+    verbose;
 }
 
 void Get_Info::get_arguments(const int argc, char *argv[]) {
@@ -85,7 +87,7 @@ void Get_Info::get_arguments(const int argc, char *argv[]) {
             }
         } else if (arg == "-c" || arg == "--case") {
             if (i + 1 < argc && possible_value.find('-') == -1) {
-                letter_case = std::stoi(argv[i + 1]);
+                letter_case = argv[i + 1];
             } else {
                 std::cout << "Error: Missing value for -c/--case argument" << '\n';
                 exit(0);
@@ -104,6 +106,8 @@ void Get_Info::get_arguments(const int argc, char *argv[]) {
                 std::cout << "Error: Missing value for -o/--output argument" << '\n';
                 exit(0);
             }
+        } else if (arg == "-v" || arg == "--verbose") {
+            verbose = true;
         } else {
             std::cout << "Error: Unknown argument " << '\"' << arg << '\"' << '\n';
             exit(1);
@@ -138,9 +142,11 @@ void Get_Info::is_everything_ok() {
                           letter_case,
                           separator,
                           combinations,
-                          output_file_name);
+                          output_file_name,
+                          verbose);
         generate.generate_combinations();
     } else {
+        //TODO make sure, everything is working in this condition
         int whats_wrong;
 
         bool invalid_choice;
@@ -170,7 +176,7 @@ void Get_Info::is_everything_ok() {
                     break;
                 case 3:
                     std::cout << "New case-sensitivity level: ";
-                    std::cin >> letter_case;
+                    std::getline(std::cin, letter_case);
                     break;
                 case 4:
                     do {
@@ -198,6 +204,8 @@ void Get_Info::is_everything_ok() {
                     break;
                 case 5:
                     std::cout << "Files" << '\n';
+                    //TODO implement function to handle this case
+                    break;
                 default:
                     std::cout << "Incorrect number" << '\n';
                     invalid_choice = true;
@@ -234,6 +242,7 @@ void Get_Info::start_ui() {
             std::cout << "Each file's first line starts at index 1 -> index has been set to 1" << '\n';
             separators_line = 1;
         } else if (separators_line > 7) {
+            //TODO check if this is possible even is a separators file is used
             std::cout << "Unsupported separator line index, please check the help page for -r/--char with";
             std::cout << "./kplg -h/--help -r/--char";
         } else {
@@ -241,8 +250,8 @@ void Get_Info::start_ui() {
             std::cout << '\t' << "Character file: " << "internal" << '\n';
             std::cout << '\t' << "Character line: " << separators_line << '\n';
             std::cout << '\t' << "Characters: ";
-            for (const std::string& one_of_separator : separator){
-                std::cout << one_of_separator << " ";
+            for (const std::string& one_of_separators : separator){
+                std::cout << one_of_separators << " ";
             }
             std::cout << '\n';
             std::this_thread::sleep_for(std::chrono::milliseconds(25));
@@ -252,13 +261,17 @@ void Get_Info::start_ui() {
         std::cout << '\t' << "Character file: " << separators_file_name << '\n';
         std::cout << '\t' << "Character line: " << separators_line << '\n';
         std::cout << '\t' << "Characters: ";
-        for (const std::string& one_of_separator : separator){
-          std::cout << one_of_separator << " ";
+        for (const std::string& one_of_separators : separator){
+          std::cout << one_of_separators << " ";
         }
         std::cout << '\n';
         std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
     }
+    std::cout << '\n';
+
+    std::cout << "Verbose mode: " << (verbose ? "Active" : "Inactive") << '\n';
+
     std::cout << '\n';
 
     if (input_file_name.empty()) {

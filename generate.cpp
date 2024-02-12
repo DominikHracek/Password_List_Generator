@@ -3,7 +3,7 @@
 #include <iostream>
 #include <utility>
 #include <vector>
-#include <fstream>
+#include <cryptopp/aes.h>
 
 #include "generate.h"
 
@@ -13,14 +13,16 @@ Generate::Generate() {
 	total_words = 0;
 	combinations = {};
 	generated_combinations = {};
+	verbose = false;
 }
 
 void Generate::get_info(const int minimal_combination_length,
                         const int maximal_combination_length,
-                        const int letter_case,
+                        const std::string letter_case,
                         std::vector<std::string> separator,
                         const std::vector<std::vector<std::string>>& twod_combinations,
-                        const std::string& output_file_name) {
+                        const std::string& output_file_name,
+                        const bool verbose) {
 
 	this->minimal_combination_length = minimal_combination_length;
 	this->maximal_combination_length = maximal_combination_length;
@@ -28,6 +30,92 @@ void Generate::get_info(const int minimal_combination_length,
 	this->separator = std::move(separator);
 	this->twod_combinations = twod_combinations;
 	this->output_file_name = output_file_name;
+	this->verbose = verbose;
+}
+
+std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::string>& combinations) {
+	std::vector<std::vector<std::string>> return_combinations;
+	std::vector<std::string> vector_of_combinations;
+	if (letter_case == "1") {
+		for (const std::string& combination : combinations) {
+			vector_of_combinations.clear();
+			std::string upper_case_combination = combination;
+			if (std::isalpha(upper_case_combination[0])/*TODO check if first character is a letter, if is uppercase it, otherwise uppercase the second character*/) {
+				upper_case_combination[0] = std::toupper(upper_case_combination[0]);
+			} else {
+				upper_case_combination[1] = std::toupper(upper_case_combination[1]);
+			}
+			vector_of_combinations.push_back(combination);
+			vector_of_combinations.push_back(upper_case_combination);
+			return_combinations.push_back(vector_of_combinations);
+		}
+	} else if (letter_case == "2") {
+		for (const std::string& combination : combinations) {
+			vector_of_combinations.clear();
+			if (combination.length() % 2 == 0) {
+				std::string upper_case_combination = combination;
+				upper_case_combination[0] = std::toupper(upper_case_combination[0]);
+				upper_case_combination[upper_case_combination.length()/2-1] = std::toupper(upper_case_combination[upper_case_combination.length()/2-1]);
+				upper_case_combination[upper_case_combination.length()/2] = std::toupper(upper_case_combination[upper_case_combination.length()/2]);
+				upper_case_combination[upper_case_combination.length()-1] = std::toupper(upper_case_combination[upper_case_combination.length()-1]);
+				vector_of_combinations.push_back(combination);
+				vector_of_combinations.push_back(upper_case_combination);
+				return_combinations.push_back(vector_of_combinations);
+			} else {
+				std::string upper_case_combination = combination;
+				upper_case_combination[0] = std::toupper(upper_case_combination[0]);
+				upper_case_combination[upper_case_combination.length()/2] = std::toupper(upper_case_combination[upper_case_combination.length()/2]);
+				upper_case_combination[upper_case_combination.length()-1] = std::toupper(upper_case_combination[upper_case_combination.length()-1]);
+				vector_of_combinations.push_back(combination);
+				vector_of_combinations.push_back(upper_case_combination);
+				return_combinations.push_back(vector_of_combinations);
+			}
+		}
+	} else if (letter_case == "3a") {
+		for (const std::string& combination : combinations) {
+			vector_of_combinations.clear();
+			std::string upper_case_combination = combination;
+			for (int i = 0; i < upper_case_combination.length(); i++) {
+				if (i % 2 == 0) {
+					upper_case_combination[i] = std::toupper(upper_case_combination[i]);
+				}
+			}
+			vector_of_combinations.push_back(combination);
+			vector_of_combinations.push_back(upper_case_combination);
+			return_combinations.push_back(vector_of_combinations);
+		}
+	} else if (letter_case == "3b") {
+		for (const std::string& combination : combinations) {
+			vector_of_combinations.clear();
+			std::string upper_case_combination = combination;
+			for (int i = 0; i < upper_case_combination.length(); i++) {
+				if (i % 2 == 1) {
+					upper_case_combination[i] = std::toupper(upper_case_combination[i]);
+				}
+			}
+			vector_of_combinations.push_back(combination);
+			vector_of_combinations.push_back(upper_case_combination);
+			return_combinations.push_back(vector_of_combinations);
+		}
+	} else if (letter_case == "4") {
+		for (const std::string& combination : combinations) {
+			std::string upper_case_combination;
+			for (int i = 0; i < (1 << combination.length()); i++) {
+				upper_case_combination = combination;
+				for (int j = 0; j < combination.length(); j++) {
+					if ((i >> j) & 1) {
+						upper_case_combination[j] = std::toupper(upper_case_combination[j]);
+					}
+				}
+			}
+			vector_of_combinations.push_back(combination);
+			vector_of_combinations.push_back(upper_case_combination);
+			return_combinations.push_back(vector_of_combinations);
+		}
+	} else {
+			return_combinations.push_back(combinations);
+	}
+	return return_combinations;
 }
 
 void Generate::generate_combinations() {
@@ -40,34 +128,59 @@ void Generate::generate_combinations() {
 	}
 	std::cout << "Total generated combinations: " << total_combinations << '\n';
 	combinations = convert_2d_vector_to_normal_vector(twod_combinations);
-	std::vector<std::string> words_without_repetition = combinations;
+	twod_combinations.clear();
+	combinations = convert_2d_vector_to_normal_vector(casing(combinations));
+	for (const std::string& combination : combinations) {
+		std::cout << "Combination: " << combination << '\n';
+	}
 
 	generated_combinations.clear();
 
-	int previous_length = 0;
-	for (int i = 1; i <= combinations.size(); i++){
-		std::vector<std::string> temporary_combinations = generate_combinations_with_repetition(i, combinations, separator, "", 0);
-		for (const std::string& combination : temporary_combinations){
-			for (const std::string &sep : separator) {
-				std::string new_combination = combination + sep;
-				generated_combinations.push_back(new_combination);
-				std::cout << '\r' << new_combination << std::flush;
-				if (new_combination.length() < previous_length) {
-					const int difference = previous_length - new_combination.length();
-					std::cout << std::string(difference, ' ') << std::flush;
+	if (verbose) {
+		if (hash) {
+			std::ofstream output_file(output_file_name);
+			std::vector<std::string> correct_length_combinations;
+			correct_length_combinations.clear();
+			for (const std::string &generated_combination : generated_combinations){
+				if (generated_combination.length() >= minimal_combination_length && generated_combination.length() <= maximal_combination_length) {
+					correct_length_combinations.push_back(generated_combination);
+					
 				}
-				previous_length = new_combination.length();
+				output_file << generated_combination << '\n';
+			}
+			casing(correct_length_combinations);
+			output_file.close();
+			std::cout << '\n' << "Combinations written to file: " << output_file_name << '\n';
+			exit(0);
+		} else {
+			std::ofstream output_file(output_file_name);
+			std::vector<std::string> correct_length_combinations;
+			correct_length_combinations.clear();
+			for (const std::string &generated_combination : generated_combinations){
+				if (generated_combination.length() >= minimal_combination_length && generated_combination.length() <= maximal_combination_length) {
+					correct_length_combinations.push_back(generated_combination);
+				}
+				output_file << generated_combination << '\n';
+			}
+			casing(correct_length_combinations);
+			output_file.close();
+			std::cout << '\n' << "Combinations written to file: " << output_file_name << '\n';
+			exit(0);
+		}
+	} else {
+		std::ofstream output_file(output_file_name);
+		std::vector<std::string> correct_length_combinations;
+		correct_length_combinations.clear();
+		for (const std::string &generated_combination : generated_combinations){
+			if (generated_combination.length() >= minimal_combination_length && generated_combination.length() <= maximal_combination_length) {
+				correct_length_combinations.push_back(generated_combination);
 			}
 		}
+		casing(correct_length_combinations);
+		output_file.close();
+		std::cout << '\n' << "Combinations written to file: " << output_file_name << '\n';
+		exit(0);
 	}
-
-	std::ofstream output_file(output_file_name);
-	for (const std::string &generated_combination : generated_combinations){
-		output_file << generated_combination << '\n';
-	}
-	output_file.close();
-	std::cout << "Combinations written to file: " << output_file_name << '\n';
-	exit(0);
 }
 
 std::vector<std::string> Generate::convert_2d_vector_to_normal_vector(const std::vector<std::vector<std::string>>& twod_vector) {
@@ -99,6 +212,8 @@ std::vector<std::string> Generate::generate_combinations_with_repetition(const i
 	for (const std::string& word : words){
 		for (const std::string& sep : separator){
 			std::vector<std::string> new_words = generate_combinations_with_repetition(combination_length, words, separator, combination + sep + word, current + 1);
+			Generate generate;
+			generate.casing(new_words);
 			for (const std::string& new_word : new_words){
 				generated_combinations.push_back(new_word);
 			}

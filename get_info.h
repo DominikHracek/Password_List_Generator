@@ -29,7 +29,7 @@ class Get_Info {
     std::vector<std::vector<std::string>> separators;
     std::vector<std::string> separator;
 
-    int letter_case;
+    std::string letter_case;
 
     std::string input_file_name;
     std::ifstream input_file;
@@ -42,6 +42,8 @@ class Get_Info {
 
     std::string output_file_name;
     std::ifstream output_file;
+
+    bool verbose;
 };
 
 #endif
