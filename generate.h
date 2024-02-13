@@ -25,12 +25,6 @@ class Generate{
                                                       const std::string& combination,
                                                       int current);
 
-    static std::vector<std::string> generate_combinations_with_repetition_double_vector(int combination_length,
-                                                      const std::vector<std::vector<std::string>>& words,
-                                                      const std::vector<std::string>& separator,
-                                                      const std::string& combination,
-                                                      int current);
-
     static std::vector<std::string> convert_2d_vector_to_normal_vector(const std::vector<std::vector<std::string>>& twod_vector);
 
     private:
