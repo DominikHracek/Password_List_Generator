@@ -12,6 +12,15 @@
 #include "generate.h"
 #include "get_info.h"
 
+/**
+ * Constructor for the Get_Info class.
+ *
+ * @param None
+ *
+ * @return None
+ *
+ * @throws None
+ */
 Get_Info::Get_Info(){
     minimal_combination_length = 0;
     maximal_combination_length = 12;
@@ -37,9 +46,16 @@ Get_Info::Get_Info(){
     output_file_name = "generated_passwords.txt";
 
     verbose = false;
-    hash = false;
 }
 
+/**
+ * Get the arguments from the command line and parse them.
+ *
+ * @param argc the number of command line arguments
+ * @param argv an array of C-strings containing the command line arguments
+ *
+ * @throws None
+ */
 void Get_Info::get_arguments(const int argc, char *argv[]) {
     for (int i = 1; i < argc; i += 2) {
         std::string arg = argv[i];
@@ -116,6 +132,15 @@ void Get_Info::get_arguments(const int argc, char *argv[]) {
     }
 }
 
+/**
+ * Trims leading and trailing whitespace from the input string.
+ *
+ * @param string the input string to be trimmed
+ *
+ * @return the trimmed string
+ *
+ * @throws N/A
+ */
 std::string trim(const std::string& string) {
   const auto *whitespace = " \t\n\r\f\v";
   const size_t begin = string.find_first_not_of(whitespace);
@@ -126,6 +151,13 @@ std::string trim(const std::string& string) {
   return string.substr(begin, end - begin + 1);
 }
 
+/**
+ * Checks if everything is ok and prompts for user input if not.
+ *
+ * @return void
+ *
+ * @throws N/A
+ */
 void Get_Info::is_everything_ok() {
     std::cout << "Is everything ok? [Y/n]: ";
     std::string output_check;
@@ -144,8 +176,7 @@ void Get_Info::is_everything_ok() {
                           separator,
                           combinations,
                           output_file_name,
-                          verbose,
-                          hash);
+                          verbose);
         generate.generate_combinations();
     } else {
         //TODO make sure, everything is working in this condition
@@ -219,6 +250,11 @@ void Get_Info::is_everything_ok() {
     start_ui();
 }
 
+/**
+ * Starts the user interface and displays information about the password list generator,
+ * including combination length, case-sensitivity level, character set, verbose mode,
+ * input and output file names, and generated passwords. It also handles possible errors.
+ */
 void Get_Info::start_ui() {
     #ifdef _WIN64
         std::system("cls");
@@ -302,6 +338,14 @@ void Get_Info::start_ui() {
     std::cout << '\n' << '\n';
 }
 
+/**
+ * Retrieves separators from a specified file at a given line number, and populates the separators container.
+ *
+ * @param separators_file_name the name of the file containing the separators
+ * @param line the line number from which to retrieve the separators
+ *
+ * @throws N/A
+ */
 void Get_Info::get_separators(const std::string& separators_file_name,const int line) {
     separators.clear();
     separators_file.open(separators_file_name);
@@ -325,12 +369,31 @@ void Get_Info::get_separators(const std::string& separators_file_name,const int 
     separators_file.close();
 }
 
+/**
+ * Retrieves the separator at the specified index from the list of separators.
+ *
+ * @param line the index of the separator to retrieve
+ *
+ * @return void
+ *
+ * @throws None
+ */
 void Get_Info::get_separators(const int line) {
     if (line >= 1 && line <= separators.size()) {
         separator = separators[line - 1];
     }
 }
 
+/**
+ * Reads the content of the input file and stores each line as a word in the
+ * 'words' vector.
+ *
+ * @param input_file_name the name of the input file to be read
+ *
+ * @return void
+ *
+ * @throws N/A
+ */
 void Get_Info::get_words(const std::string& input_file_name) {
     words.clear();
     input_file.open(input_file_name);
@@ -341,6 +404,15 @@ void Get_Info::get_words(const std::string& input_file_name) {
     input_file.close();
 }
 
+/**
+ * A method to get words from the user input, lowercase them, and add them to a list.
+ *
+ * @param None
+ *
+ * @return None
+ *
+ * @throws None
+ */
 void Get_Info::get_words() {
     std::cout << "Enter words to combine (separate with commas(,)).\nEverything will be lowercased: ";
     std::string words_to_add;
@@ -358,6 +430,15 @@ void Get_Info::get_words() {
     std::cin.clear();
 }
 
+/**
+ * Asks for patterns and combinations of words from input file or standard input.
+ *
+ * @param None
+ *
+ * @return None
+ *
+ * @throws None
+ */
 void Get_Info::ask_for_patterns() {
     if (input_file_name.empty()) {
         get_words();

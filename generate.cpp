@@ -5,24 +5,38 @@
 
 #include "generate.h"
 
+/**
+ * Constructor for the Generate class.
+ */
 Generate::Generate() {
+	minimal_combination_length = 1;
+	maximal_combination_length = 12;
 	total_combinations = 0;
 	total_separators = 0;
 	total_words = 0;
 	combinations = {};
 	generated_combinations = {};
 	verbose = false;
-	hash = false;
 }
 
+/**
+ * Sets the values of the member variables based on the input parameters.
+ *
+ * @param minimal_combination_length the minimal length of combinations to generate
+ * @param maximal_combination_length the maximal length of combinations to generate
+ * @param letter_case the letter case to use for generating combinations
+ * @param separator the separator to use for separating combinations
+ * @param twod_combinations the two-dimensional vector of combinations
+ * @param output_file_name the name of the output file
+ * @param verbose whether to output verbose information
+ */
 void Generate::get_info(const int minimal_combination_length,
                         const int maximal_combination_length,
                         const std::string letter_case,
                         std::vector<std::string> separator,
                         const std::vector<std::vector<std::string>>& twod_combinations,
                         const std::string& output_file_name,
-                        const bool verbose,
-                        const bool hash) {
+                        const bool verbose) {
 
 	this->minimal_combination_length = minimal_combination_length;
 	this->maximal_combination_length = maximal_combination_length;
@@ -31,9 +45,17 @@ void Generate::get_info(const int minimal_combination_length,
 	this->twod_combinations = twod_combinations;
 	this->output_file_name = output_file_name;
 	this->verbose = verbose;
-	this->hash = hash;
 }
 
+/**
+ * Generates combinations with different casings based on the specified letter_case.
+ *
+ * @param combinations the vector of strings containing combinations to be cased
+ *
+ * @return a vector of vectors of strings containing the cased combinations
+ *
+ * @throws None
+ */
 std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::string>& combinations) {
 	std::vector<std::vector<std::string>> return_combinations;
 	std::vector<std::string> vector_of_combinations;
@@ -119,6 +141,15 @@ std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::st
 	return return_combinations;
 }
 
+/**
+ * Generates combinations based on the twod_combinations and separator.
+ *
+ * @param None
+ *
+ * @return None
+ *
+ * @throws None
+ */
 void Generate::generate_combinations() {
 	for (const auto& combination : twod_combinations){
 		total_words += combination.size();
@@ -135,41 +166,45 @@ void Generate::generate_combinations() {
 		std::cout << "Combination: " << combination << '\n';
 	}
 
-	generated_combinations.clear();
-
-	if (hash) {
-		if (verbose) {
-			std::ofstream output_file(output_file_name);
-			std::vector<std::string> correct_length_combinations;
-			correct_length_combinations.clear();
-			for (const std::string &generated_combination : generated_combinations){
-				if (generated_combination.length() >= minimal_combination_length && generated_combination.length() <= maximal_combination_length) {
-					correct_length_combinations.push_back(generated_combination);
-
-				}
-				output_file << generated_combination << '\n';
+	generate_combinations_with_repetition(minimal_combination_length, combinations, separator, "", 0);
+	if (verbose) {
+		std::ofstream output_file(output_file_name);
+		std::vector<std::string> correct_length_combinations;
+		for (const std::string &generated_combination : generated_combinations){
+			if (generated_combination.length() >= minimal_combination_length && generated_combination.length() <= maximal_combination_length) {
+				correct_length_combinations.push_back(generated_combination);
 			}
-			casing(correct_length_combinations);
-			output_file.close();
-			std::cout << '\n' << "Combinations written to file: " << output_file_name << '\n';
-			exit(0);
-		} else {
-			std::ofstream output_file(output_file_name);
-			std::vector<std::string> correct_length_combinations;
-			correct_length_combinations.clear();
-			for (const std::string &generated_combination : generated_combinations){
-				if (generated_combination.length() >= minimal_combination_length && generated_combination.length() <= maximal_combination_length) {
-					correct_length_combinations.push_back(generated_combination);
-				}
-			}
-			casing(correct_length_combinations);
-			output_file.close();
-			std::cout << '\n' << "Combinations written to file: " << output_file_name << '\n';
-			exit(0);
+			output_file << generated_combination << '\n';
 		}
+		casing(correct_length_combinations);
+		output_file.close();
+		std::cout << '\n' << "Combinations written to file: " << output_file_name << '\n';
+		exit(0);
+	} else {
+		std::ofstream output_file(output_file_name);
+		std::vector<std::string> correct_length_combinations;
+		correct_length_combinations.clear();
+		for (const std::string &generated_combination : generated_combinations){
+			if (generated_combination.length() >= minimal_combination_length && generated_combination.length() <= maximal_combination_length) {
+				correct_length_combinations.push_back(generated_combination);
+			}
+		}
+		casing(correct_length_combinations);
+		output_file.close();
+		std::cout << '\n' << "Combinations written to file: " << output_file_name << '\n';
+		exit(0);
 	}
 }
 
+/**
+ * Converts a 2D vector of strings to a normal vector of strings.
+ *
+ * @param twod_vector The 2D vector to be converted
+ *
+ * @return The normal vector of strings
+ *
+ * @throws None
+ */
 std::vector<std::string> Generate::convert_2d_vector_to_normal_vector(const std::vector<std::vector<std::string>>& twod_vector) {
 	std::vector<std::string> converted_vector;
 	for (auto & vector_in_2d_vector : twod_vector){
@@ -180,6 +215,19 @@ std::vector<std::string> Generate::convert_2d_vector_to_normal_vector(const std:
 	return converted_vector;
 }
 
+/**
+ * Generates combinations with repetition.
+ *
+ * @param combination_length the length of the combination
+ * @param words the list of words to combine
+ * @param separator the list of separators to use between words
+ * @param combination the current combination being generated
+ * @param current the current position in the combination
+ *
+ * @return a vector of generated combinations
+ *
+ * @throws No specific error is mentioned
+ */
 std::vector<std::string> Generate::generate_combinations_with_repetition(const int combination_length,
                                                      const std::vector<std::string>& words,
                                                      const std::vector<std::string>& separator,
