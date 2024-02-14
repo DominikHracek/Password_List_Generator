@@ -64,11 +64,7 @@ void Get_Info::get_arguments(const int argc, char *argv[]) {
             possible_value = argv[i + 1];
         }
 
-        if (arg == "-i" || arg == "--interactive") {
-            //start_friendly_ui();
-            std::cout << "Starting in interactive mode" << '\n';
-            break;
-        } else if (arg == "-n" || arg == "--min") {
+        if (arg == "-n" || arg == "--min") {
             if (i + 1 < argc && possible_value.find('-') == -1) {
                 minimal_combination_length = std::stoi(argv[i + 1]);
             } else {

@@ -17,10 +17,7 @@ int main(const int argc, char *argv[]) {
       help_page.show_general_help();
       
     } else if (argc == 3){
-      if (strcmp(argv[2], "-i") == 0 || strcmp(argv[2], "--interactive") == 0){
-        help_page.show_interactive_mode();
-      }
-      else if (strcmp(argv[2], "-n") == 0 || strcmp(argv[2], "--min") == 0) {
+      if (strcmp(argv[2], "-n") == 0 || strcmp(argv[2], "--min") == 0) {
         help_page.show_minimal_character_length();
         
       } else if (strcmp(argv[2], "-x") == 0 || strcmp(argv[2], "--max") == 0){

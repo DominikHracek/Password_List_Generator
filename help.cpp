@@ -23,8 +23,6 @@ void Help::show_general_help() {
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-h" << " " << "|" << " " << "--help" << '\t' << "Shows this page" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "-i" << " " << "|" << " " << "--interactive" << '\t' << "Starts interactive mode" << '\n';
-  std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-n" << " " << "|" << " " << "--min" << '\t' << "Minimal number of characters (default: 1)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-x" << " " << "|" << " " << "--max" << '\t' << "Maximal number of characters (default: 12)" << '\n';
@@ -38,24 +36,6 @@ void Help::show_general_help() {
   std::cout << '\t' << "-f" << " " << "|" << " " << "--file" << '\t' << "Load words from a file" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-o" << " " << "|" << " " << "--output" << '\t' << "Specifies the file to save the generated combinations" << '\n';
-}
-
-void Help::show_interactive_mode() {
-  std::cout << "Usage:" << '\n';
-  std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "./kplg -i" << '\n';
-  std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "./kplg --interactive" << '\n';
-  std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\n';
-  std::cout << "Starts interactive mode" << '\n';
-  std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\n';
-  std::cout << "Example:" << '\n';
-  std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "./kplg -i" << '\n';
-  std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "./kplg --interactive" << '\n';
 }
 
 void Help::show_minimal_character_length(){

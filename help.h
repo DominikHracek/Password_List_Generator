@@ -2,7 +2,6 @@ class Help{
   public:
     static void show_general_help();
 
-    static void show_interactive_mode();
     static void show_minimal_character_length();
     static void show_maximal_character_length();
     static void show_characters();
