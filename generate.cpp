@@ -166,30 +166,50 @@ void Generate::generate_combinations() {
 		std::cout << "Combination: " << combination << '\n';
 	}
 
-	generate_combinations_with_repetition(minimal_combination_length, combinations, separator, "", 0);
 	if (verbose) {
-		std::ofstream output_file(output_file_name);
-		std::vector<std::string> correct_length_combinations;
-		for (const std::string &generated_combination : generated_combinations){
-			if (generated_combination.length() >= minimal_combination_length && generated_combination.length() <= maximal_combination_length) {
-				correct_length_combinations.push_back(generated_combination);
+		int previous_length = 0;
+		for (int i = 1; i <= combinations.size(); i++){
+			std::vector<std::string> temporary_combinations = generate_combinations_with_repetition(i, combinations, separator, "", 0);
+			for (const std::string& combination : temporary_combinations){
+				for (const std::string &sep : separator) {
+					std::string new_combination = combination + sep;
+					if (new_combination.length() >= minimal_combination_length && new_combination.length() <= maximal_combination_length) {
+						generated_combinations.push_back(new_combination);
+					}
+					std::cout << '\r' << new_combination << std::flush;
+					if (new_combination.length() < previous_length) {
+						const int difference = previous_length - new_combination.length();
+						std::cout << std::string(difference, ' ') << std::flush;
+					}
+					previous_length = new_combination.length();
+				}
 			}
+		}
+
+		std::ofstream output_file(output_file_name);
+		for (const std::string &generated_combination : generated_combinations){
 			output_file << generated_combination << '\n';
 		}
-		casing(correct_length_combinations);
 		output_file.close();
-		std::cout << '\n' << "Combinations written to file: " << output_file_name << '\n';
+		std::cout << '\n' << '\n' << "Combinations written to file: " << output_file_name << '\n';
 		exit(0);
 	} else {
-		std::ofstream output_file(output_file_name);
-		std::vector<std::string> correct_length_combinations;
-		correct_length_combinations.clear();
-		for (const std::string &generated_combination : generated_combinations){
-			if (generated_combination.length() >= minimal_combination_length && generated_combination.length() <= maximal_combination_length) {
-				correct_length_combinations.push_back(generated_combination);
+		int previous_length = 0;
+		for (int i = 1; i <= combinations.size(); i++){
+			std::vector<std::string> temporary_combinations = generate_combinations_with_repetition(i, combinations, separator, "", 0);
+			for (const std::string& combination : temporary_combinations){
+				for (const std::string &sep : separator) {
+					std::string new_combination = combination + sep;
+					if (new_combination.length() >= minimal_combination_length && new_combination.length() <= maximal_combination_length) {
+						generated_combinations.push_back(new_combination);
+					}
+				}
 			}
 		}
-		casing(correct_length_combinations);
+		std::ofstream output_file(output_file_name);
+		for (const std::string &generated_combination : generated_combinations){
+			output_file << generated_combination << '\n';
+		}
 		output_file.close();
 		std::cout << '\n' << "Combinations written to file: " << output_file_name << '\n';
 		exit(0);
