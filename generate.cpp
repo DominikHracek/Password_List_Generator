@@ -194,7 +194,6 @@ void Generate::generate_combinations() {
 		std::cout << '\n' << '\n' << "Combinations written to file: " << output_file_name << '\n';
 		exit(0);
 	} else {
-		int previous_length = 0;
 		for (int i = 1; i <= combinations.size(); i++){
 			std::vector<std::string> temporary_combinations = generate_combinations_with_repetition(i, combinations, separator, "", 0);
 			for (const std::string& combination : temporary_combinations){

@@ -199,8 +199,13 @@ void Get_Info::is_everything_ok() {
 
             switch (whats_wrong) {
                 case 1:
-                    std::cout << "New minimal length: ";
-                    std::cin >> minimal_combination_length;
+                    std::cout << "New minimal length (blank for exit): ";
+                    std::string temp_minimal_combination_length;
+                    std::getline(std::cin, temp_minimal_combination_length);
+                    if (!temp_minimal_combination_length.empty()) {
+                        std::cin >> minimal_combination_length;
+                        break;
+                    }
                     break;
                 case 2:
                     std::cout << "New maximal length: ";
@@ -244,10 +249,10 @@ void Get_Info::is_everything_ok() {
                     std::cout << "2) Disable" << '\n';
                     break;
                 case 6:
-                    std::cout << "Files" << '\n';
                     std::cout << "1) File with separators" << '\n';
                     std::cout << "2) Input file name (words)" << '\n';
                     std::cout << "3) Output file name (combinations)" << '\n';
+
                     break;
                 case 7:
                     std::cout << "Combinations" << '\n';
