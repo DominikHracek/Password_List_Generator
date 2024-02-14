@@ -1,7 +1,6 @@
 #include <cctype>
 #include <chrono>
 #include <cmath>
-#include <cstring>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
@@ -11,6 +10,8 @@
 
 #include "generate.h"
 #include "get_info.h"
+
+#include "help.h"
 
 /**
  * Constructor for the Get_Info class.
@@ -185,8 +186,10 @@ void Get_Info::is_everything_ok() {
             std::cout << '\t' << "2) Maximal length" << '\n';
             std::cout << '\t' << "3) Case-sensitivity level" << '\n';
             std::cout << '\t' << "4) Character set" << '\n';
-            std::cout << '\t' << "5) Files" << '\n';
-            std::cout << '\t' << "6) Combinations" << '\n';
+            std::cout << '\t' << "5) Verbosity" << '\n';
+            std::cout << '\t' << "6) Files" << '\n';
+            std::cout << '\t' << "7) Combinations" << '\n';
+            std::cout << '\t' << "8) Exit" << '\n';
             std::cout << "What's wrong: ";
             std::cin >> whats_wrong;
             std::cin.clear();
@@ -204,14 +207,17 @@ void Get_Info::is_everything_ok() {
                     std::cin >> maximal_combination_length;
                     break;
                 case 3:
+                    Help::show_case();
+                    std::cout << '\n' << '\n';
                     std::cout << "New case-sensitivity level: ";
-                    std::getline(std::cin, letter_case);
+                    std::cin >> letter_case;
                     break;
                 case 4:
                     do {
                         invalid_choice_inner = false;
                         std::cout << "1) File name" << '\n';
                         std::cout << "2) File line" << '\n';
+                        std::cout << "3) Back" << '\n';
                         int file_checker;
                         std::cin >> file_checker;
                         switch (file_checker) {
@@ -225,6 +231,8 @@ void Get_Info::is_everything_ok() {
                                 std::cin >> separators_line;
                                 get_separators(separators_line);
                                 break;
+                            case 3:
+                                break;
                             default:
                                 invalid_choice_inner = true;
                                 break;
@@ -232,8 +240,20 @@ void Get_Info::is_everything_ok() {
                     } while (invalid_choice_inner);
                     break;
                 case 5:
+                    std::cout << "1) Enable" << '\n';
+                    std::cout << "2) Disable" << '\n';
+                    break;
+                case 6:
                     std::cout << "Files" << '\n';
-                    //TODO implement function to handle this case
+                    std::cout << "1) File with separators" << '\n';
+                    std::cout << "2) Input file name (words)" << '\n';
+                    std::cout << "3) Output file name (combinations)" << '\n';
+                    break;
+                case 7:
+                    std::cout << "Combinations" << '\n';
+                    //TODO make sure, everything is working in this condition
+                    break;
+                case 8:
                     break;
                 default:
                     std::cout << "Incorrect number" << '\n';

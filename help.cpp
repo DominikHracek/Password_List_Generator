@@ -27,9 +27,9 @@ void Help::show_general_help() {
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-x" << " " << "|" << " " << "--max" << '\t' << "Maximal number of characters (default: 12)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "-r" << " " << "|" << " " << "--char" << '\t' << "What characters to use between words" << '\n';
+  std::cout << '\t' << "-c" << " " << "|" << " " << "--case" << '\t' << "Case-sensitivity settings" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "-c" << " " << "|" << " " << "--case" << '\t' << "Upper/Lowercase settings" << '\n';
+  std::cout << '\t' << "-r" << " " << "|" << " " << "--char" << '\t' << "What characters to use between words" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "-v" << " " << "|" << " " << "--verbose" << '\t' << "Enables verbose output" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
