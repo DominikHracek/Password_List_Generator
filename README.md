@@ -1,11 +1,8 @@
 # Password List Generator Repository
 Welcome to the `Password_List_Generator` repository! This project aims to provide an easy-to-use tool that generates passwords, that the victim could use, to make it easier to crack a password based on social engineering. The following information will help you understand how to use.
 ## Table of Contents
-1. **Introduction**
-2. **Installation**
-3. **Usage** - **Command Line Interface (CLI)**
-## Introduction
-The `Password_List_Generator` is designed a command line interface application. It allows users to generate strong passwords with customizable parameters such as length, word separators, character sets. 
+1. **Installation**
+2. **Usage** - **Command Line Interface (CLI)**
 ## Installation
 To install and run the CLI version locally, follow these steps:
 ```bash
