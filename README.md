@@ -1,5 +1,5 @@
 # Password List Generator Repository
-Welcome to the `Password_List_Generator` repository! This project aims to provide an easy-to-use tool that generates passwords, that the victim could use, to make it easier to crack a password based on social engineering. The following information will help you understand how to use and contribute to our project.
+Welcome to the `Password_List_Generator` repository! This project aims to provide an easy-to-use tool that generates passwords, that the victim could use, to make it easier to crack a password based on social engineering. The following information will help you understand how to use.
 ## Table of Contents
 1. **Introduction**
 2. **Installation**
