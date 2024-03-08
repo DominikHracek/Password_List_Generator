@@ -40,11 +40,6 @@ int main(const int argc, char *argv[]) {
         exit(2);
       }
     }
-  } else if (strcmp(argv[1], "-i") == 0 || strcmp(argv[1], "--interactive") == 0) {
-    Get_Info get_info;
-    get_info.get_arguments(argc, argv);
-    std::cout << "This will start interactive mode in the future, WIP" << '\n';
-    //get_info.start_friendly_ui();
   } else {
     Get_Info get_info;
     get_info.get_arguments(argc, argv);

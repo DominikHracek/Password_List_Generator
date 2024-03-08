@@ -1,6 +1,5 @@
 #include <cctype>
 #include <chrono>
-#include <cmath>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
@@ -45,6 +44,8 @@ Get_Info::Get_Info(){
     patterns_of_words = {};
 
     output_file_name = "generated_passwords.txt";
+
+    hash_enabled = "";
 
     verbose = false;
 }
@@ -165,6 +166,10 @@ void Get_Info::is_everything_ok() {
     output_check = trim(output_check);
     std::cin.clear();
 
+    std::string temp_minimal_combination_length;
+    std::string temp_maximal_combination_length;
+    std::string temp_letter_case;
+
     if (output_check == "y" || output_check == "yes" || output_check.empty()) {
         Generate generate;
         generate.get_info(minimal_combination_length,
@@ -173,6 +178,7 @@ void Get_Info::is_everything_ok() {
                           separator,
                           combinations,
                           output_file_name,
+                          hash_enabled,
                           verbose);
         generate.generate_combinations();
     } else {
@@ -188,8 +194,9 @@ void Get_Info::is_everything_ok() {
             std::cout << '\t' << "4) Character set" << '\n';
             std::cout << '\t' << "5) Verbosity" << '\n';
             std::cout << '\t' << "6) Files" << '\n';
-            std::cout << '\t' << "7) Combinations" << '\n';
-            std::cout << '\t' << "8) Exit" << '\n';
+            std::cout << '\t' << "7) Words to combine" << '\n';
+            std::cout << '\t' << "8) Hash function" << '\n';
+            std::cout << '\t' << "9) Back" << '\n';
             std::cout << "What's wrong: ";
             std::cin >> whats_wrong;
             std::cin.clear();
@@ -199,37 +206,48 @@ void Get_Info::is_everything_ok() {
 
             switch (whats_wrong) {
                 case 1:
+                    //TODO blank for exit doesn't work
                     std::cout << "New minimal length (blank for exit): ";
-                    std::string temp_minimal_combination_length;
-                    std::getline(std::cin, temp_minimal_combination_length);
+                    std::cin >> temp_minimal_combination_length;
                     if (!temp_minimal_combination_length.empty()) {
-                        std::cin >> minimal_combination_length;
-                        break;
+                        minimal_combination_length = std::stoi(temp_minimal_combination_length);
                     }
                     break;
                 case 2:
-                    std::cout << "New maximal length: ";
-                    std::cin >> maximal_combination_length;
+                    std::cout << "New maximal length (blank for exit): ";
+                    std::cin >> temp_maximal_combination_length;
+                    if (!temp_maximal_combination_length.empty()) {
+                        maximal_combination_length = std::stoi(temp_maximal_combination_length);
+                    }
                     break;
                 case 3:
                     Help::show_case();
                     std::cout << '\n' << '\n';
                     std::cout << "New case-sensitivity level: ";
-                    std::cin >> letter_case;
+                    std::cin >> temp_letter_case;
+                    if (!temp_letter_case.empty()) {
+                        letter_case = temp_letter_case;
+                    }
                     break;
                 case 4:
                     do {
                         invalid_choice_inner = false;
-                        std::cout << "1) File name" << '\n';
-                        std::cout << "2) File line" << '\n';
-                        std::cout << "3) Back" << '\n';
+                        std::cout << '\t' << "1) Character file" << '\n';
+                        std::cout << '\t' << "2) Character line" << '\n';
+                        std::cout << '\t' << "3) Back" << '\n';
+                        std::cout << "What's wrong: ";
                         int file_checker;
                         std::cin >> file_checker;
                         switch (file_checker) {
                             case 1:
                                 std::cout << "New file name: ";
-                                std::getline(std::cin, separators_file_name);
-                                get_separators(separators_file_name, separators_line);
+                                std::cin >> separators_file_name;
+                                try {
+                                    get_separators(separators_file_name, separators_line);
+                                } catch (FileNotFoundException&) {
+                                    std::cout << "File not found: " << separators_file_name << '\n';
+                                    invalid_choice_inner = true;
+                                }
                                 break;
                             case 2:
                                 std::cout << "New file line: ";
@@ -245,20 +263,59 @@ void Get_Info::is_everything_ok() {
                     } while (invalid_choice_inner);
                     break;
                 case 5:
-                    std::cout << "1) Enable" << '\n';
-                    std::cout << "2) Disable" << '\n';
+                    std::cout << '\t' << "1) Enable" << '\n';
+                    std::cout << '\t' << "2) Disable" << '\n';
+                    std::cout << '\t' << "3) Back" << '\n';
+                    std::cout << "Status: ";
+                    int verbosity;
+                    std::cin >> verbosity;
+                    switch (verbosity) {
+                        case 1:
+                            verbose = true;
+                            break;
+                        case 2:
+                            verbose = false;
+                            break;
+                        case 3:
+                            break;
+                        default:
+                            invalid_choice = true;
+                            break;
+                    }
                     break;
                 case 6:
                     std::cout << "1) File with separators" << '\n';
                     std::cout << "2) Input file name (words)" << '\n';
                     std::cout << "3) Output file name (combinations)" << '\n';
-
+                    std::cout << "4) Back" << '\n';
+                    std::cout << "What's wrong: ";
+                    int file_checker;
+                    std::cin >> file_checker;
+                    switch (file_checker) {
+                        case 1:
+                            //get_separators();
+                            break;
+                        case 2:
+                            //get_words();
+                            break;
+                        case 3:
+                            //get_output_file_name();
+                            break;
+                        case 4:
+                            break;
+                        default:
+                            invalid_choice = true;
+                            break;
+                    }
                     break;
                 case 7:
-                    std::cout << "Combinations" << '\n';
+                    for (int i = 0; i < combinations.size(); i++) {
+                        std::cout << i + 1 << ") " << combinations[i][0] << '\n';
+                    }
                     //TODO make sure, everything is working in this condition
                     break;
                 case 8:
+                    //TODO handle hash functions
                     break;
                 default:
                     std::cout << "Incorrect number" << '\n';
@@ -328,8 +385,38 @@ void Get_Info::start_ui() {
 
     }
     std::cout << '\n';
+    if (hash_enabled == "SHA224") {
+        std::cout << "Hashed using SHA224" << '\n';
+    } else if (hash_enabled == "SHA256") {
+        std::cout << "Hashed using SHA256" << '\n';
+    } else if (hash_enabled == "SHA384") {
+        std::cout << "Hashed using SHA384" << '\n';
+    } else if (hash_enabled == "SHA512") {
+        std::cout << "Hashed using SHA512" << '\n';
+    } else if (hash_enabled == "SHA3-224"){
+        std::cout << "Hashed using SHA3-224" << '\n';
+    } else if (hash_enabled == "SHA3-256"){
+        std::cout << "Hashed using SHA3-256" << '\n';
+    } else if (hash_enabled == "SHA3-384"){
+        std::cout << "Hashed using SHA3-384" << '\n';
+    } else if (hash_enabled == "SHA3-512"){
+        std::cout << "Hashed using SHA3-512" << '\n';
+    } else if (hash_enabled == "MD4"){
+        std::cout << "Hashed using MD4" << '\n';
+    } else if (hash_enabled == "MD5"){
+        std::cout << "Hashed using MD5" << '\n';
+    } else if (hash_enabled == "MD6"){
+        std::cout << "Hashed using MD6" << '\n';
+    } else if (hash_enabled == "PKBDF2") {
+        std::cout << "Hashed using PKBDF2" << '\n';
+    } else {
+        std::cout << "Hashing: " << "Inactive" << '\n';
+    }
+    std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
+    std::cout << '\n';
     std::cout << "Verbose mode: " << (verbose ? "Active" : "Inactive") << '\n';
+    std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
     std::cout << '\n';
 
@@ -359,6 +446,11 @@ void Get_Info::start_ui() {
     std::cout << '\n' << '\n';
 }
 
+bool Get_Info::fileExists(const std::string& fileName) {
+    std::ifstream file(fileName);
+    return file.good();
+}
+
 /**
  * Retrieves separators from a specified file at a given line number, and populates the separators container.
  *
@@ -369,6 +461,11 @@ void Get_Info::start_ui() {
  */
 void Get_Info::get_separators(const std::string& separators_file_name,const int line) {
     separators.clear();
+    //TODO check if file exists and line exists
+    if (!fileExists(separators_file_name)) {
+        separators_file.close();
+        throw FileNotFoundException(separators_file_name);
+    }
     separators_file.open(separators_file_name);
 
     std::string line_being_read;

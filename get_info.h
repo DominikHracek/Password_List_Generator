@@ -12,6 +12,7 @@ class Get_Info {
     void is_everything_ok();
     void start_ui();
     void start_friendly_ui();
+    static bool fileExists(const std::string& fileName);
     void get_separators(const std::string& separators_file_name, int line);
     void get_separators(int line);
     void get_words(const std::string& input_file_name);
@@ -43,7 +44,14 @@ class Get_Info {
     std::string output_file_name;
     std::ifstream output_file;
 
+    std::string hash_enabled;
+
     bool verbose;
+};
+
+class FileNotFoundException : public std::runtime_error {
+  public:
+    explicit FileNotFoundException(const std::string& fileName) : std::runtime_error("File not found: " + fileName) {}
 };
 
 #endif

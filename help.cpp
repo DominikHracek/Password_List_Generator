@@ -144,6 +144,49 @@ void Help::show_case(){
   std::cout << '\t' << "./kplg --case 1" << '\n';
 }
 
+void Help::show_hash() {
+  std::cout << "Usage:" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "Short form not supported (because of collision with '--help')" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg --hash" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\n';
+  std::cout << "Specifies, with what hashing algorithm are all combinations hashed";
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << "Supported algorithms:" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "MD4" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "MD5" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "MD6" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "SHA224" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "SHA256" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "SHA384" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "SHA512" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "SHA3-224" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "SHA3-256" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "SHA3-384" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "SHA3-512" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "PKBDF2" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\n';
+  std::cout << "Example:" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "./kplg --hash SHA256" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+}
+
 void Help::show_verbose() {
   std::cout << "Usage:" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));

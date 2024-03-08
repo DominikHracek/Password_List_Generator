@@ -1,9 +1,9 @@
-#include <algorithm>
 #include <cmath>
 #include <iostream>
 #include <utility>
 
 #include "generate.h"
+#include "hash.h"
 
 /**
  * Constructor for the Generate class.
@@ -16,6 +16,7 @@ Generate::Generate() {
 	total_words = 0;
 	combinations = {};
 	generated_combinations = {};
+	hash_enabled = "";
 	verbose = false;
 }
 
@@ -28,14 +29,16 @@ Generate::Generate() {
  * @param separator the separator to use for separating combinations
  * @param twod_combinations the two-dimensional vector of combinations
  * @param output_file_name the name of the output file
+ * @param hash_enabled the hash function to use
  * @param verbose whether to output verbose information
  */
 void Generate::get_info(const int minimal_combination_length,
                         const int maximal_combination_length,
-                        const std::string letter_case,
+                        const std::string& letter_case,
                         std::vector<std::string> separator,
                         const std::vector<std::vector<std::string>>& twod_combinations,
                         const std::string& output_file_name,
+                        const std::string& hash_enabled,
                         const bool verbose) {
 
 	this->minimal_combination_length = minimal_combination_length;
@@ -44,6 +47,7 @@ void Generate::get_info(const int minimal_combination_length,
 	this->separator = std::move(separator);
 	this->twod_combinations = twod_combinations;
 	this->output_file_name = output_file_name;
+	this->hash_enabled = hash_enabled;
 	this->verbose = verbose;
 }
 
@@ -141,6 +145,8 @@ std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::st
 	return return_combinations;
 }
 
+
+
 /**
  * Generates combinations based on the twod_combinations and separator.
  *
@@ -169,7 +175,8 @@ void Generate::generate_combinations() {
 	if (verbose) {
 		int previous_length = 0;
 		for (int i = 1; i <= combinations.size(); i++){
-			std::vector<std::string> temporary_combinations = generate_combinations_with_repetition(i, combinations, separator, "", 0);
+			std::string empty_string = "";
+			std::vector<std::string> temporary_combinations = generate_combinations_with_repetition(i, combinations, separator, empty_string, 0);
 			for (const std::string& combination : temporary_combinations){
 				for (const std::string &sep : separator) {
 					std::string new_combination = combination + sep;
@@ -195,7 +202,8 @@ void Generate::generate_combinations() {
 		exit(0);
 	} else {
 		for (int i = 1; i <= combinations.size(); i++){
-			std::vector<std::string> temporary_combinations = generate_combinations_with_repetition(i, combinations, separator, "", 0);
+			std::string empty_string = "";
+			std::vector<std::string> temporary_combinations = generate_combinations_with_repetition(i, combinations, separator, empty_string, 0);
 			for (const std::string& combination : temporary_combinations){
 				for (const std::string &sep : separator) {
 					std::string new_combination = combination + sep;
@@ -250,10 +258,17 @@ std::vector<std::string> Generate::convert_2d_vector_to_normal_vector(const std:
 std::vector<std::string> Generate::generate_combinations_with_repetition(const int combination_length,
                                                      const std::vector<std::string>& words,
                                                      const std::vector<std::string>& separator,
-                                                     const std::string& combination,
+                                                     std::string& combination,
                                                      const int current) {
 	std::vector<std::string> generated_combinations;
 	if (current == combination_length){
+		std::cout << "If: " << combination << '\n'; //Generating itself
+		if (!hash_enabled.empty()) {
+			Hash hash;
+			std::string hashed_combination = hash.get_hash(combination, hash_enabled);
+			hashed_combination = ":" + hashed_combination;
+			combination += hashed_combination;
+		}
 		generated_combinations.push_back(combination);
 		return generated_combinations;
 	}
@@ -265,7 +280,8 @@ std::vector<std::string> Generate::generate_combinations_with_repetition(const i
 
 	for (const std::string& word : words){
 		for (const std::string& sep : separator){
-			std::vector<std::string> new_words = generate_combinations_with_repetition(combination_length, words, separator, combination + sep + word, current + 1);
+			std::string new_word = combination + sep + word;
+			std::vector<std::string> new_words = generate_combinations_with_repetition(combination_length, words, separator, new_word, current + 1);
 			Generate generate;
 			generate.casing(new_words);
 			for (const std::string& new_word : new_words){
