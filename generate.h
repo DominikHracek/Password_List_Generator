@@ -24,7 +24,7 @@ class Generate{
 
         void generate_combinations();
 
-        std::vector<std::string> generate_combinations_with_repetition(int combination_length,
+        void generate_combinations_with_repetition(int combination_length,
                                                           const std::vector<std::string>& words,
                                                           const std::vector<std::string>& separator,
                                                           std::string& combination,
