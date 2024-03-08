@@ -23,12 +23,18 @@ int main(const int argc, char *argv[]) {
       } else if (strcmp(argv[2], "-x") == 0 || strcmp(argv[2], "--max") == 0){
         help_page.show_maximal_character_length();
         
-      } else if (strcmp(argv[2], "-r") == 0 || strcmp(argv[2], "--char") == 0){
-        help_page.show_characters();
-        
       } else if (strcmp(argv[2], "-c") == 0 || strcmp(argv[2], "--case") == 0){
         help_page.show_case();
-        
+
+      } else if (strcmp(argv[2], "-r") == 0 || strcmp(argv[2], "--char") == 0) {
+        help_page.show_characters();
+
+      } else if (strcmp(argv[2], "-a") == 0 || strcmp(argv[2], "--hash") == 0){
+        help_page.show_hash();
+
+      } else if (strcmp(argv[2], "-v") == 0 || strcmp(argv[2], "--verbose") == 0){
+        help_page.show_verbose();
+
       } else if (strcmp(argv[2], "-f") == 0 || strcmp(argv[2], "--file") == 0){
         help_page.show_input_file();
 

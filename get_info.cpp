@@ -121,6 +121,13 @@ void Get_Info::get_arguments(const int argc, char *argv[]) {
                 std::cout << "Error: Missing value for -o/--output argument" << '\n';
                 exit(0);
             }
+        } else if (arg == "-a" || arg == "--hash") {
+            if (i + 1 < argc && possible_value.find('-') == -1) {
+                hash_enabled = argv[i + 1];
+            } else {
+                std::cout << "Error: Missing value for -a/--hash argument" << '\n';
+                exit(0);
+            }
         } else if (arg == "-v" || arg == "--verbose") {
             verbose = true;
         } else {
@@ -385,31 +392,35 @@ void Get_Info::start_ui() {
 
     }
     std::cout << '\n';
-    if (hash_enabled == "SHA224") {
-        std::cout << "Hashed using SHA224" << '\n';
-    } else if (hash_enabled == "SHA256") {
-        std::cout << "Hashed using SHA256" << '\n';
-    } else if (hash_enabled == "SHA384") {
-        std::cout << "Hashed using SHA384" << '\n';
-    } else if (hash_enabled == "SHA512") {
-        std::cout << "Hashed using SHA512" << '\n';
-    } else if (hash_enabled == "SHA3-224"){
-        std::cout << "Hashed using SHA3-224" << '\n';
-    } else if (hash_enabled == "SHA3-256"){
-        std::cout << "Hashed using SHA3-256" << '\n';
-    } else if (hash_enabled == "SHA3-384"){
-        std::cout << "Hashed using SHA3-384" << '\n';
-    } else if (hash_enabled == "SHA3-512"){
-        std::cout << "Hashed using SHA3-512" << '\n';
-    } else if (hash_enabled == "MD4"){
-        std::cout << "Hashed using MD4" << '\n';
+    for (char &character : hash_enabled) {
+        character = std::tolower(character);
+    }
+    if (hash_enabled == "MD4"){
+    std::cout << "Hashed using MD4" << '\n';
     } else if (hash_enabled == "MD5"){
         std::cout << "Hashed using MD5" << '\n';
     } else if (hash_enabled == "MD6"){
         std::cout << "Hashed using MD6" << '\n';
+    } else if (hash_enabled == "sha224") {
+        std::cout << "Hashed using SHA224" << '\n';
+    } else if (hash_enabled == "sha256") {
+        std::cout << "Hashed using SHA256" << '\n';
+    } else if (hash_enabled == "sha384") {
+        std::cout << "Hashed using SHA384" << '\n';
+    } else if (hash_enabled == "sha512") {
+        std::cout << "Hashed using SHA512" << '\n';
+    } else if (hash_enabled == "sha3_224"){
+        std::cout << "Hashed using SHA3_224" << '\n';
+    } else if (hash_enabled == "sha3_256"){
+        std::cout << "Hashed using SHA3_256" << '\n';
+    } else if (hash_enabled == "sha3_384"){
+        std::cout << "Hashed using SHA3_384" << '\n';
+    } else if (hash_enabled == "sha3_512"){
+        std::cout << "Hashed using SHA3_512" << '\n';
     } else if (hash_enabled == "PKBDF2") {
         std::cout << "Hashed using PKBDF2" << '\n';
     } else {
+        std::cout << hash_enabled << '\n';
         std::cout << "Hashing: " << "Inactive" << '\n';
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(25));

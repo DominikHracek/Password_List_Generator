@@ -3,6 +3,7 @@
 #include <utility>
 
 #include "generate.h"
+
 #include "hash.h"
 
 /**
@@ -172,55 +173,17 @@ void Generate::generate_combinations() {
 		std::cout << "Combination: " << combination << '\n';
 	}
 
-	if (verbose) {
-		int previous_length = 0;
-		for (int i = 1; i <= combinations.size(); i++){
-			std::string empty_string = "";
-			std::vector<std::string> temporary_combinations = generate_combinations_with_repetition(i, combinations, separator, empty_string, 0);
-			for (const std::string& combination : temporary_combinations){
-				for (const std::string &sep : separator) {
-					std::string new_combination = combination + sep;
-					if (new_combination.length() >= minimal_combination_length && new_combination.length() <= maximal_combination_length) {
-						generated_combinations.push_back(new_combination);
-					}
-					std::cout << '\r' << new_combination << std::flush;
-					if (new_combination.length() < previous_length) {
-						const int difference = previous_length - new_combination.length();
-						std::cout << std::string(difference, ' ') << std::flush;
-					}
-					previous_length = new_combination.length();
-				}
-			}
-		}
-
-		std::ofstream output_file(output_file_name);
-		for (const std::string &generated_combination : generated_combinations){
-			output_file << generated_combination << '\n';
-		}
-		output_file.close();
-		std::cout << '\n' << '\n' << "Combinations written to file: " << output_file_name << '\n';
-		exit(0);
-	} else {
-		for (int i = 1; i <= combinations.size(); i++){
-			std::string empty_string = "";
-			std::vector<std::string> temporary_combinations = generate_combinations_with_repetition(i, combinations, separator, empty_string, 0);
-			for (const std::string& combination : temporary_combinations){
-				for (const std::string &sep : separator) {
-					std::string new_combination = combination + sep;
-					if (new_combination.length() >= minimal_combination_length && new_combination.length() <= maximal_combination_length) {
-						generated_combinations.push_back(new_combination);
-					}
-				}
-			}
-		}
-		std::ofstream output_file(output_file_name);
-		for (const std::string &generated_combination : generated_combinations){
-			output_file << generated_combination << '\n';
-		}
-		output_file.close();
-		std::cout << '\n' << "Combinations written to file: " << output_file_name << '\n';
-		exit(0);
+	for (int i = 1; i <= combinations.size(); i++){
+		std::string empty_string;
+		std::vector<std::string> temporary_combinations = generate_combinations_with_repetition(
+														i,
+														combinations,
+														separator,
+														empty_string,
+														0);
 	}
+	std::cout << '\n' << "Combinations written to file:" << output_file_name << '\n';
+	exit(0);
 }
 
 /**
@@ -255,6 +218,7 @@ std::vector<std::string> Generate::convert_2d_vector_to_normal_vector(const std:
  *
  * @throws No specific error is mentioned
  */
+//TODO change to void
 std::vector<std::string> Generate::generate_combinations_with_repetition(const int combination_length,
                                                      const std::vector<std::string>& words,
                                                      const std::vector<std::string>& separator,
@@ -262,15 +226,52 @@ std::vector<std::string> Generate::generate_combinations_with_repetition(const i
                                                      const int current) {
 	std::vector<std::string> generated_combinations;
 	if (current == combination_length){
-		std::cout << "If: " << combination << '\n'; //Generating itself
-		if (!hash_enabled.empty()) {
-			Hash hash;
-			std::string hashed_combination = hash.get_hash(combination, hash_enabled);
-			hashed_combination = ":" + hashed_combination;
-			combination += hashed_combination;
+		if (verbose) {
+			int previous_length = 0;
+
+			std::ofstream output_file(output_file_name);
+			for (const std::string &sep : separator) {
+				std::cout << "Sep: " << sep << '\n';
+				combination += sep;
+				if (combination.length() >= minimal_combination_length && combination.length() <= maximal_combination_length) {
+					if (!hash_enabled.empty()) {
+						Hash hash;
+						hash.get_parameters(combination, hash_enabled);
+						std::string hashed_combination = hash.get_hash(combination, hash_enabled);
+						hashed_combination = ":" + hashed_combination;
+						combination += hashed_combination;
+					}
+					std::cout << '\r' << combination << std::flush;
+					if (combination.length() < previous_length) {
+						const int difference = previous_length - combination.length();
+						std::cout << std::string(difference, ' ') << std::flush;
+					}
+					previous_length = combination.length();
+					//output_file << combination << '\n';
+					std::cout << "If: " << combination << '\n'; //Generating itself
+					generated_combinations.push_back(combination);
+				}
+			}
+			output_file.close();
+		} else {
+			std::ofstream output_file(output_file_name);
+			std::string previous_combination = combination;
+			for (const std::string &sep : separator) {
+				combination = previous_combination;
+				combination += sep;
+				if (combination.length() >= minimal_combination_length && combination.length() <= maximal_combination_length) {
+					if (!hash_enabled.empty()) {
+						Hash hash;
+						hash.get_parameters(combination, hash_enabled);
+						std::string hashed_combination = hash.get_hash(combination, hash_enabled);
+						hashed_combination = ":" + hashed_combination;
+						combination += hashed_combination;
+					}
+					output_file << combination << '\n';
+					std::cout << "If: " << combination << '\n'; //Generating itself
+				}
+			}
 		}
-		generated_combinations.push_back(combination);
-		return generated_combinations;
 	}
 
 	for (const std::string& word : words){
@@ -284,10 +285,11 @@ std::vector<std::string> Generate::generate_combinations_with_repetition(const i
 			std::vector<std::string> new_words = generate_combinations_with_repetition(combination_length, words, separator, new_word, current + 1);
 			Generate generate;
 			generate.casing(new_words);
-			for (const std::string& new_word : new_words){
-				generated_combinations.push_back(new_word);
+			for (const std::string& newword : new_words){
+				generated_combinations.push_back(newword);
 			}
 		}
 	}
+	std::cout << "Final return" << '\n';
 	return generated_combinations;
 }
