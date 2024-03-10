@@ -8,8 +8,6 @@ void Help::show_general_help() {
   std::cout << "Thanks for using Khakis's Password List Generator" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\n';
-  std::cout << "Usage ./kplg [OPTIONS] -w" << '\n';
-  std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << "Usage ./kplg --help [OPTION]" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << "DO NOT USE -w/--words AND -f/--file AT THE SAME TIME," << '\n';
@@ -164,6 +162,10 @@ void Help::show_hash() {
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "MD5" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "NTLM" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
+  std::cout << '\t' << "SHA1_160" << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "SHA224" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "SHA256" << '\n';
@@ -179,8 +181,6 @@ void Help::show_hash() {
   std::cout << '\t' << "SHA3_384" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "SHA3_512" << '\n';
-  std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "PKBDF2" /*TODO*/ << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\n';
   std::cout << "Example:" << '\n';

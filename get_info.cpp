@@ -173,10 +173,6 @@ void Get_Info::is_everything_ok() {
     output_check = trim(output_check);
     std::cin.clear();
 
-    std::string temp_minimal_combination_length;
-    std::string temp_maximal_combination_length;
-    std::string temp_letter_case;
-
     if (output_check == "y" || output_check == "yes" || output_check.empty()) {
         Generate generate;
         generate.get_info(minimal_combination_length,
@@ -198,7 +194,7 @@ void Get_Info::is_everything_ok() {
             std::cout << '\t' << "1) Minimal length" << '\n';
             std::cout << '\t' << "2) Maximal length" << '\n';
             std::cout << '\t' << "3) Case-sensitivity level" << '\n';
-            std::cout << '\t' << "4) Character set" << '\n';
+            std::cout << '\t' << "4) Separator set" << '\n';
             std::cout << '\t' << "5) Verbosity" << '\n';
             std::cout << '\t' << "6) Files" << '\n';
             std::cout << '\t' << "7) Words to combine" << '\n';
@@ -213,42 +209,50 @@ void Get_Info::is_everything_ok() {
 
             switch (whats_wrong) {
                 case 1:
-                    //TODO blank for exit doesn't work
-                    std::cout << "New minimal length (blank for exit): ";
-                    std::cin >> temp_minimal_combination_length;
-                    if (!temp_minimal_combination_length.empty()) {
-                        minimal_combination_length = std::stoi(temp_minimal_combination_length);
-                    }
+                    std::cout << "New minimal length: ";
+                    std::cin >> minimal_combination_length;
                     break;
                 case 2:
-                    std::cout << "New maximal length (blank for exit): ";
-                    std::cin >> temp_maximal_combination_length;
-                    if (!temp_maximal_combination_length.empty()) {
-                        maximal_combination_length = std::stoi(temp_maximal_combination_length);
-                    }
+                    std::cout << "New maximal length: ";
+                    std::cin >> maximal_combination_length;
                     break;
                 case 3:
                     Help::show_case();
                     std::cout << '\n' << '\n';
                     std::cout << "New case-sensitivity level: ";
-                    std::cin >> temp_letter_case;
-                    if (!temp_letter_case.empty()) {
-                        letter_case = temp_letter_case;
+                    std::cin >> letter_case;
+                    if (!letter_case.empty()) {
+                        std::vector<std::string> casing_combinations = Generate::convert_2d_vector_to_normal_vector(combinations);
+                        Generate generate;
+                        combinations.clear();
+                        generate.get_info(minimal_combination_length,
+                                          maximal_combination_length,
+                                          letter_case,
+                                          separator,
+                                          combinations,
+                                          output_file_name,
+                                          hash_enabled,
+                                          verbose);
+                        combinations = generate.casing(casing_combinations);
                     }
                     break;
                 case 4:
                     do {
                         invalid_choice_inner = false;
-                        std::cout << '\t' << "1) Character file" << '\n';
-                        std::cout << '\t' << "2) Character line" << '\n';
+                        std::cout << '\t' << "1) Separator file" << '\n';
+                        std::cout << '\t' << "2) Separator line" << '\n';
                         std::cout << '\t' << "3) Back" << '\n';
                         std::cout << "What's wrong: ";
                         int file_checker;
                         std::cin >> file_checker;
                         switch (file_checker) {
                             case 1:
-                                std::cout << "New file name: ";
+                                std::cout << "New file name (type 'internal' for internal separators): ";
                                 std::cin >> separators_file_name;
+                                if (separators_file_name == "internal") {
+                                    separators_file_name = "";
+                                    break;
+                                }
                                 try {
                                     get_separators(separators_file_name, separators_line);
                                 } catch (FileNotFoundException&) {
@@ -324,6 +328,8 @@ void Get_Info::is_everything_ok() {
                 case 8:
                     //TODO handle hash functions
                     break;
+                case 9:
+                    break;
                 default:
                     std::cout << "Incorrect number" << '\n';
                     invalid_choice = true;
@@ -331,6 +337,7 @@ void Get_Info::is_everything_ok() {
             }
         } while (invalid_choice);
     }
+    std::cin.clear();
     std::cin.ignore();
     start_ui();
 }
@@ -341,11 +348,11 @@ void Get_Info::is_everything_ok() {
  * input and output file names, and generated passwords. It also handles possible errors.
  */
 void Get_Info::start_ui() {
-    #ifdef _WIN64
-        std::system("cls");
-    #else
-        std::system("clear");
-    #endif
+#ifdef _WIN64
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
 
     std::cout << ">>>>>>>>>>>>>>>>>>>>>Khakis's Password List Generator<<<<<<<<<<<<<<<<<<<<<" << '\n';
     std::cout << '\n';
@@ -369,10 +376,10 @@ void Get_Info::start_ui() {
             std::cout << "Unsupported separator line index, please check the help page for -r/--char with";
             std::cout << "./kplg -h/--help -r/--char";
         } else {
-            std::cout << "Character set:" << '\n';
-            std::cout << '\t' << "Character file: " << "internal" << '\n';
-            std::cout << '\t' << "Character line: " << separators_line << '\n';
-            std::cout << '\t' << "Characters: ";
+            std::cout << "Separator set:" << '\n';
+            std::cout << '\t' << "Separator file: " << "internal" << '\n';
+            std::cout << '\t' << "Separator line: " << separators_line << '\n';
+            std::cout << '\t' << "Separators: ";
             for (const std::string& one_of_separators : separator){
                 std::cout << one_of_separators << " ";
             }
@@ -380,12 +387,12 @@ void Get_Info::start_ui() {
             std::this_thread::sleep_for(std::chrono::milliseconds(25));
         }
     } else {
-        std::cout << "Character set:" << '\n';
-        std::cout << '\t' << "Character file: " << separators_file_name << '\n';
-        std::cout << '\t' << "Character line: " << separators_line << '\n';
-        std::cout << '\t' << "Characters: ";
+        std::cout << "Separator set:" << '\n';
+        std::cout << '\t' << "Separator file: " << separators_file_name << '\n';
+        std::cout << '\t' << "Separator line: " << separators_line << '\n';
+        std::cout << '\t' << "Separators: ";
         for (const std::string& one_of_separators : separator){
-          std::cout << one_of_separators << " ";
+            std::cout << one_of_separators << " ";
         }
         std::cout << '\n';
         std::this_thread::sleep_for(std::chrono::milliseconds(25));
@@ -395,32 +402,33 @@ void Get_Info::start_ui() {
     for (char &character : hash_enabled) {
         character = std::tolower(character);
     }
-    if (hash_enabled == "MD4"){
-    std::cout << "Hashed using MD4" << '\n';
-    } else if (hash_enabled == "MD5"){
-        std::cout << "Hashed using MD5" << '\n';
-    } else if (hash_enabled == "MD6"){
-        std::cout << "Hashed using MD6" << '\n';
+    if (hash_enabled == "md2"){
+        std::cout << "Hashing using MD2" << '\n';
+    } else if (hash_enabled == "md4"){
+        std::cout << "Hashing using MD4" << '\n';
+    } else if (hash_enabled == "md5") {
+        std::cout << "Hashing using MD5" << '\n';
+    } else if (hash_enabled == "ntlm") {
+        std::cout << "Hashing using NTLM" << '\n';
+    } else if (hash_enabled == "sha1_160") {
+        std::cout << "Hashing using SHA1_160" << '\n';
     } else if (hash_enabled == "sha224") {
-        std::cout << "Hashed using SHA224" << '\n';
+        std::cout << "Hashing using SHA224" << '\n';
     } else if (hash_enabled == "sha256") {
-        std::cout << "Hashed using SHA256" << '\n';
+        std::cout << "Hashing using SHA256" << '\n';
     } else if (hash_enabled == "sha384") {
-        std::cout << "Hashed using SHA384" << '\n';
+        std::cout << "Hashing using SHA384" << '\n';
     } else if (hash_enabled == "sha512") {
-        std::cout << "Hashed using SHA512" << '\n';
+        std::cout << "Hashing using SHA512" << '\n';
     } else if (hash_enabled == "sha3_224"){
-        std::cout << "Hashed using SHA3_224" << '\n';
+        std::cout << "Hashing using SHA3_224" << '\n';
     } else if (hash_enabled == "sha3_256"){
-        std::cout << "Hashed using SHA3_256" << '\n';
+        std::cout << "Hashing using SHA3_256" << '\n';
     } else if (hash_enabled == "sha3_384"){
-        std::cout << "Hashed using SHA3_384" << '\n';
+        std::cout << "Hashing using SHA3_384" << '\n';
     } else if (hash_enabled == "sha3_512"){
-        std::cout << "Hashed using SHA3_512" << '\n';
-    } else if (hash_enabled == "PKBDF2") {
-        std::cout << "Hashed using PKBDF2" << '\n';
+        std::cout << "Hashing using SHA3_512" << '\n';
     } else {
-        std::cout << hash_enabled << '\n';
         std::cout << "Hashing: " << "Inactive" << '\n';
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(25));
@@ -442,6 +450,18 @@ void Get_Info::start_ui() {
     std::cout << "Output file name: " << output_file_name << '\n';
     std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
+    if (letter_case != "0") {
+        Generate generate;
+        generate.get_info(minimal_combination_length,
+                                                  maximal_combination_length,
+                                                  letter_case,
+                                                  separator,
+                                                  combinations,
+                                                  output_file_name,
+                                                  hash_enabled,
+                                                  verbose);
+        combinations = generate.casing(generate.convert_2d_vector_to_normal_vector(combinations));
+    }
     std::cout << "Combinations: " << '\n';
     for (int i = 0; i < combinations.size(); i++) {
         std::cout << '\t' << words[i] << '\n';
@@ -457,13 +477,22 @@ void Get_Info::start_ui() {
     std::cout << '\n' << '\n';
 }
 
+/**
+ * Check if the file exists.
+ *
+ * @param fileName the name of the file to check
+ *
+ * @return true if the file exists, false otherwise
+ *
+ * @throws None
+ */
 bool Get_Info::fileExists(const std::string& fileName) {
     std::ifstream file(fileName);
     return file.good();
 }
 
 /**
- * Retrieves separators from a specified file at a given line number, and populates the separators container.
+ * Retrieves separators from a specified file at a given line number.
  *
  * @param separators_file_name the name of the file containing the separators
  * @param line the line number from which to retrieve the separators
