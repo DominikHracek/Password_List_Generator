@@ -61,7 +61,6 @@ void Generate::get_info(const int minimal_combination_length,
  *
  * @throws None
  */
-//TODO crashes when changes from 2 to 1
 std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::string>& combinations) {
 	std::vector<std::vector<std::string>> return_combinations;
 	std::vector<std::string> vector_of_combinations;
@@ -95,8 +94,11 @@ std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::st
 			vector_of_combinations.push_back(combination);
 			return_combinations.push_back(vector_of_combinations);
 		}
+	//TODO do the other letter_case posibilities
 	} else if (letter_case == "2") {
 		for (const std::string& combination : combinations) {
+			bool has_been_switched = false;
+			bool is_a_number = false;
 			vector_of_combinations.clear();
 			if (combination.length() % 2 == 0) {
 				std::string upper_case_combination = combination;
@@ -159,7 +161,6 @@ std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::st
 			return_combinations.push_back(vector_of_combinations);
 		}
 	} else {
-		//TODO handle better
 		std::cout << "Invalid letter case: " << letter_case << '\n';
 		exit(1);
 	}

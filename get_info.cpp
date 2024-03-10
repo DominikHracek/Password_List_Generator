@@ -184,8 +184,8 @@ void Get_Info::is_everything_ok() {
                           hash_enabled,
                           verbose);
         generate.generate_combinations();
+        exit(0);
     } else {
-        //TODO make sure, everything is working in this condition
         int whats_wrong;
 
         bool invalid_choice;
@@ -222,7 +222,6 @@ void Get_Info::is_everything_ok() {
                     std::cout << "New case-sensitivity level: ";
                     std::cin >> letter_case;
                     if (!letter_case.empty()) {
-                        std::vector<std::string> casing_combinations = Generate::convert_2d_vector_to_normal_vector(combinations);
                         Generate generate;
                         combinations.clear();
                         generate.get_info(minimal_combination_length,
@@ -233,7 +232,7 @@ void Get_Info::is_everything_ok() {
                                           output_file_name,
                                           hash_enabled,
                                           verbose);
-                        combinations = generate.casing(casing_combinations);
+                        combinations = generate.casing(words);
                     }
                     break;
                 case 4:
@@ -295,24 +294,23 @@ void Get_Info::is_everything_ok() {
                     }
                     break;
                 case 6:
-                    std::cout << "1) File with separators" << '\n';
-                    std::cout << "2) Input file name (words)" << '\n';
-                    std::cout << "3) Output file name (combinations)" << '\n';
-                    std::cout << "4) Back" << '\n';
+                    std::cout << "1) Input file name (words)" << '\n';
+                    std::cout << "2) Output file name (generated combinations)" << '\n';
+                    std::cout << "3) Back" << '\n';
                     std::cout << "What's wrong: ";
                     int file_checker;
                     std::cin >> file_checker;
                     switch (file_checker) {
                         case 1:
-                            //get_separators();
+                            std::cout << "New input file name: ";
+                            std::cin >> input_file_name;
+                            get_words(input_file_name);
                             break;
                         case 2:
-                            //get_words();
+                            std::cout << "New output file name: ";
+                            std::cin >> output_file_name;
                             break;
                         case 3:
-                            //get_output_file_name();
-                            break;
-                        case 4:
                             break;
                         default:
                             invalid_choice = true;
@@ -320,10 +318,50 @@ void Get_Info::is_everything_ok() {
                     }
                     break;
                 case 7:
-                    for (int i = 0; i < combinations.size(); i++) {
-                        std::cout << i + 1 << ") " << combinations[i][0] << '\n';
+                    for (int i = 0; i < words.size(); i++) {
+                        std::cout << i + 1 << ") " << words[i] << '\n';
                     }
-                    //TODO make sure, everything is working in this condition
+                    std::cout << "1) Add a word" << '\n';
+                    std::cout << "2) Modify a word" << '\n';
+                    std::cout << "3) Remove a word" << '\n';
+                    std::cout << "4) Back" << '\n';
+                    std::cout << "What do you want to do: ";
+                    int word_option;
+                    std::cin >> word_option;
+                    switch (word_option) {
+                        case 1:
+                            std::cout << "New word: ";
+                            std::string new_word;
+                            std::cin >> new_word;
+                            words.push_back(new_word);
+                            break;
+                        case 2:
+                            for (int i = 0; i < words.size(); i++) {
+                                std::cout << i + 1 << ") " << words[i] << '\n';
+                            }
+                            std::cout << "Which word do you want to modify: ";
+                            int which_word;
+                            std::cin >> which_word;
+                            std::cout << "New word: ";
+                            std::string modified_word;
+                            std::cin >> modified_word;
+                            words[which_word - 1] = modified_word;
+                            break;
+                        case 3:
+                            for (int i = 0; i < words.size(); i++) {
+                                std::cout << i + 1 << ") " << words[i] << '\n';
+                            }
+                            std::cout << "Which word do you want to remove: ";
+                            int remove_word;
+                            std::cin >> remove_word;
+                            words.erase(words.begin() + (remove_word - 1));
+                            break;
+                        case 4:
+                            break;
+                        default:
+                            invalid_choice = true;
+                            break;
+                    }
                     break;
                 case 8:
                     //TODO handle hash functions
@@ -460,7 +498,7 @@ void Get_Info::start_ui() {
                                                   output_file_name,
                                                   hash_enabled,
                                                   verbose);
-        combinations = generate.casing(generate.convert_2d_vector_to_normal_vector(combinations));
+        combinations = generate.casing(words);
     }
     std::cout << "Combinations: " << '\n';
     for (int i = 0; i < combinations.size(); i++) {
