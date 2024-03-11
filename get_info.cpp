@@ -197,9 +197,8 @@ void Get_Info::is_everything_ok() {
             std::cout << '\t' << "4) Separator set" << '\n';
             std::cout << '\t' << "5) Verbosity" << '\n';
             std::cout << '\t' << "6) Files" << '\n';
-            std::cout << '\t' << "7) Words to combine" << '\n';
-            std::cout << '\t' << "8) Hash function" << '\n';
-            std::cout << '\t' << "9) Back" << '\n';
+            std::cout << '\t' << "7) Hash function" << '\n';
+            std::cout << '\t' << "8) Back" << '\n';
             std::cout << "What's wrong: ";
             std::cin >> whats_wrong;
             std::cin.clear();
@@ -318,55 +317,71 @@ void Get_Info::is_everything_ok() {
                     }
                     break;
                 case 7:
-                    for (int i = 0; i < words.size(); i++) {
-                        std::cout << i + 1 << ") " << words[i] << '\n';
-                    }
-                    std::cout << "1) Add a word" << '\n';
-                    std::cout << "2) Modify a word" << '\n';
-                    std::cout << "3) Remove a word" << '\n';
-                    std::cout << "4) Back" << '\n';
-                    std::cout << "What do you want to do: ";
-                    int word_option;
-                    std::cin >> word_option;
-                    switch (word_option) {
+                    std::cout << "Which hashing algorithm do you want to use?" << '\n';
+                    std::cout << '\t' << "1) MD2" << '\n';
+                    std::cout << '\t' << "2) MD4" << '\n';
+                    std::cout << '\t' << "3) MD5" << '\n';
+                    std::cout << '\t' << "4) NTLM" << '\n';
+                    std::cout << '\t' << "5) SHA1_160" << '\n';
+                    std::cout << '\t' << "6) SHA224" << '\n';
+                    std::cout << '\t' << "7) SHA256" << '\n';
+                    std::cout << '\t' << "8) SHA384" << '\n';
+                    std::cout << '\t' << "9) SHA512" << '\n';
+                    std::cout << '\t' << "10) SHA3_224" << '\n';
+                    std::cout << '\t' << "11) SHA3_256" << '\n';
+                    std::cout << '\t' << "12) SHA3_384" << '\n';
+                    std::cout << '\t' << "13) SHA3_512" << '\n';
+                    std::cout << '\t' << "14) Back" << '\n';
+                    std::cout << "What's wrong: ";
+                    int hash_checker;
+                    std::cin >> hash_checker;
+                    switch (hash_checker) {
                         case 1:
-                            std::cout << "New word: ";
-                            std::string new_word;
-                            std::cin >> new_word;
-                            words.push_back(new_word);
+                            hash_enabled = "MD2";
                             break;
                         case 2:
-                            for (int i = 0; i < words.size(); i++) {
-                                std::cout << i + 1 << ") " << words[i] << '\n';
-                            }
-                            std::cout << "Which word do you want to modify: ";
-                            int which_word;
-                            std::cin >> which_word;
-                            std::cout << "New word: ";
-                            std::string modified_word;
-                            std::cin >> modified_word;
-                            words[which_word - 1] = modified_word;
+                            hash_enabled = "MD4";
                             break;
                         case 3:
-                            for (int i = 0; i < words.size(); i++) {
-                                std::cout << i + 1 << ") " << words[i] << '\n';
-                            }
-                            std::cout << "Which word do you want to remove: ";
-                            int remove_word;
-                            std::cin >> remove_word;
-                            words.erase(words.begin() + (remove_word - 1));
+                            hash_enabled = "MD5";
                             break;
                         case 4:
+                            hash_enabled = "NTLM";
+                            break;
+                        case 5:
+                            hash_enabled = "SHA1_160";
+                            break;
+                        case 6:
+                            hash_enabled = "SHA224";
+                            break;
+                        case 7:
+                            hash_enabled = "SHA256";
+                            break;
+                        case 8:
+                            hash_enabled = "SHA384";
+                            break;
+                        case 9:
+                            hash_enabled = "SHA512";
+                            break;
+                        case 10:
+                            hash_enabled = "SHA3_224";
+                            break;
+                        case 11:
+                            hash_enabled = "SHA3_256";
+                            break;
+                        case 12:
+                            hash_enabled = "SHA3_384";
+                            break;
+                        case 13:
+                            hash_enabled = "SHA3_512";
+                            break;
+                        case 14:
                             break;
                         default:
                             invalid_choice = true;
                             break;
                     }
-                    break;
                 case 8:
-                    //TODO handle hash functions
-                    break;
-                case 9:
                     break;
                 default:
                     std::cout << "Incorrect number" << '\n';
