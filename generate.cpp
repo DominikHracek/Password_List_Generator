@@ -66,7 +66,6 @@ std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::st
 	std::vector<std::string> vector_of_combinations;
 	//TODO ADD OPTION TO DECIDE WHETHER TO BE RECURSIVE OR NOT (IF 2, THEN 1,2 NOT ONLY 2)
 	//TODO MULTIPLE VARIATIONS OF A WORDS GET REPLACED IN THIS FUNCTION
-	//TODO 0 doesn't work
 	if (letter_case == "0") {
 		for (const std::string& combination : combinations) {
 			vector_of_combinations.push_back(combination);
@@ -95,7 +94,6 @@ std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::st
 			vector_of_combinations.push_back(combination);
 			return_combinations.push_back(vector_of_combinations);
 		}
-	//TODO do the other letter_case posibilities
 	} else if (letter_case == "2") {
 		for (const std::string& combination : combinations) {
 			bool is_a_number = false;

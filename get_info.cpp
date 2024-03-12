@@ -50,6 +50,8 @@ Get_Info::Get_Info(){
     verbose = false;
 }
 
+bool letter_case_was_zero = true;
+
 /**
  * Get the arguments from the command line and parse them.
  *
@@ -495,47 +497,65 @@ void Get_Info::start_ui() {
 
     if (letter_case != "0") {
         Generate generate;
-        if (words.size() > 1 && !has_been_converted) {
-            words = Generate::convert_2d_vector_to_normal_vector(combinations);
-            combinations.clear();
+        words.clear();
+        for (const std::vector<std::string>& combination : combinations) {
+            if (combination.size() > 1 && !has_been_converted) {
+                for (const std::string& word : combination) {
+                    words.push_back(word);
+                }
+                has_been_converted = true;
+            }
+        }
+        generate.get_info(minimal_combination_length,
+                          maximal_combination_length,
+                          letter_case,
+                          separator,
+                          combinations,
+                          output_file_name,
+                          hash_enabled,
+                          verbose);
+        combinations = generate.casing(words);
+        letter_case_was_zero = false;
+    } else {
+        if (!letter_case_was_zero) {
             std::vector<std::string> temp_combinations;
             for (const std::string& word : words) {
                 temp_combinations.clear();
                 temp_combinations.push_back(word);
                 combinations.push_back(temp_combinations);
+                Generate generate;
+                generate.get_info(minimal_combination_length,
+                                  maximal_combination_length,
+                                  letter_case,
+                                  separator,
+                                  combinations,
+                                  output_file_name,
+                                  hash_enabled,
+                                  verbose);
+                combinations = generate.casing(words);
+                //TODO fix this
+                std::cout << "-----------------------------------------------" << '\n';
+                for (const std::vector<std::string>& combination : combinations) {
+                    for (const std::string& word : combination) {
+                        std::cout << word << ' ';
+                    }
+                    std::cout << '\n';
+                }
+                std::cout << "-----------------------------------------------" << '\n';
+                letter_case_was_zero = true;
             }
-            has_been_converted = true;
         }
-        generate.get_info(minimal_combination_length,
-                          maximal_combination_length,
-                          letter_case,
-                          separator,
-                          combinations,
-                          output_file_name,
-                          hash_enabled,
-                          verbose);
-        combinations = generate.casing(words);
-    } else {
-        std::vector<std::string> temp_combinations;
-        for (const std::string& word : words) {
-            temp_combinations.clear();
-            temp_combinations.push_back(word);
-            combinations.push_back(temp_combinations);
-        }
-        Generate generate;
-        generate.get_info(minimal_combination_length,
-                          maximal_combination_length,
-                          letter_case,
-                          separator,
-                          combinations,
-                          output_file_name,
-                          hash_enabled,
-                          verbose);
-        combinations = generate.casing(words);
     }
 
+    for (const std::vector<std::string>& combination : combinations) {
+        for (const std::string& word : combination) {
+            std::cout << word << ' ';
+        }
+        std::cout << '\n';
+    }
 
     std::cout << "Combinations: " << '\n';
+    std::cout << "Words size: " << words.size() << '\n';
     for (int i = 0; i < words.size(); i++) {
         std::cout << '\t' << words[i] << '\n';
         for (const auto & j : combinations[i]) {
