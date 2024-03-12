@@ -191,6 +191,7 @@ void Get_Info::is_everything_ok() {
         bool invalid_choice;
         do {
             invalid_choice = false;
+            //TODO add option to remove words, because of casing 4b
             std::cout << '\t' << "1) Minimal length" << '\n';
             std::cout << '\t' << "2) Maximal length" << '\n';
             std::cout << '\t' << "3) Case-sensitivity level" << '\n';
@@ -220,19 +221,6 @@ void Get_Info::is_everything_ok() {
                     std::cout << '\n' << '\n';
                     std::cout << "New case-sensitivity level: ";
                     std::cin >> letter_case;
-                    if (!letter_case.empty()) {
-                        Generate generate;
-                        combinations.clear();
-                        generate.get_info(minimal_combination_length,
-                                          maximal_combination_length,
-                                          letter_case,
-                                          separator,
-                                          combinations,
-                                          output_file_name,
-                                          hash_enabled,
-                                          verbose);
-                        combinations = generate.casing(words);
-                    }
                     break;
                 case 4:
                     do {
@@ -337,43 +325,43 @@ void Get_Info::is_everything_ok() {
                     std::cin >> hash_checker;
                     switch (hash_checker) {
                         case 1:
-                            hash_enabled = "MD2";
+                            hash_enabled = "md2";
                             break;
                         case 2:
-                            hash_enabled = "MD4";
+                            hash_enabled = "md4";
                             break;
                         case 3:
-                            hash_enabled = "MD5";
+                            hash_enabled = "md5";
                             break;
                         case 4:
-                            hash_enabled = "NTLM";
+                            hash_enabled = "ntlm";
                             break;
                         case 5:
-                            hash_enabled = "SHA1_160";
+                            hash_enabled = "sha1_160";
                             break;
                         case 6:
-                            hash_enabled = "SHA224";
+                            hash_enabled = "sha224";
                             break;
                         case 7:
-                            hash_enabled = "SHA256";
+                            hash_enabled = "sha256";
                             break;
                         case 8:
-                            hash_enabled = "SHA384";
+                            hash_enabled = "sha384";
                             break;
                         case 9:
-                            hash_enabled = "SHA512";
+                            hash_enabled = "sha512";
                             break;
                         case 10:
-                            hash_enabled = "SHA3_224";
+                            hash_enabled = "sha3_224";
                             break;
                         case 11:
-                            hash_enabled = "SHA3_256";
+                            hash_enabled = "sha3_256";
                             break;
                         case 12:
-                            hash_enabled = "SHA3_384";
+                            hash_enabled = "sha3_384";
                             break;
                         case 13:
-                            hash_enabled = "SHA3_512";
+                            hash_enabled = "sha3_512";
                             break;
                         case 14:
                             break;
@@ -394,6 +382,8 @@ void Get_Info::is_everything_ok() {
     std::cin.ignore();
     start_ui();
 }
+
+bool has_been_converted = false;
 
 /**
  * Starts the user interface and displays information about the password list generator,
@@ -505,18 +495,48 @@ void Get_Info::start_ui() {
 
     if (letter_case != "0") {
         Generate generate;
+        if (words.size() > 1 && !has_been_converted) {
+            words = Generate::convert_2d_vector_to_normal_vector(combinations);
+            combinations.clear();
+            std::vector<std::string> temp_combinations;
+            for (const std::string& word : words) {
+                temp_combinations.clear();
+                temp_combinations.push_back(word);
+                combinations.push_back(temp_combinations);
+            }
+            has_been_converted = true;
+        }
         generate.get_info(minimal_combination_length,
-                                                  maximal_combination_length,
-                                                  letter_case,
-                                                  separator,
-                                                  combinations,
-                                                  output_file_name,
-                                                  hash_enabled,
-                                                  verbose);
+                          maximal_combination_length,
+                          letter_case,
+                          separator,
+                          combinations,
+                          output_file_name,
+                          hash_enabled,
+                          verbose);
+        combinations = generate.casing(words);
+    } else {
+        std::vector<std::string> temp_combinations;
+        for (const std::string& word : words) {
+            temp_combinations.clear();
+            temp_combinations.push_back(word);
+            combinations.push_back(temp_combinations);
+        }
+        Generate generate;
+        generate.get_info(minimal_combination_length,
+                          maximal_combination_length,
+                          letter_case,
+                          separator,
+                          combinations,
+                          output_file_name,
+                          hash_enabled,
+                          verbose);
         combinations = generate.casing(words);
     }
+
+
     std::cout << "Combinations: " << '\n';
-    for (int i = 0; i < combinations.size(); i++) {
+    for (int i = 0; i < words.size(); i++) {
         std::cout << '\t' << words[i] << '\n';
         for (const auto & j : combinations[i]) {
             std::cout << '\t' << '\t' << j << '\n';

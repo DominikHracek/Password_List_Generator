@@ -133,7 +133,8 @@ void Help::show_case(){
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\t' << "3b - With even indexed characters (lIkE tHiS)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
-  std::cout << '\t' << "4  - Every character (one, onE, oNe, oNE, One, OnE, ONe, ONE)" << '\n';
+  std::cout << '\t' << "4a - Every character is capital (one, ONE)" << '\n';
+  std::cout << '\t' << "4b - Every character (one, onE, oNe, oNE, One, OnE, ONe, ONE)" << '\n';
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
   std::cout << '\n';
   std::cout << "Example:" << '\n';

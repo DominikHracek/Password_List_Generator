@@ -4,7 +4,7 @@
 #include <sys/stat.h>
 
 #include "generate.h"
-#include "hash.h"
+//#include "hash.h"
 
 /**
  * Constructor for the Generate class.
@@ -64,24 +64,25 @@ void Generate::get_info(const int minimal_combination_length,
 std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::string>& combinations) {
 	std::vector<std::vector<std::string>> return_combinations;
 	std::vector<std::string> vector_of_combinations;
-	if (letter_case == "1") {
+	//TODO ADD OPTION TO DECIDE WHETHER TO BE RECURSIVE OR NOT (IF 2, THEN 1,2 NOT ONLY 2)
+	//TODO MULTIPLE VARIATIONS OF A WORDS GET REPLACED IN THIS FUNCTION
+	//TODO 0 doesn't work
+	if (letter_case == "0") {
 		for (const std::string& combination : combinations) {
-			bool has_been_switched = false;
+			vector_of_combinations.push_back(combination);
+		}
+		return_combinations.push_back(vector_of_combinations);
+	} else if (letter_case == "1") {
+		for (const std::string& combination : combinations) {
 			bool is_a_number = false;
 			vector_of_combinations.clear();
 			std::string upper_case_combination = combination;
-			if (!has_been_switched) {
+			if (bool has_been_switched = false; !has_been_switched) {
 				for (int i = 0; i < combination.length(); i++) {
 					if (std::isalpha(upper_case_combination[i])) {
-						if (std::islower(upper_case_combination[i])) {
-							upper_case_combination[i] = std::toupper(upper_case_combination[i]);
-							has_been_switched = true;
-							break;
-						} else {
-							upper_case_combination[i] = std::tolower(upper_case_combination[i]);
-							has_been_switched = true;
-							break;
-						}
+						upper_case_combination[i] = std::toupper(upper_case_combination[i]);
+						has_been_switched = true;
+						break;
 					}
 					if (i == combination.length()-1) {
 						is_a_number = true;
@@ -97,69 +98,111 @@ std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::st
 	//TODO do the other letter_case posibilities
 	} else if (letter_case == "2") {
 		for (const std::string& combination : combinations) {
-			bool has_been_switched = false;
 			bool is_a_number = false;
 			vector_of_combinations.clear();
-			if (combination.length() % 2 == 0) {
-				std::string upper_case_combination = combination;
-				upper_case_combination[0] = std::toupper(upper_case_combination[0]);
-				upper_case_combination[upper_case_combination.length()/2-1] = std::toupper(upper_case_combination[upper_case_combination.length()/2-1]);
-				upper_case_combination[upper_case_combination.length()/2] = std::toupper(upper_case_combination[upper_case_combination.length()/2]);
-				upper_case_combination[upper_case_combination.length()-1] = std::toupper(upper_case_combination[upper_case_combination.length()-1]);
-				vector_of_combinations.push_back(combination);
-				vector_of_combinations.push_back(upper_case_combination);
-				return_combinations.push_back(vector_of_combinations);
-			} else {
-				std::string upper_case_combination = combination;
-				upper_case_combination[0] = std::toupper(upper_case_combination[0]);
-				upper_case_combination[upper_case_combination.length()/2] = std::toupper(upper_case_combination[upper_case_combination.length()/2]);
-				upper_case_combination[upper_case_combination.length()-1] = std::toupper(upper_case_combination[upper_case_combination.length()-1]);
-				vector_of_combinations.push_back(combination);
-				vector_of_combinations.push_back(upper_case_combination);
-				return_combinations.push_back(vector_of_combinations);
+			std::string upper_case_combination = combination;
+			if (bool has_been_switched = false; !has_been_switched) {
+				int first_alpha_index = 0;
+				for (int i = 0; i < combination.length(); i++) {
+					if (std::isalpha(upper_case_combination[i])) {
+						first_alpha_index = i;
+						if ((combination.length() - first_alpha_index) % 2 == 0) {
+							upper_case_combination[i] = std::toupper(upper_case_combination[i]);
+							upper_case_combination[(upper_case_combination.length() - first_alpha_index)/2-1] = std::toupper(upper_case_combination[(upper_case_combination.length() - first_alpha_index)/2-1]);
+							upper_case_combination[(upper_case_combination.length() - first_alpha_index)/2] = std::toupper(upper_case_combination[(upper_case_combination.length() - first_alpha_index)/2]);
+							upper_case_combination[(upper_case_combination.length() - first_alpha_index)/2+1] = std::toupper(upper_case_combination[(upper_case_combination.length() - first_alpha_index)/2+1]);
+						} else {
+							upper_case_combination[i] = std::toupper(upper_case_combination[i]);
+							upper_case_combination[(upper_case_combination.length() - first_alpha_index)/2 + i] = std::toupper(upper_case_combination[(upper_case_combination.length() - first_alpha_index)/2 + i]);
+							upper_case_combination[upper_case_combination.length() - first_alpha_index-1 + i] = std::toupper(upper_case_combination[upper_case_combination.length() - first_alpha_index - 1 + i]);
+						}
+						break;
+					}
+					if (i == combination.length() - 1) {
+						is_a_number = true;
+					}
+				}
 			}
+			if (!is_a_number) {
+				vector_of_combinations.push_back(upper_case_combination);
+			}
+			vector_of_combinations.push_back(combination);
+			return_combinations.push_back(vector_of_combinations);
 		}
 	} else if (letter_case == "3a") {
 		for (const std::string& combination : combinations) {
+			bool is_a_number = false;
 			vector_of_combinations.clear();
 			std::string upper_case_combination = combination;
-			for (int i = 0; i < upper_case_combination.length(); i++) {
-				if (i % 2 == 0) {
-					upper_case_combination[i] = std::toupper(upper_case_combination[i]);
+			if (bool has_been_switched = false; !has_been_switched) {
+				int first_alpha_index = 0;
+				for (int i = 0; i < combination.length(); i++) {
+					if (std::isalpha(upper_case_combination[i])) {
+						first_alpha_index = i;
+						for (int j = 0; j < upper_case_combination.length() - first_alpha_index; j += 2) {
+							upper_case_combination[j+i] = std::toupper(upper_case_combination[j+i]);
+						}
+						break;
+					}
+					if (i == combination.length() - 1) {
+						is_a_number = true;
+					}
 				}
 			}
-			vector_of_combinations.push_back(combination);
 			vector_of_combinations.push_back(upper_case_combination);
+			vector_of_combinations.push_back(combination);
 			return_combinations.push_back(vector_of_combinations);
 		}
 	} else if (letter_case == "3b") {
 		for (const std::string& combination : combinations) {
+			bool is_a_number = false;
 			vector_of_combinations.clear();
 			std::string upper_case_combination = combination;
-			for (int i = 0; i < upper_case_combination.length(); i++) {
-				if (i % 2 == 1) {
-					upper_case_combination[i] = std::toupper(upper_case_combination[i]);
-				}
-			}
-			vector_of_combinations.push_back(combination);
-			vector_of_combinations.push_back(upper_case_combination);
-			return_combinations.push_back(vector_of_combinations);
-		}
-	} else if (letter_case == "4") {
-		for (const std::string& combination : combinations) {
-			std::string upper_case_combination;
-			for (int i = 0; i < (1 << combination.length()); i++) {
-				upper_case_combination = combination;
-				for (int j = 0; j < combination.length(); j++) {
-					if ((i >> j) & 1) {
-						upper_case_combination[j] = std::toupper(upper_case_combination[j]);
+			if (bool has_been_switched = false; !has_been_switched) {
+				int first_alpha_index = 0;
+				for (int i = 0; i < combination.length(); i++) {
+					if (std::isalpha(upper_case_combination[i])) {
+						first_alpha_index = i;
+						for (int j = 1; j < upper_case_combination.length() - first_alpha_index; j += 2) {
+							upper_case_combination[j+i] = std::toupper(upper_case_combination[j+i]);
+						}
+						break;
+					}
+					if (i == combination.length() - 1) {
+						is_a_number = true;
 					}
 				}
 			}
-			vector_of_combinations.push_back(combination);
 			vector_of_combinations.push_back(upper_case_combination);
+			vector_of_combinations.push_back(combination);
 			return_combinations.push_back(vector_of_combinations);
 		}
+	} else if (letter_case == "4a") {
+		for (const std::string& combination : combinations) {
+			bool is_a_number = false;
+			vector_of_combinations.clear();
+			std::string upper_case_combination = combination;
+			if (bool has_been_switched = false; !has_been_switched) {
+				int first_alpha_index = 0;
+				for (int i = 0; i < combination.length(); i++) {
+					if (std::isalpha(upper_case_combination[i])) {
+						first_alpha_index = i;
+						for (int j = 0; j < upper_case_combination.length() - first_alpha_index; j++) {
+							upper_case_combination[j+i] = std::toupper(upper_case_combination[j+i]);
+						}
+						break;
+					}
+					if (i == combination.length() - 1) {
+						is_a_number = true;
+					}
+				}
+			}
+			vector_of_combinations.push_back(upper_case_combination);
+			vector_of_combinations.push_back(combination);
+			return_combinations.push_back(vector_of_combinations);
+		}
+	} else if (letter_case == "4b") {
+		//TODO Implement 4b (pow(2, length)-1)
 	} else {
 		std::cout << "Invalid letter case: " << letter_case << '\n';
 		exit(1);
@@ -259,13 +302,13 @@ void Generate::generate_combinations_with_repetition(const int combination_lengt
 				combination = previous_combination;
 				combination += sep;
 				if (combination.length() >= minimal_combination_length && combination.length() <= maximal_combination_length) {
-					std::string to_be_written;
-					if (!hash_enabled.empty()) {
+					std::string to_be_written = combination;
+					/*if (!hash_enabled.empty()) {
 						Hash hash;
 						hash.get_parameters(combination, hash_enabled);
 						std::string hashed_combination = hash.get_hash(combination, hash_enabled);
 						to_be_written = combination + ":" + hashed_combination;
-					}
+					}*/
 					std::cout << '\r' << to_be_written << std::flush;
 					if (to_be_written.length() < previous_length) {
 						const int difference = previous_length - to_be_written.length();
@@ -283,13 +326,13 @@ void Generate::generate_combinations_with_repetition(const int combination_lengt
 				combination = previous_combination;
 				combination += sep;
 				if (combination.length() >= minimal_combination_length && combination.length() <= maximal_combination_length) {
-					std::string to_be_written;
-					if (!hash_enabled.empty()) {
+					std::string to_be_written = combination;
+					/*if (!hash_enabled.empty()) {
 						Hash hash;
 						hash.get_parameters(combination, hash_enabled);
 						std::string hashed_combination = hash.get_hash(combination, hash_enabled);
 						to_be_written = combination + ":" + hashed_combination;
-					}
+					}*/
 					output_file << to_be_written << '\n';
 				}
 			}
