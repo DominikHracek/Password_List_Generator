@@ -64,8 +64,7 @@ void Generate::get_info(const int minimal_combination_length,
 std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::string>& combinations) {
 	std::vector<std::vector<std::string>> return_combinations;
 	std::vector<std::string> vector_of_combinations;
-	//TODO ADD OPTION TO DECIDE WHETHER TO BE RECURSIVE OR NOT (IF 2, THEN 1,2 NOT ONLY 2)
-	//TODO MULTIPLE VARIATIONS OF A WORDS GET REPLACED IN THIS FUNCTION
+	//TODO changing from 3a to 1 breaks the output
 	if (letter_case == "0") {
 		for (const std::string& combination : combinations) {
 			vector_of_combinations.push_back(combination);

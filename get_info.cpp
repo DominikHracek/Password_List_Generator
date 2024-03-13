@@ -496,7 +496,6 @@ void Get_Info::start_ui() {
     std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
     if (letter_case != "0") {
-        Generate generate;
         words.clear();
         for (const std::vector<std::string>& combination : combinations) {
             if (combination.size() > 1 && !has_been_converted) {
@@ -506,6 +505,7 @@ void Get_Info::start_ui() {
                 has_been_converted = true;
             }
         }
+        Generate generate;
         generate.get_info(minimal_combination_length,
                           maximal_combination_length,
                           letter_case,
@@ -514,48 +514,24 @@ void Get_Info::start_ui() {
                           output_file_name,
                           hash_enabled,
                           verbose);
+        words = generate.convert_2d_vector_to_normal_vector(combinations);
         combinations = generate.casing(words);
         letter_case_was_zero = false;
     } else {
         if (!letter_case_was_zero) {
             std::vector<std::string> temp_combinations;
+            combinations.clear();
             for (const std::string& word : words) {
                 temp_combinations.clear();
                 temp_combinations.push_back(word);
                 combinations.push_back(temp_combinations);
-                Generate generate;
-                generate.get_info(minimal_combination_length,
-                                  maximal_combination_length,
-                                  letter_case,
-                                  separator,
-                                  combinations,
-                                  output_file_name,
-                                  hash_enabled,
-                                  verbose);
-                combinations = generate.casing(words);
-                //TODO fix this
-                std::cout << "-----------------------------------------------" << '\n';
-                for (const std::vector<std::string>& combination : combinations) {
-                    for (const std::string& word : combination) {
-                        std::cout << word << ' ';
-                    }
-                    std::cout << '\n';
-                }
-                std::cout << "-----------------------------------------------" << '\n';
+                words = Generate::convert_2d_vector_to_normal_vector(combinations);
                 letter_case_was_zero = true;
             }
         }
     }
 
-    for (const std::vector<std::string>& combination : combinations) {
-        for (const std::string& word : combination) {
-            std::cout << word << ' ';
-        }
-        std::cout << '\n';
-    }
-
     std::cout << "Combinations: " << '\n';
-    std::cout << "Words size: " << words.size() << '\n';
     for (int i = 0; i < words.size(); i++) {
         std::cout << '\t' << words[i] << '\n';
         for (const auto & j : combinations[i]) {
