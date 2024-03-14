@@ -495,26 +495,19 @@ void Get_Info::start_ui() {
     std::cout << "Output file name: " << output_file_name << '\n';
     std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
+    //TODO consider making every combination a vector {original_word, transformed_word} (can be same)
     if (letter_case != "0") {
         words.clear();
         for (const std::vector<std::string>& combination : combinations) {
-            std::cout << "{";
-            for (const std::string& word : combination) {
-                std::cout << "{" << word << "}, ";
-            }
-            std::cout << "}, " << '\n';
-        }
-        for (const std::vector<std::string>& combination : combinations) {
-            std::cout << "Combination size: " << combination.size() << '\n';
             if (combination.size() > 1 && !has_been_converted) {
                 for (const std::string& word : combination) {
                     words.push_back(word);
                 }
-                has_been_converted = true;
             } else {
                 words.push_back(combination[combination.size() - 1]);
             }
         }
+        has_been_converted = true;
         Generate generate;
         generate.get_info(minimal_combination_length,
                           maximal_combination_length,
