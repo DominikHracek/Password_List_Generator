@@ -64,7 +64,6 @@ void Generate::get_info(const int minimal_combination_length,
 std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::string>& combinations) {
 	std::vector<std::vector<std::string>> return_combinations;
 	std::vector<std::string> vector_of_combinations;
-	//TODO changing from 3a to non-zero breaks the output
 	if (letter_case == "0") {
 		for (const std::string& combination : combinations) {
 			vector_of_combinations.push_back(combination);

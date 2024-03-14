@@ -198,10 +198,11 @@ void Get_Info::is_everything_ok() {
             std::cout << '\t' << "2) Maximal length" << '\n';
             std::cout << '\t' << "3) Case-sensitivity level" << '\n';
             std::cout << '\t' << "4) Separator set" << '\n';
-            std::cout << '\t' << "5) Verbosity" << '\n';
-            std::cout << '\t' << "6) Files" << '\n';
-            std::cout << '\t' << "7) Hash function" << '\n';
-            std::cout << '\t' << "8) Back" << '\n';
+            std::cout << '\t' << "5) Remove combinations" << '\n';
+            std::cout << '\t' << "6) Verbosity" << '\n';
+            std::cout << '\t' << "7) Files" << '\n';
+            std::cout << '\t' << "8) Hash function" << '\n';
+            std::cout << '\t' << "9) Back" << '\n';
             std::cout << "What's wrong: ";
             std::cin >> whats_wrong;
             std::cin.clear();
@@ -262,6 +263,20 @@ void Get_Info::is_everything_ok() {
                     } while (invalid_choice_inner);
                     break;
                 case 5:
+                    //TODO change this to use words to so you can remove the whole combination with only one word
+                    int i = 0;
+                    for (const std::vector<std::string>& combination : combinations) {
+                        for (const std::string& word : combination) {
+                            i++;
+                            std::cout << i << ") " << word << '\n';
+                        }
+                    }
+                    std::cout << '\n';
+                    std::cout << "Which word to remove: ";
+                    int word_to_remove;
+                    std::cin >> word_to_remove;
+
+                case 6:
                     std::cout << '\t' << "1) Enable" << '\n';
                     std::cout << '\t' << "2) Disable" << '\n';
                     std::cout << '\t' << "3) Back" << '\n';
@@ -282,7 +297,7 @@ void Get_Info::is_everything_ok() {
                             break;
                     }
                     break;
-                case 6:
+                case 7:
                     std::cout << "1) Input file name (words)" << '\n';
                     std::cout << "2) Output file name (generated combinations)" << '\n';
                     std::cout << "3) Back" << '\n';
@@ -306,7 +321,7 @@ void Get_Info::is_everything_ok() {
                             break;
                     }
                     break;
-                case 7:
+                case 8:
                     std::cout << "Which hashing algorithm do you want to use?" << '\n';
                     std::cout << '\t' << "1) MD2" << '\n';
                     std::cout << '\t' << "2) MD4" << '\n';
@@ -371,7 +386,7 @@ void Get_Info::is_everything_ok() {
                             invalid_choice = true;
                             break;
                     }
-                case 8:
+                case 9:
                     break;
                 default:
                     std::cout << "Incorrect number" << '\n';
