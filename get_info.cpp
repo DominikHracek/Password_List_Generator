@@ -498,11 +498,21 @@ void Get_Info::start_ui() {
     if (letter_case != "0") {
         words.clear();
         for (const std::vector<std::string>& combination : combinations) {
+            std::cout << "{";
+            for (const std::string& word : combination) {
+                std::cout << "{" << word << "}, ";
+            }
+            std::cout << "}, " << '\n';
+        }
+        for (const std::vector<std::string>& combination : combinations) {
+            std::cout << "Combination size: " << combination.size() << '\n';
             if (combination.size() > 1 && !has_been_converted) {
                 for (const std::string& word : combination) {
                     words.push_back(word);
                 }
                 has_been_converted = true;
+            } else {
+                words.push_back(combination[combination.size() - 1]);
             }
         }
         Generate generate;
@@ -514,7 +524,6 @@ void Get_Info::start_ui() {
                           output_file_name,
                           hash_enabled,
                           verbose);
-        words = generate.convert_2d_vector_to_normal_vector(combinations);
         combinations = generate.casing(words);
         letter_case_was_zero = false;
     } else {
