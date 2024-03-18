@@ -175,6 +175,8 @@ void Get_Info::is_everything_ok() {
     output_check = trim(output_check);
     std::cin.clear();
 
+    int i = 1;
+
     if (output_check == "y" || output_check == "yes" || output_check.empty()) {
         Generate generate;
         generate.get_info(minimal_combination_length,
@@ -264,11 +266,12 @@ void Get_Info::is_everything_ok() {
                     break;
                 case 5:
                     //TODO change this to use words to so you can remove the whole combination with only one word
-                    int i = 0;
-                    for (const std::vector<std::string>& combination : combinations) {
-                        for (const std::string& word : combination) {
+                    for (int j = 0; j < words.size(); j++) {
+                        std::cout << i << ") " << words[j] << '\n';
+                        i++;
+                        for (const std::string& word : combinations[j]) {
+                            std::cout << '\t' << i << ") " << word << '\n';
                             i++;
-                            std::cout << i << ") " << word << '\n';
                         }
                     }
                     std::cout << '\n';
@@ -276,6 +279,14 @@ void Get_Info::is_everything_ok() {
                     int word_to_remove;
                     std::cin >> word_to_remove;
 
+                    for (const std::vector<std::string>& combination : combinations) {
+                        if (combination.size()+1 < word_to_remove) {
+                            word_to_remove -= combination.size()+1;
+                            continue;
+                        }
+                        if (/*//TODO implement this feature (GPG signed commit testing*/)
+                    }
+                    break;
                 case 6:
                     std::cout << '\t' << "1) Enable" << '\n';
                     std::cout << '\t' << "2) Disable" << '\n';

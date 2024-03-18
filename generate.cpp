@@ -173,7 +173,7 @@ std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::st
 			vector_of_combinations.push_back(combination);
 			return_combinations.push_back(vector_of_combinations);
 		}
-	} else if (letter_case == "4a") {
+	} else if (letter_case == "4") {
 		for (const std::string& combination : combinations) {
 			bool is_a_number = false;
 			vector_of_combinations.clear();
@@ -197,8 +197,6 @@ std::vector<std::vector<std::string>> Generate::casing(const std::vector<std::st
 			vector_of_combinations.push_back(combination);
 			return_combinations.push_back(vector_of_combinations);
 		}
-	} else if (letter_case == "4b") {
-		//TODO Implement 4b (pow(2, length)-1)
 	} else {
 		std::cout << "Invalid letter case: " << letter_case << '\n';
 		exit(1);
